@@ -1,6 +1,6 @@
 package app;
 
-import java.awt.CardLayout;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -172,13 +172,20 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
-        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            final JFrame application = new JFrame("VentureBound");
+            application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        application.add(cardPanel);
+            application.add(cardPanel);
 
-        viewManagerModel.setState(signupView.getViewName());
-        viewManagerModel.firePropertyChanged();
+            // Set size before making it visible
+            application.setSize(700, 400);
+            cardPanel.setPreferredSize(new Dimension(700, 400)); // Set preferred size for the panel
+
+            // Center the frame on the screen
+            application.setLocationRelativeTo(null);
+
+            // Make it visible after setting size
+            application.setVisible(true);
 
         return application;
     }
