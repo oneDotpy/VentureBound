@@ -77,8 +77,8 @@ public class AppBuilder {
      */
     public AppBuilder addSignupView() {
         signupViewModel = new SignupViewModel();
-        signupView = new SignupView(signupViewModel);
-        cardPanel.add(signupView, signupView.getViewName());
+        signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
+        cardPanel.add(signupView,   signupView.getViewName());
         return this;
     }
 
@@ -88,7 +88,7 @@ public class AppBuilder {
      */
     public AppBuilder addLoginView() {
         loginViewModel = new LoginViewModel();
-        loginView = new LoginView(loginViewModel);
+        loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
         cardPanel.add(loginView, loginView.getViewName());
         return this;
     }
@@ -172,21 +172,29 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-            final JFrame application = new JFrame("VentureBound");
-            application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // Create view models
+        LoginViewModel loginViewModel = new LoginViewModel();
+        SignupViewModel signupViewModel = new SignupViewModel();
 
-            application.add(cardPanel);
+        // Create views, passing cardLayout and cardPanel to enable switching views
+        LoginView loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
+        SignupView signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
 
-            // Set size before making it visible
-            application.setSize(700, 400);
-            cardPanel.setPreferredSize(new Dimension(700, 400)); // Set preferred size for the panel
+        // Add views to cardPanel with unique names
+        cardPanel.add(loginView, "login");
+        cardPanel.add(signupView, "signup");
 
-            // Center the frame on the screen
-            application.setLocationRelativeTo(null);
+        // Create and configure the main application frame
+        JFrame application = new JFrame("Application");
+        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        application.setSize(700, 400);
+        application.setLocationRelativeTo(null);
 
-            // Make it visible after setting size
-            application.setVisible(true);
+        // Add cardPanel to the frame and make it visible
+        application.add(cardPanel);
+        application.setVisible(true);
 
         return application;
+
     }
 }

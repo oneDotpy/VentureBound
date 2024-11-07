@@ -22,7 +22,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private final JButton logIn;
     private LoginController loginController;
 
-    public LoginView(LoginViewModel loginViewModel) {
+    public LoginView(LoginViewModel loginViewModel, CardLayout cardLayout, JPanel cardPanel) {
         loginViewModel.addPropertyChangeListener(this);
 
         // Set background color and layout
@@ -103,19 +103,19 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         signUpButton.setFont(new Font("SansSerif", Font.BOLD, 14));
         signUpButton.setForeground(Color.decode("#8ca5e5"));
         signUpButton.setBackground(Color.decode("#2c2c2e"));
-        signUpButton.setBorderPainted(false); // Remove button border
-        signUpButton.setFocusPainted(false); // Remove focus outline
-        signUpButton.setContentAreaFilled(false); // Remove button fill
+        signUpButton.setBorderPainted(false);
+        signUpButton.setFocusPainted(false);
+        signUpButton.setContentAreaFilled(false);
         signUpButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         signUpButton.addActionListener(e -> {
-            // Trigger logic to switch to SignUp view
+            // Switch to the "signup" view
+            cardLayout.show(cardPanel, "signup");
             System.out.println("Redirecting to SignUp view...");
         });
 
         formPanel.add(signUpButton);
 
-        // Add components to the main panel
         this.add(title);
         this.add(Box.createVerticalStrut(20)); // Space between title and form
         this.add(formPanel);
