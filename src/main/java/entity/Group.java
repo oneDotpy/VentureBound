@@ -17,7 +17,7 @@ public interface Group {
      * Returns the users of the group.
      * @return the users of the group.
      */
-    List<User> getUsers();
+    List<String> getUsernames();
 
     /**
      * Returns the responses of the group.

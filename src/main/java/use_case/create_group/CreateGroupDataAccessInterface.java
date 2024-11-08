@@ -12,4 +12,6 @@ public interface CreateGroupDataAccessInterface {
      * @param group the user to save
      */
     void save(Group group);
+
+    Group get(String groupName);
 }

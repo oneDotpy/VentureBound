@@ -32,8 +32,8 @@ public class FirestoreDataAccessObject {
         }
         catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("BP 3");
         }
-        throw new RuntimeException("BP 3");
     }
 
     static Firestore getFirestore() { return db; }

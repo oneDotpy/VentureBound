@@ -6,9 +6,9 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 
-import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
+import entity.Group;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
@@ -22,9 +22,38 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface {
 
+    private UserFactory userFactory;
+    private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;
+
+    public FirestoreUserDataAccessObject(UserFactory userFactory,
+                                         FirestoreGroupDataAccessObject firestoreGroupDataAccessObject) {
+        this.userFactory = userFactory;
+        this.firestoreGroupDataAccessObject = firestoreGroupDataAccessObject;
+    }
+
     @Override
     public User get(String username) {
-        return null;
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference docRef = db.collection("users").document(username);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        try {
+            DocumentSnapshot document = future.get();
+            if (document.exists()) {
+                System.out.println("Document data: " + document.getData());
+            } else {
+                System.out.println("No such document!");
+                return null;
+            }
+
+            String password = document.get("password").toString();
+            String email = document.get("email").toString();
+            String groupName = document.get("group").toString();
+            Group group = firestoreGroupDataAccessObject.get("groupName");
+            return userFactory.create(email, password, email, group);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
