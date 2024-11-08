@@ -66,6 +66,8 @@ public class AppBuilder {
     private LoginView loginView;
     private WelcomeViewModel welcomeViewModel;
     private WelcomeView welcomeView;
+    private JoinGroupView joinGroupView;
+    private CreateGroupView  createGroupView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -188,16 +190,27 @@ public class AppBuilder {
         LoginView loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
         SignupView signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
         WelcomeView welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
+        JoinGroupView joinGroupView = new JoinGroupView(cardLayout, cardPanel);
+        CreateGroupView createGroupView = new CreateGroupView(cardLayout, cardPanel);
 
         // Add views to cardPanel with unique names
         cardPanel.add(loginView, "login");
         cardPanel.add(signupView, "signup");
         cardPanel.add(welcomeView, "welcome");
+        cardPanel.add(joinGroupView, "join_group");
+        cardPanel.add(createGroupView, "create_group");
 
         // Create and configure the main application frame
         JFrame application = new JFrame("Application");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        application.setSize(700, 400);
+
+        // Set fixed size
+        application.setSize(1280, 720);
+        application.setMinimumSize(new Dimension(900, 600));
+        application.setMaximumSize(new Dimension(900, 600));
+        application.setResizable(false); // Prevent resizing
+
+        // Center the window on the screen
         application.setLocationRelativeTo(null);
 
         // Add cardPanel to the frame and make it visible
@@ -205,6 +218,5 @@ public class AppBuilder {
         application.setVisible(true);
 
         return application;
-
     }
 }

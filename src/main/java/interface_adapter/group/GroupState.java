@@ -1,4 +1,4 @@
-package interface_adapter.welcome;
+package interface_adapter.group;
 
 public class GroupState {
     private String groupName = "";
