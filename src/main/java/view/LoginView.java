@@ -86,15 +86,23 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         logIn.setMaximumSize(new Dimension(275, 40));
         formPanel.add(logIn);
 
-        logIn.addActionListener(evt -> {
-            if (evt.getSource().equals(logIn)) {
-                final LoginState currentState = loginViewModel.getState();
-                loginController.execute(
-                        currentState.getUsername(),
-                        currentState.getPassword()
-                );
-            }
+        logIn.addActionListener(e -> {
+            // Switch to the "welcome" view
+            cardLayout.show(cardPanel, "welcome");
+            System.out.println("Redirecting to Welcome view...");
         });
+
+//        logIn.addActionListener(evt -> {
+//            if (evt.getSource().equals(logIn)) {
+//                final LoginState currentState = loginViewModel.getState();
+//                loginController.execute(
+//                        currentState.getUsername(),
+//                        currentState.getPassword()
+//                );
+//            }
+//        });
+
+
 
         formPanel.add(Box.createVerticalStrut(20)); // Space before sign-up link
 
