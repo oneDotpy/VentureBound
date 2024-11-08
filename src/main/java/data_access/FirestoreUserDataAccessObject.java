@@ -68,11 +68,12 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
     }
 
 
-
-
-
     @Override
     public void changePassword(User user) {
+        Firestore db = FirestoreDataAccessObject.getFirestore();
+        db.collection("users")
+                .document(user.getName())
+                .update("password", user.getPassword());
 
     }
 
@@ -87,9 +88,5 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
     }
 
     @Override
-    public boolean existsByName(String username) {
-        return false;
-    }
-
-
+    public boolean existsByName(String username) { return false; }
 }
