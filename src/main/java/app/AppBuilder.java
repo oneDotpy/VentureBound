@@ -6,8 +6,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import com.google.firebase.FirebaseApp;
+import data_access.FirestoreGroupDataAccessObject;
+import data_access.FirestoreUserDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
+import entity.CommonGroupFactory;
 import entity.CommonUserFactory;
+import entity.GroupFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
@@ -50,13 +55,17 @@ import view.*;
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
-    // thought question: is the hard dependency below a problem?
+
     private final UserFactory userFactory = new CommonUserFactory();
+    private final GroupFactory groupFactory = new CommonGroupFactory();
+
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    // thought question: is the hard dependency below a problem?
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    // Instantiate Firestore Group Data Access Object
+    private final FirestoreGroupDataAccessObject groupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory);
+    // Instantiate FireStore User Data Access Object
+    private final FirestoreUserDataAccessObject userDataAccessObject = new FirestoreUserDataAccessObject(userFactory, groupDataAccessObject);
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
