@@ -48,6 +48,12 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
         logOut.setContentAreaFilled(true);
         logOut.setPreferredSize(new Dimension(100, 30));
 
+        logOut.addActionListener(e -> {
+            // Switch to the "login" view
+            cardLayout.show(cardPanel, "login");
+            System.out.println("Redirecting to login view...");
+        });
+
         // Add greeting and logout button to the top panel
         topPanel.add(greeting);
         topPanel.add(logOut);
@@ -103,14 +109,15 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
         // Add components to the main panel
         this.add(topPanel, BorderLayout.NORTH);
         this.add(buttonPanel, BorderLayout.CENTER);
+//
+//        // Log Out button functionality
+//        logOut.addActionListener(evt -> {
+//            if (evt.getSource().equals(logOut)) {
+//                final LoggedInState currentState = welcomeViewModel.getState();
+//                this.logoutController.execute(currentState.getUsername());
+//            }
+//        });
 
-        // Log Out button functionality
-        logOut.addActionListener(evt -> {
-            if (evt.getSource().equals(logOut)) {
-                final LoggedInState currentState = welcomeViewModel.getState();
-                this.logoutController.execute(currentState.getUsername());
-            }
-        });
     }
 
     @Override

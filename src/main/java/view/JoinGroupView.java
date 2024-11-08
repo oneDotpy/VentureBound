@@ -65,13 +65,18 @@ public class JoinGroupView extends JPanel {
         joinButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         joinButton.setMaximumSize(new Dimension(200, 50));
 
+//        joinButton.addActionListener(e -> {
+//            String groupCode = groupCodeInputField.getText().trim();
+//            if (groupCode.isEmpty()) {
+//                JOptionPane.showMessageDialog(null, "Please enter a group code.", "Error", JOptionPane.ERROR_MESSAGE);
+//            } else {
+//                System.out.println("Attempting to join group with code: " + groupCode);
+//            }
+//        });
+
         joinButton.addActionListener(e -> {
-            String groupCode = groupCodeInputField.getText().trim();
-            if (groupCode.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter a group code.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                System.out.println("Attempting to join group with code: " + groupCode);
-            }
+            cardLayout.show(cardPanel, "chat");
+            System.out.println("Redirecting to Chat view...");
         });
 
         // Add components to the container with reduced spacing
