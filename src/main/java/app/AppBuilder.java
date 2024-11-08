@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -186,12 +187,19 @@ public class AppBuilder {
         SignupViewModel signupViewModel = new SignupViewModel();
         WelcomeViewModel welcomeViewModel = new WelcomeViewModel();
 
+        ArrayList<String> testMember = new ArrayList<>();
+        testMember.add("User1");
+        testMember.add("User2");
+        testMember.add("User3");
+        testMember.add("USer4");
+
         // Create views, passing cardLayout and cardPanel to enable switching views
         LoginView loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
         SignupView signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
         WelcomeView welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
         JoinGroupView joinGroupView = new JoinGroupView(cardLayout, cardPanel);
         CreateGroupView createGroupView = new CreateGroupView(cardLayout, cardPanel);
+        ChatView chatView = new ChatView("Group Name", testMember, cardLayout, cardPanel);
 
         // Add views to cardPanel with unique names
         cardPanel.add(loginView, "login");
@@ -199,6 +207,7 @@ public class AppBuilder {
         cardPanel.add(welcomeView, "welcome");
         cardPanel.add(joinGroupView, "join_group");
         cardPanel.add(createGroupView, "create_group");
+        cardPanel.add(chatView, "chat");
 
         // Create and configure the main application frame
         JFrame application = new JFrame("Application");
