@@ -24,5 +24,5 @@ public interface GroupFactory {
      * @param users the list of members
      * @return the new group
      */
-    Group create(String groupName, List<User> users);
+    Group create(String groupName, List<String> users);
 }

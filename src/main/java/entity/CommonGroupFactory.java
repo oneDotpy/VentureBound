@@ -13,7 +13,7 @@ public class CommonGroupFactory implements GroupFactory{
     }
 
     @Override
-    public Group create(String groupName, List<User> users){
+    public Group create(String groupName, List<String> users){
         return new CommonGroup(groupName, users);
     }
 }
