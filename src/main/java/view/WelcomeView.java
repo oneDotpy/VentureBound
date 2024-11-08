@@ -6,9 +6,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 
 import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.welcome.GroupState;
 import interface_adapter.welcome.WelcomeViewModel;
 
 /**
@@ -72,6 +70,12 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
         createGroup.setMaximumSize(new Dimension(200, 50));
         createGroup.setPreferredSize(new Dimension(200, 50));
 
+        createGroup.addActionListener(e -> {
+            // Switch to the "create group" view
+            cardLayout.show(cardPanel, "create_group");
+            System.out.println("Redirecting to create group view...");
+        });
+
         // "Join a Group" button
         joinGroup = new JButton("Join a group");
         joinGroup.setFont(new Font("SansSerif", Font.BOLD, 18));
@@ -84,8 +88,14 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
         joinGroup.setMaximumSize(new Dimension(200, 50));
         joinGroup.setPreferredSize(new Dimension(200, 50));
 
+        joinGroup.addActionListener(e -> {
+            // Switch to the "join group" view
+            cardLayout.show(cardPanel, "join_group");
+            System.out.println("Redirecting to join group view...");
+        });
+
         // Add buttons to button panel with spacing
-        buttonPanel.add(Box.createVerticalStrut(50));
+        buttonPanel.add(Box.createVerticalStrut(150));
         buttonPanel.add(createGroup);
         buttonPanel.add(Box.createVerticalStrut(20)); // Space between buttons
         buttonPanel.add(joinGroup);
@@ -97,8 +107,8 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
         // Log Out button functionality
         logOut.addActionListener(evt -> {
             if (evt.getSource().equals(logOut)) {
-                final GroupState currentState = welcomeViewModel.getState();
-                this.logoutController.execute(currentState.getGroupName());
+                final LoggedInState currentState = welcomeViewModel.getState();
+                this.logoutController.execute(currentState.getUsername());
             }
         });
     }

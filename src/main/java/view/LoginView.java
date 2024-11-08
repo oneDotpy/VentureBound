@@ -27,84 +27,76 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         // Set background color and layout
         this.setBackground(Color.decode("#2c2c2e"));
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50)); // Padding around the content
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.weightx = 1.0;
 
         // Title Label
         JLabel title = new JLabel("VentureBound", SwingConstants.CENTER);
         title.setFont(new Font("SansSerif", Font.BOLD, 32));
         title.setForeground(Color.WHITE);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Container for fields and button
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formPanel.setBackground(Color.decode("#2c2c2e"));
-        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Inner padding for the form panel
-
-        Dimension inputFieldSize = new Dimension(200, 30);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        this.add(title, gbc);
 
         // Username Label and Field
-        JPanel usernamePanel = new JPanel();
-        usernamePanel.setLayout(new BoxLayout(usernamePanel, BoxLayout.X_AXIS));
-        usernamePanel.setBackground(Color.decode("#2c2c2e"));
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.NONE;
         JLabel usernameLabel = new JLabel("Username");
         usernameLabel.setForeground(Color.LIGHT_GRAY);
         usernameLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        usernameLabel.setPreferredSize(new Dimension(100, 30));
-        usernameInputField.setPreferredSize(inputFieldSize);
-        usernameInputField.setMaximumSize(inputFieldSize);
-        usernamePanel.add(usernameLabel);
-//        usernamePanel.add(Box.createHorizontalStrut(10)); // Space between label and field
-        usernamePanel.add(usernameInputField);
+        this.add(usernameLabel, gbc);
 
-        formPanel.add(usernamePanel);
-        formPanel.add(Box.createVerticalStrut(10));
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        usernameInputField.setPreferredSize(new Dimension(200, 30));
+        usernameInputField.setMaximumSize(new Dimension(200, 30));
+        this.add(usernameInputField, gbc);
+
         // Password Label and Field
-        JPanel passwordPanel = new JPanel();
-        passwordPanel.setLayout(new BoxLayout(passwordPanel, BoxLayout.X_AXIS));
-        passwordPanel.setBackground(Color.decode("#2c2c2e"));
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.EAST;
         JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setForeground(Color.LIGHT_GRAY);
         passwordLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        passwordLabel.setPreferredSize(new Dimension(100, 30));
-        passwordInputField.setPreferredSize(inputFieldSize);
-        passwordInputField.setMaximumSize(inputFieldSize);
-        passwordPanel.add(passwordLabel);
-        passwordPanel.add(Box.createHorizontalStrut(10)); // Space between label and field
-        passwordPanel.add(passwordInputField);
+        this.add(passwordLabel, gbc);
 
-        formPanel.add(passwordPanel);
-        formPanel.add(Box.createVerticalStrut(20)); // Space before login button
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        passwordInputField.setPreferredSize(new Dimension(200, 30));
+        passwordInputField.setMaximumSize(new Dimension(200, 30));
+        this.add(passwordInputField, gbc);
 
         // Login Button
         logIn = new JButton("Login");
         logIn.setFont(new Font("SansSerif", Font.BOLD, 16));
         logIn.setBackground(Color.decode("#8ca5e5"));
         logIn.setForeground(Color.WHITE);
-        logIn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        logIn.setMaximumSize(new Dimension(275, 40));
-        formPanel.add(logIn);
+        logIn.setFocusPainted(false);
+        logIn.setBorderPainted(false);
+
+        // Set fixed size for the login button
+        logIn.setPreferredSize(new Dimension(200, 40));
+        logIn.setMaximumSize(new Dimension(200, 40));
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+        this.add(logIn, gbc);
 
         logIn.addActionListener(e -> {
-            // Switch to the "welcome" view
             cardLayout.show(cardPanel, "welcome");
             System.out.println("Redirecting to Welcome view...");
         });
-
-//        logIn.addActionListener(evt -> {
-//            if (evt.getSource().equals(logIn)) {
-//                final LoginState currentState = loginViewModel.getState();
-//                loginController.execute(
-//                        currentState.getUsername(),
-//                        currentState.getPassword()
-//                );
-//            }
-//        });
-
-
-
-        formPanel.add(Box.createVerticalStrut(20)); // Space before sign-up link
 
         // Sign Up Button
         JButton signUpButton = new JButton("Or Sign up");
@@ -116,17 +108,13 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         signUpButton.setContentAreaFilled(false);
         signUpButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        gbc.gridy = 4;
+        this.add(signUpButton, gbc);
+
         signUpButton.addActionListener(e -> {
-            // Switch to the "signup" view
             cardLayout.show(cardPanel, "signup");
             System.out.println("Redirecting to SignUp view...");
         });
-
-        formPanel.add(signUpButton);
-
-        this.add(title);
-        this.add(Box.createVerticalStrut(20)); // Space between title and form
-        this.add(formPanel);
     }
 
     @Override
@@ -152,9 +140,5 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
-    }
-
-    public JLabel getPasswordErrorField() {
-        return passwordErrorField;
     }
 }

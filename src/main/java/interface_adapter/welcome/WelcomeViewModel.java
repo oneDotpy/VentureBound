@@ -1,9 +1,10 @@
 package interface_adapter.welcome;
 
 import interface_adapter.ViewModel;
-import interface_adapter.signup.SignupState;
+import interface_adapter.change_password.LoggedInState;
+import interface_adapter.group.GroupState;
 
-public class WelcomeViewModel extends ViewModel<GroupState> {
+public class WelcomeViewModel extends ViewModel<LoggedInState> {
     public static final String TITLE_LABEL = "Sign Up View";
     public static final String USERNAME_LABEL = "Choose username";
     public static final String PASSWORD_LABEL = "Choose password";
@@ -16,6 +17,6 @@ public class WelcomeViewModel extends ViewModel<GroupState> {
 
     public WelcomeViewModel() {
         super("welcome");
-        setState(new GroupState());
+        setState(new LoggedInState());
     }
 }
