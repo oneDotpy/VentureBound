@@ -1,12 +1,17 @@
 package view;
 
+import interface_adapter.chat.ChatController;
+import interface_adapter.chat.ChatViewModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class ChatView extends JPanel {
+public class ChatView extends JPanel implements PropertyChangeListener {
     private final JLabel groupNameLabel;
     private final JButton leaveGroupButton;
     private final JTextArea chatArea;
@@ -14,8 +19,16 @@ public class ChatView extends JPanel {
     private final JButton sendButton;
     private final DefaultListModel<String> membersListModel;
     private final JList<String> membersList;
+    private final ChatViewModel chatViewModel;
+    private ChatController chatController;
 
-    public ChatView(String groupName, List<String> members, CardLayout cardLayout, JPanel cardPanel) {
+    public ChatView(ChatViewModel chatViewModel, ChatController chatController, String groupName, List<String> members, CardLayout cardLayout, JPanel cardPanel) {
+        this.chatViewModel = chatViewModel;
+        this.chatController = chatController;
+
+        // Add this class as a property change listener to the ViewModel
+        chatViewModel.addPropertyChangeListener(this);
+
         this.setLayout(new BorderLayout());
         this.setBackground(Color.decode("#2c2c2e"));
 
@@ -32,16 +45,17 @@ public class ChatView extends JPanel {
         groupNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Leave Group Button
-        leaveGroupButton = new JButton("Leave Group");
+        leaveGroupButton = new JButton("Simulate");
         leaveGroupButton.setFont(new Font("SansSerif", Font.BOLD, 14));
         leaveGroupButton.setBackground(Color.decode("#8b0000"));
         leaveGroupButton.setForeground(Color.WHITE);
         leaveGroupButton.setFocusPainted(false);
         leaveGroupButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        leaveGroupButton.addActionListener(e -> {
-            System.out.println("Leaving group...");
-            // Logic for leaving group here
-        });
+//        leaveGroupButton.addActionListener(e -> {
+//            System.out.println("Leaving group...");
+//            cardLayout.show(cardPanel, "welcome");
+//        });
+        leaveGroupButton.addActionListener(new SimulButtonListener()); // Temporary
 
         // Members Label
         JLabel membersLabel = new JLabel("Members:");
@@ -50,7 +64,7 @@ public class ChatView extends JPanel {
 
         // Members List
         membersListModel = new DefaultListModel<>();
-        members.forEach(membersListModel::addElement);
+        updateMembers(members);
         membersList = new JList<>(membersListModel);
         membersList.setBackground(Color.decode("#2c2c2e"));
         membersList.setForeground(Color.WHITE);
@@ -75,7 +89,6 @@ public class ChatView extends JPanel {
         chatArea.setForeground(Color.WHITE);
         chatArea.setLineWrap(true);
         chatArea.setWrapStyleWord(true);
-
         JScrollPane chatScrollPane = new JScrollPane(chatArea);
         chatScrollPane.setBorder(BorderFactory.createEmptyBorder());
 
@@ -112,23 +125,51 @@ public class ChatView extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String message = messageInputField.getText().trim();
             if (!message.isEmpty()) {
-                chatArea.append("You: " + message + "\n");
+                System.out.println("[ChatView] Sending message: " + message); // Debug statement
+                chatController.sendMessage(message, chatViewModel.getCurrentUser());
                 messageInputField.setText("");
-
-                // Logic to send message to the group chat
-                System.out.println("Sending message: " + message);
+            } else {
+                System.out.println("[ChatView] No message to send."); // Debug statement
             }
         }
     }
 
+    // [TEMP] Simulation button listener
+    private class SimulButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            chatViewModel.simulateMemberMessage("Alice", "Hi everyone!");
+            messageInputField.setText("");
+            }
+        }
+
+
     // Method to update chat area with new messages
-    public void addMessage(String message) {
-        chatArea.append(message + "\n");
+    public void addMessage(String user, String message) {
+        chatArea.append(user + ": " + message + "\n");
     }
 
     // Method to update members list
     public void updateMembers(List<String> members) {
         membersListModel.clear();
         members.forEach(membersListModel::addElement);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("messages".equals(evt.getPropertyName())) {
+            List<String> messages = chatViewModel.getState().getMessages();
+            chatArea.setText(String.join("\n", messages));
+        } else if ("members".equals(evt.getPropertyName())) {
+            updateMembers(chatViewModel.getMembers());
+        }
+    }
+
+    public String getViewName() {
+        return "chat";
+    }
+
+    public void setChatController(ChatController controller) {
+        this.chatController = controller;
     }
 }

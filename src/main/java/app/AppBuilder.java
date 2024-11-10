@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import javax.swing.text.View;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
@@ -14,6 +15,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.chat.ChatViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -36,6 +38,11 @@ import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import view.*;
+
+import interface_adapter.chat.ChatController;
+import interface_adapter.chat.ChatPresenter;
+import interface_adapter.chat.ChatViewModel;
+import use_case.chat.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -63,6 +70,7 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private ChatViewModel chatViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
     private WelcomeViewModel welcomeViewModel;
@@ -186,12 +194,23 @@ public class AppBuilder {
         LoginViewModel loginViewModel = new LoginViewModel();
         SignupViewModel signupViewModel = new SignupViewModel();
         WelcomeViewModel welcomeViewModel = new WelcomeViewModel();
+        ChatViewModel chatViewModel = new ChatViewModel();
 
-        ArrayList<String> testMember = new ArrayList<>();
-        testMember.add("User1");
-        testMember.add("User2");
-        testMember.add("User3");
-        testMember.add("USer4");
+        // Initialize Presenter
+        ChatPresenter chatPresenter = new ChatPresenter(chatViewModel);
+
+        // Initialize Interactor
+        ChatInteractor chatInteractor = new ChatInteractor(chatPresenter);
+
+        // Initialize Controller
+        ChatController chatController = new ChatController(chatInteractor);
+
+        ArrayList<String> testMembers = new ArrayList<>();
+        testMembers.add("Alice");
+        testMembers.add("Bob");
+        chatViewModel.setCurrentUser("You");
+        chatViewModel.setMembers(testMembers);
+
 
         // Create views, passing cardLayout and cardPanel to enable switching views
         LoginView loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
@@ -199,7 +218,7 @@ public class AppBuilder {
         WelcomeView welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
         JoinGroupView joinGroupView = new JoinGroupView(cardLayout, cardPanel);
         CreateGroupView createGroupView = new CreateGroupView(cardLayout, cardPanel);
-        ChatView chatView = new ChatView("Group Name", testMember, cardLayout, cardPanel);
+        ChatView chatView = new ChatView(chatViewModel, chatController,"Test Group", testMembers, cardLayout, cardPanel);
 
         // Add views to cardPanel with unique names
         cardPanel.add(loginView, "login");
