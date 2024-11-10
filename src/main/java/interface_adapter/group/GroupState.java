@@ -20,4 +20,8 @@ public class GroupState {
     public void setLoginError(String createError) {
         this.createError = createError;
     }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 }
