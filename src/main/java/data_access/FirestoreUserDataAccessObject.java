@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 
 import entity.User;
@@ -64,10 +65,15 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
         data.put("password", user.getPassword());
         data.put("email", user.getEmail());
         data.put("group", user.getGroup());
-        db.collection("users").document(user.getName()).set(data);
+
+        ApiFuture<WriteResult> future = db.collection("users").document(user.getName()).set(data);
+        try {
+            System.out.println(future.get());
+        } catch(Exception e) {
+            e.printStackTrace();
+            return;
+        }
     }
-
-
 
 
 

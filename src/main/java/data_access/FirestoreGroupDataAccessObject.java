@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.WriteResult;
 import entity.*;
 import use_case.create_group.CreateGroupDataAccessInterface;
 
@@ -83,8 +84,12 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         data.put("Responses", group.getResponses());
         data.put("Users", group.getUsernames());
 
-        db.collection("groups").document(group.getGroupName()).set(data);
-
+        ApiFuture<WriteResult> future = db.collection("groups").document(group.getGroupName()).set(data);
+        try {
+            System.out.println("Successfully updated at: " + future.get().getUpdateTime());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
