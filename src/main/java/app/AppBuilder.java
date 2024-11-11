@@ -21,6 +21,7 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.welcome.WelcomeViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -33,10 +34,7 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import view.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -66,6 +64,8 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private WelcomeViewModel welcomeViewModel;
+    private WelcomeView welcomeView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -90,6 +90,13 @@ public class AppBuilder {
         loginViewModel = new LoginViewModel();
         loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
         cardPanel.add(loginView, loginView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addWelcomeView() {
+        welcomeViewModel = new WelcomeViewModel();
+        welcomeView =  new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
+        cardPanel.add(welcomeView, welcomeView.getViewName());
         return this;
     }
 
@@ -175,14 +182,17 @@ public class AppBuilder {
         // Create view models
         LoginViewModel loginViewModel = new LoginViewModel();
         SignupViewModel signupViewModel = new SignupViewModel();
+        WelcomeViewModel welcomeViewModel = new WelcomeViewModel();
 
         // Create views, passing cardLayout and cardPanel to enable switching views
         LoginView loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
         SignupView signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
+        WelcomeView welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
 
         // Add views to cardPanel with unique names
         cardPanel.add(loginView, "login");
         cardPanel.add(signupView, "signup");
+        cardPanel.add(welcomeView, "welcome");
 
         // Create and configure the main application frame
         JFrame application = new JFrame("Application");
