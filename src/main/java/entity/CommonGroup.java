@@ -1,7 +1,7 @@
 package entity;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommonGroup implements Group{
     private final String groupName;
@@ -53,4 +53,7 @@ public class CommonGroup implements Group{
     public List<String> getChosenLocations() {
         return chosen;
     }
+
+    @Override
+    public List<Message> getMessages() { return messages; }
 }

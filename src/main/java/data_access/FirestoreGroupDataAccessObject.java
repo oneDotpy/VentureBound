@@ -1,27 +1,29 @@
 package data_access;
 
 import com.google.api.core.ApiFuture;
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
-import entity.Group;
-import entity.GroupFactory;
+import entity.*;
 import use_case.create_group.CreateGroupDataAccessInterface;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInterface {
 
     private final GroupFactory groupFactory;
+    private final ResponseFactory responseFactory;
+    private final MessageFactory messageFactory;
 
-    public FirestoreGroupDataAccessObject(GroupFactory groupFactory) {
+    public FirestoreGroupDataAccessObject(GroupFactory groupFactory,
+                                          ResponseFactory responseFactory, MessageFactory messageFactory) {
         this.groupFactory = groupFactory;
+        this.responseFactory = responseFactory;
+        this.messageFactory = messageFactory;
     }
 
     @Override
@@ -39,9 +41,28 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
                 return null;
             }
 
-            List<String> usernames = Arrays.asList(document.get("usernames").toString().split(","));
-            List<String> recommendations = Arrays.asList(document.get("recommendedLocations").toString().split(","));
-            List<String> chosen = Arrays.asList(document.get("chosenDestinations").toString().split(","));
+            List<String> usernames = (ArrayList)document.get("usernames");
+            List<String> recommendations = (ArrayList)document.get("recommendedLocations");
+            List<String> chosen = (ArrayList)document.get("chosenDestinations");
+
+            List<Response> responses = new ArrayList<>();
+            List<Object> responseArrayList = (ArrayList)document.get("responses");
+            for (Object obj : responseArrayList) {
+                Map<String, String> response = (Map<String, String>)obj;
+                String question = response.get("question");
+                String answer = response.get("answer");
+                responses.add(responseFactory.create(question, answer));
+            }
+
+            List<Message> messages = new ArrayList<>();
+            List<Object> messageArrayList = (ArrayList)document.get("messages");
+            for (Object obj : messageArrayList) {
+                Map<String, Object> message = (Map<String, Object>)obj;
+                String user = (String)message.get("user");
+                Timestamp timestamp = (Timestamp)message.get("timestamp");
+                String content = (String)message.get("content");
+                messages.add(messageFactory.createMessage(user, content, timestamp));
+            }
 
             return groupFactory.create(groupName, usernames, responses, recommendations, chosen, messages);
         } catch (Exception e) {
@@ -57,7 +78,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         data.put("ChosenDestinations", group.getChosenLocations());
         data.put("groupName", group.getGroupName());
         data.put("ChosenLocations", group.getChosenLocations());
-        data.put("Messages", null);
+        data.put("Messages", group.getMessages());
         data.put("RecommendedLocations", group.getRecommendedLocations());
         data.put("Responses", group.getResponses());
         data.put("Users", group.getUsernames());
@@ -65,7 +86,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         db.collection("groups").document(group.getGroupName()).set(data);
 
     }
-
 
 }
 

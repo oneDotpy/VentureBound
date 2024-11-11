@@ -10,7 +10,7 @@ public interface Message {
      * Returns the User of the sender message.
      * @return the Sender.
      */
-    User getSender();
+    String getSender();
 
     /**
      * Returns the content of the message.

@@ -1,21 +1,12 @@
 package entity;
 
-import java.io.Serializable;
-
 public class CommonResponse implements Response{
-    private final User user;
     private final String promptQuestion;
     private final String answer;
 
-    public CommonResponse(User user, String promptQuestion, String answer) {
-        this.user = user;
+    public CommonResponse(String promptQuestion, String answer) {
         this.promptQuestion = promptQuestion;
         this.answer = answer;
-    }
-
-    @Override
-    public User getSender() {
-        return null;
     }
 
     @Override

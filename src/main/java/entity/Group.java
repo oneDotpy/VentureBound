@@ -26,14 +26,20 @@ public interface Group {
     List<Response> getResponses();
 
     /**
-     * Returns the recommended location of the group.
-     * @return the recommended location of the group.
+     * Returns the recommended locations of the group.
+     * @return the recommended locations of the group.
      */
     List<String> getRecommendedLocations();
 
     /**
-     * Returns the chosen location of the group.
-     * @return the chosen location of the group.
+     * Returns the chosen locations of the group.
+     * @return the chosen locations of the group.
      */
     List<String> getChosenLocations();
+
+    /**
+     * Returns the messages in the group.
+     * @return the messages in the group.
+     */
+    List<Message> getMessages();
 }
