@@ -13,8 +13,8 @@ public class ChatPresenter implements ChatOutputBoundary {
 
     @Override
     public void presentMessage(ChatOutputData response) {
-        System.out.println("[ChatPresenter] Presenting message: " + response.getMessage()); // Debug statement
-        chatViewModel.addMessage(response.getMessage());
+        System.out.println("[ChatPresenter] Presenting message from " + response.getSender() + ": " + response.getMessage());
+        chatViewModel.addMessage(response.getSender(), response.getMessage());
     }
 
     @Override

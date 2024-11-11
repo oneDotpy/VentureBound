@@ -138,10 +138,13 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private class SimulButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            chatViewModel.simulateMemberMessage("Alice", "Hi everyone!");
+            String simulatedUser = "Alice";
+            String simulatedMessage = "Hi everyone!";
+            chatViewModel.simulateMemberMessage(simulatedUser, simulatedMessage);
             messageInputField.setText("");
-            }
         }
+    }
+
 
 
     // Method to update chat area with new messages
