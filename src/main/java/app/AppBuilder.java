@@ -1,10 +1,12 @@
 package app;
 
-import java.awt.CardLayout;
+import java.awt.*;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import javax.swing.text.View;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
@@ -13,6 +15,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.chat.ChatViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -21,6 +24,7 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.welcome.WelcomeViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -33,10 +37,12 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import view.*;
+
+import interface_adapter.chat.ChatController;
+import interface_adapter.chat.ChatPresenter;
+import interface_adapter.chat.ChatViewModel;
+import use_case.chat.*;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -64,8 +70,13 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private ChatViewModel chatViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private WelcomeViewModel welcomeViewModel;
+    private WelcomeView welcomeView;
+    private JoinGroupView joinGroupView;
+    private CreateGroupView  createGroupView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -77,8 +88,8 @@ public class AppBuilder {
      */
     public AppBuilder addSignupView() {
         signupViewModel = new SignupViewModel();
-        signupView = new SignupView(signupViewModel);
-        cardPanel.add(signupView, signupView.getViewName());
+        signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
+        cardPanel.add(signupView,   signupView.getViewName());
         return this;
     }
 
@@ -88,8 +99,15 @@ public class AppBuilder {
      */
     public AppBuilder addLoginView() {
         loginViewModel = new LoginViewModel();
-        loginView = new LoginView(loginViewModel);
+        loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
         cardPanel.add(loginView, loginView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addWelcomeView() {
+        welcomeViewModel = new WelcomeViewModel();
+        welcomeView =  new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
+        cardPanel.add(welcomeView, welcomeView.getViewName());
         return this;
     }
 
@@ -172,13 +190,60 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        // Create view models
+        LoginViewModel loginViewModel = new LoginViewModel();
+        SignupViewModel signupViewModel = new SignupViewModel();
+        WelcomeViewModel welcomeViewModel = new WelcomeViewModel();
+        ChatViewModel chatViewModel = new ChatViewModel();
+
+        // Initialize Presenter
+        ChatPresenter chatPresenter = new ChatPresenter(chatViewModel);
+
+        // Initialize Interactor
+        ChatInteractor chatInteractor = new ChatInteractor(chatPresenter);
+
+        // Initialize Controller
+        ChatController chatController = new ChatController(chatInteractor);
+
+        ArrayList<String> testMembers = new ArrayList<>();
+        testMembers.add("Alice");
+        testMembers.add("Bob");
+        chatViewModel.setCurrentUser("You");
+        chatViewModel.setMembers(testMembers);
+
+
+        // Create views, passing cardLayout and cardPanel to enable switching views
+        LoginView loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
+        SignupView signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
+        WelcomeView welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
+        JoinGroupView joinGroupView = new JoinGroupView(cardLayout, cardPanel);
+        CreateGroupView createGroupView = new CreateGroupView(cardLayout, cardPanel);
+        ChatView chatView = new ChatView(chatViewModel, chatController,"Test Group", testMembers, cardLayout, cardPanel);
+
+        // Add views to cardPanel with unique names
+        cardPanel.add(loginView, "login");
+        cardPanel.add(signupView, "signup");
+        cardPanel.add(welcomeView, "welcome");
+        cardPanel.add(joinGroupView, "join_group");
+        cardPanel.add(createGroupView, "create_group");
+        cardPanel.add(chatView, "chat");
+
+        // Create and configure the main application frame
+        JFrame application = new JFrame("Application");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        application.add(cardPanel);
+        // Set fixed size
+        application.setSize(1280, 720);
+        application.setMinimumSize(new Dimension(900, 600));
+        application.setMaximumSize(new Dimension(900, 600));
+        application.setResizable(false); // Prevent resizing
 
-        viewManagerModel.setState(signupView.getViewName());
-        viewManagerModel.firePropertyChanged();
+        // Center the window on the screen
+        application.setLocationRelativeTo(null);
+
+        // Add cardPanel to the frame and make it visible
+        application.add(cardPanel);
+        application.setVisible(true);
 
         return application;
     }
