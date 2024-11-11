@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class CommonGroup implements Group{
     private final String groupName;
-    private final List<String> users;
+    private final List<User> users;
     private final List<Response> responses;
     private final List<String> recommendations;
     private final List<String> chosen;
@@ -21,7 +21,7 @@ public class CommonGroup implements Group{
         this.messages = messages;
     }
 
-    public CommonGroup(String groupName, List<String> users){
+    public CommonGroup(String groupName, List<User> users){
         this.groupName = groupName;
         this.users = users;
         this.responses = new ArrayList<Response>();
@@ -36,7 +36,7 @@ public class CommonGroup implements Group{
     }
 
     @Override
-    public List<String> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 

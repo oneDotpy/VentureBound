@@ -1,5 +1,4 @@
 package interface_adapter.chat;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +8,18 @@ public class ChatState {
     private String currentMessage;
     private String currentUser;
 
-    // Methods to manage messages
     public List<String> getMessages() {
-        return messages;
+        return new ArrayList<>(messages);
     }
 
-    public void addMessage(String message) {
-        messages.add(message);
+    public void addMessage(String sender, String message) {
+        String formattedMessage;
+        if (sender.equals(currentUser)) {
+            formattedMessage = "You: " + message;
+        } else {
+            formattedMessage = sender + ": " + message;
+        }
+        messages.add(formattedMessage);
     }
 
     public String getCurrentMessage() {
@@ -46,7 +50,6 @@ public class ChatState {
         }
     }
 
-    // User management
     public String getCurrentUser() {
         return currentUser;
     }

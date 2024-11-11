@@ -208,7 +208,8 @@ public class AppBuilder {
         ArrayList<String> testMembers = new ArrayList<>();
         testMembers.add("Alice");
         testMembers.add("Bob");
-        chatViewModel.setCurrentUser("You");
+        testMembers.add("Charlie");
+        chatViewModel.setCurrentUser("Charlie");
         chatViewModel.setMembers(testMembers);
 
 

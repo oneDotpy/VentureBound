@@ -10,11 +10,11 @@ public class ChatViewModel extends ViewModel<ChatState> {
         setState(new ChatState());
     }
 
-    public void addMessage(String message) {
+    public void addMessage(String sender, String message) {
         ChatState state = getState();
-        state.addMessage(message);
+        state.addMessage(sender, message);
         setState(state);
-        System.out.println("[ChatViewModel] New message added: " + message); // Debug statement
+        System.out.println("[ChatViewModel] New message from " + sender + ": " + message);
         firePropertyChanged("messages"); // Notify listeners
     }
 
@@ -25,7 +25,6 @@ public class ChatViewModel extends ViewModel<ChatState> {
         firePropertyChanged("members"); // Notify listeners
     }
 
-
     public void addMember(String member) {
         ChatState state = getState();
         state.addMember(member);
@@ -35,10 +34,10 @@ public class ChatViewModel extends ViewModel<ChatState> {
 
     public void simulateMemberMessage(String member, String message) {
         ChatState state = getState();
-        state.addMessage(member + ": " + message);
+        state.addMessage(member, message);
         setState(state);
         System.out.println("[ChatViewModel] Simulating message from " + member + ": " + message);
-        firePropertyChanged("messages"); // Notify listeners immediately
+        firePropertyChanged("messages"); // Notify listeners
     }
 
     public String getCurrentUser() {
@@ -56,3 +55,4 @@ public class ChatViewModel extends ViewModel<ChatState> {
         firePropertyChanged();
     }
 }
+
