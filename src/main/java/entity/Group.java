@@ -29,7 +29,7 @@ public interface Group {
      * Returns the recommended locations of the group.
      * @return the recommended locations of the group.
      */
-    List<String> getRecommendedLocations();
+    List<Recommendation> getRecommendedLocations();
 
     /**
      * Returns the chosen locations of the group.
