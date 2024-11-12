@@ -63,8 +63,8 @@ public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
         Map<String, Object> data = new HashMap<>();
         data.put("username", user.getName());
         data.put("password", user.getPassword());
-//        data.put("email", user.getEmail());
-//        data.put("group", user.getGroup());
+        data.put("email", user.getEmail());
+        data.put("group", user.getGroup());
         db.collection("users").document(user.getName()).set(data);
     }
 
@@ -77,17 +77,4 @@ public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
                 .update("password", user.getPassword());
 
     }
-
-    @Override
-    public String getCurrentUsername() {
-        return "";
-    }
-
-    @Override
-    public void setCurrentUsername(String username) {
-
-    }
-
-    @Override
-    public boolean existsByName(String username) { return false; }
 }
