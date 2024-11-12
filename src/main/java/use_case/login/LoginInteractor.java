@@ -19,22 +19,20 @@ public class LoginInteractor implements LoginInputBoundary {
     public void execute(LoginInputData loginInputData) {
         final String username = loginInputData.getUsername();
         final String password = loginInputData.getPassword();
-        final User userDb = userDataAccessObject.get(username);
-
-        if (userDb == null) {
+        if (!userDataAccessObject.existsByName(username)) {
             loginPresenter.prepareFailView(username + ": Account does not exist.");
         }
         else {
-            final String pwd = userDb.getPassword();
+            final String pwd = userDataAccessObject.get(username).getPassword();
             if (!password.equals(pwd)) {
                 loginPresenter.prepareFailView("Incorrect password for \"" + username + "\".");
             }
             else {
-                final LoginOutputData loginOutputData = new LoginOutputData(
-                        userDb.getName(),
-                        userDb.getEmail(),
-                        userDb.getGroup(),
-                        false);
+
+                final User user = userDataAccessObject.get(loginInputData.getUsername());
+
+                userDataAccessObject.setCurrentUsername(user.getName());
+                final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }

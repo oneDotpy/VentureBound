@@ -1,3 +1,4 @@
+
 package entity;
 
 import java.util.List;
@@ -15,10 +16,9 @@ public interface Group {
 
     /**
      * Returns the users of the group.
-     *
      * @return the users of the group.
      */
-    List<User> getUsernames();
+    List<User> getUsers();
 
     /**
      * Returns the responses of the group.

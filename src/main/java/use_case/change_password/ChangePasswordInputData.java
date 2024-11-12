@@ -1,20 +1,24 @@
 package use_case.change_password;
 
+/**
+ * The input data for the Change Password Use Case.
+ */
 public class ChangePasswordInputData {
-    private final String username;
+
     private final String password;
+    private final String username;
 
-    public ChangePasswordInputData(String username, String password) {
-        this.username = username;
+    public ChangePasswordInputData(String password, String username) {
         this.password = password;
-    }
-
-    String getUsername() {
-        return username;
+        this.username = username;
     }
 
     String getPassword() {
         return password;
+    }
+
+    String getUsername() {
+        return username;
     }
 
 }
