@@ -11,16 +11,17 @@ import entity.UserFactory;
 import entity.Group;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
-import use_case.logout.LogoutUserDataAccessInterface;
-import use_case.signup.SignupUserDataAccessInterface;
+//import use_case.logout.LogoutUserDataAccessInterface;
+//import use_case.signup.SignupUserDataAccessInterface;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface,
+public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
+        implements //SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
-        ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface {
+        ChangePasswordUserDataAccessInterface {
+        //LogoutUserDataAccessInterface {
 
     private UserFactory userFactory;
     private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;
@@ -47,9 +48,9 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
 
             String password = document.get("password").toString();
             String email = document.get("email").toString();
-            String groupName = document.get("group").toString();
+            String groupName = document.get("groups").toString();
             Group group = firestoreGroupDataAccessObject.get("groupName");
-            return userFactory.create(email, password, email, group);
+            return userFactory.create(username, password, email, group);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -62,8 +63,8 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
         Map<String, Object> data = new HashMap<>();
         data.put("username", user.getName());
         data.put("password", user.getPassword());
-        data.put("email", user.getEmail());
-        data.put("group", user.getGroup());
+//        data.put("email", user.getEmail());
+//        data.put("group", user.getGroup());
         db.collection("users").document(user.getName()).set(data);
     }
 

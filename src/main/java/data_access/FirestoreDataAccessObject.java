@@ -16,16 +16,15 @@ public class FirestoreDataAccessObject {
 
     public FirestoreDataAccessObject() {
         try{
-            FileInputStream inputStream = new FileInputStream("src/main/resources/firestoretesting-natuap-firebase-adminsdk-co880-01fe6ae1db.json");
+            FileInputStream inputStream = new FileInputStream("");
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(inputStream))
-                    .setProjectId("VentureBound") // Your project ID
+                    .setProjectId("") // Your project ID
                     .build();
 
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
             }
-
             System.out.println("Firestore successfully loaded");
             // Return Firestore client
             db = FirestoreClient.getFirestore();
@@ -36,5 +35,5 @@ public class FirestoreDataAccessObject {
         }
     }
 
-    static Firestore getFirestore() { return db; }
+    public static Firestore getFirestore() { return db; }
 }
