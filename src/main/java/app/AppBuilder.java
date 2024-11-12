@@ -203,11 +203,11 @@ public class AppBuilder {
         ChatInteractor chatInteractor = new ChatInteractor(chatPresenter);
 
         // Initialize Controller
-        ChatController chatController = new ChatController(chatInteractor, chatViewModel);
+        ChatController chatController = new ChatController(chatInteractor);
 
         ArrayList<String> testMembers = new ArrayList<>();
-//        testMembers.add("Alice");
-//        testMembers.add("Bob");
+       testMembers.add("Alice");
+       testMembers.add("Bob");
         testMembers.add("Charlie");
         chatViewModel.setCurrentUser("Charlie");
         chatViewModel.setMembers(testMembers);
