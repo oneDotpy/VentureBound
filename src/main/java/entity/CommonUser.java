@@ -28,13 +28,9 @@ public class CommonUser implements User {
     }
 
     @Override
-    public String getEmail() {
-        return this.email;
-    }
+    public String getEmail() { return email; }
 
     @Override
-    public Group getGroup() {
-        return this.group;
-    }
+    public Group getGroup() { return group; }
 
 }
