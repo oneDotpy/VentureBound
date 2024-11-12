@@ -5,15 +5,14 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import entity.Group;
 import entity.GroupFactory;
+import entity.Message;
+import entity.Response;
 import use_case.create_group.CreateGroupDataAccessInterface;
 
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInterface {
@@ -35,6 +34,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
             if (document.exists()) {
                 System.out.println("Document data: " + document.getData());
             } else {
+                // TODD: Fix group
                 System.out.println("No such document!");
                 return null;
             }
@@ -42,6 +42,8 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
             List<String> usernames = Arrays.asList(document.get("usernames").toString().split(","));
             List<String> recommendations = Arrays.asList(document.get("recommendedLocations").toString().split(","));
             List<String> chosen = Arrays.asList(document.get("chosenDestinations").toString().split(","));
+            List<Response> responses = new ArrayList<>();
+            List<Message> messages = new ArrayList<>();
 
             return groupFactory.create(groupName, usernames, responses, recommendations, chosen, messages);
         } catch (Exception e) {
