@@ -36,7 +36,7 @@ public class CommonGroup implements Group{
     }
 
     @Override
-    public List<User> getUsers() {
+    public List<User> getUsernames() {
         return users;
     }
 

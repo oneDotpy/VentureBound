@@ -57,7 +57,6 @@ public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
         }
     }
 
-    @Override
     public void save(User user) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
         Map<String, Object> data = new HashMap<>();
