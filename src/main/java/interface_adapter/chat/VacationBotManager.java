@@ -93,7 +93,15 @@ public class VacationBotManager {
     private void displayRecommendations(String recommendationsJson) {
         try {
             JSONObject responseObject = new JSONObject(recommendationsJson);
-            JSONArray vacationSpots = responseObject.optJSONArray("vacationSpots");
+            JSONArray vacationSpots = null;
+            if (responseObject.has("vacationSpots")) {
+                vacationSpots = responseObject.getJSONArray("vacationSpots");
+                System.out.println(vacationSpots);
+            } else if (responseObject.has("vacation_spots")) {
+                vacationSpots = responseObject.getJSONArray("vacation_spots");
+            } else {
+                System.err.println("No 'vacationSpots' or 'vacation_spots' key found in response");
+            }
 
             if (vacationSpots != null) {
                 StringBuilder formattedRecommendations = new StringBuilder();

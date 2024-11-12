@@ -28,7 +28,7 @@ public class OpenAIChatGPT {
     public String getVacationRecommendations(String activities, String locations) throws IOException {
         String prompt = String.format(
                 "Me and my friends like %s. Sticking with %s locations, provide a JSON object with 5 recommended vacation spots based of our interests. " +
-                        "Include name, latitude, longitude, and a Google Maps link for each spot.",
+                        "Include name, latitude, longitude, and a Google Maps link for each spot. ",
                 activities, locations
         );
 
@@ -79,6 +79,7 @@ public class OpenAIChatGPT {
             JSONArray vacationSpots = null;
             if (jsonObject.has("vacationSpots")) {
                 vacationSpots = jsonObject.getJSONArray("vacationSpots");
+                System.out.println(vacationSpots);
             } else if (jsonObject.has("vacation_spots")) {
                 vacationSpots = jsonObject.getJSONArray("vacation_spots");
             } else {
