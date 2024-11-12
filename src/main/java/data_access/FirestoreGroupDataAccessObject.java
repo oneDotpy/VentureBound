@@ -76,13 +76,40 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
     public void save(Group group) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
         Map<String, Object> data = new HashMap<>();
-        data.put("ChosenDestinations", group.getChosenLocations());
         data.put("groupName", group.getGroupName());
-        data.put("ChosenLocations", group.getChosenLocations());
+        data.put("Users", group.getUsernames());
+
+        // Converting from recommendation entity into recommendation type for database
+        List<Map> recommendations_db = new ArrayList<>();
+        List<Recommendation> temp_recommendations = group.getRecommendedLocations();
+
+        for (Recommendation recommendation : temp_recommendations) {
+            Map<String, Object> temp_map = new HashMap<>();
+            temp_map.put("location : ", recommendation.getLocation());
+            temp_map.put("description : ", recommendation.getDescription());
+            temp_map.put("coordinates : ", recommendation.getCoordinates());
+            temp_map.put("rating : ", recommendation.getRating());
+            temp_map.put("votes : ", recommendation.getVote());
+            recommendations_db.add(temp_map);
+        }
+        data.put("recommendations : ", recommendations_db);
+
+        // Converting from message entity into message type for database
+        List<Map> messages_db = new ArrayList<>();
+        List<Message> temp_messages = group.getMessages();
+        for (Message message : temp_messages) {
+            Map<String, Object> temp_map = new HashMap<>();
+            temp_map.put("Sender : ", )
+        }
+
         data.put("Messages", group.getMessages());
+
+
+        data.put("ChosenDestinations", group.getChosenLocations());
+        data.put("ChosenLocations", group.getChosenLocations());
         data.put("RecommendedLocations", group.getRecommendedLocations());
         data.put("Responses", group.getResponses());
-        data.put("Users", group.getUsernames());
+
 
         ApiFuture<WriteResult> future = db.collection("groups").document(group.getGroupName()).set(data);
         try {
