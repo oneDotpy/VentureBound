@@ -31,7 +31,12 @@ public class VacationBotManager {
 
     public void startBot() {
         botState = BotState.AWAITING_LOCATION;
-        chatController.sendBotMessage("Bot", "🌍 Vacation Bot started! 🛫\nPlease answer the following questions.\n\n**Question 1:** Where would you like to go for a vacation?");
+        chatController.sendBotMessage("Bot", "🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
+    }
+
+    public void endBot() {
+        botState = BotState.INACTIVE;
+        chatController.sendBotMessage("Bot", "Vacation Bot has been stopped.");
     }
 
     public void handleMessage(String username, String message) {
@@ -65,7 +70,7 @@ public class VacationBotManager {
         chatController.sendBotMessage("Bot", "\n📍 The chosen vacation location is: **" + chosenLocation + "**");
 
         botState = BotState.AWAITING_HOBBIES;
-        chatController.sendBotMessage("Bot", "\n**Question 2:** What are your favorite hobbies? (Please choose one)");
+        chatController.sendBotMessage("Bot", "\n**Question 2:** What is your favorite hobbies? (Please choose one)");
     }
 
     private void processHobbyResponses() {
