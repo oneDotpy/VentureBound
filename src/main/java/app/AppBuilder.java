@@ -206,8 +206,8 @@ public class AppBuilder {
         ChatController chatController = new ChatController(chatInteractor);
 
         ArrayList<String> testMembers = new ArrayList<>();
-       testMembers.add("Alice");
-       testMembers.add("Bob");
+        testMembers.add("Alice");
+        testMembers.add("Bob");
         testMembers.add("Charlie");
         chatViewModel.setCurrentUser("Charlie");
         chatViewModel.setMembers(testMembers);
