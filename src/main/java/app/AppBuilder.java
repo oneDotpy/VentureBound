@@ -203,7 +203,7 @@ public class AppBuilder {
         ChatInteractor chatInteractor = new ChatInteractor(chatPresenter);
 
         // Initialize Controller
-        ChatController chatController = new ChatController(chatInteractor);
+        ChatController chatController = new ChatController(chatInteractor, chatViewModel);
 
         ArrayList<String> testMembers = new ArrayList<>();
         testMembers.add("Alice");
