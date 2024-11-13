@@ -11,10 +11,12 @@ public class GroupController {
     }
 
     public void createGroup(String groupName) {
+        System.out.println("[GroupController] Creating group with name: " + groupName);
         interactor.createGroup(new GroupInputData(groupName));
     }
 
     public void joinGroup(String groupCode) {
+        System.out.println("[GroupController] Joining group with code: " + groupCode);
         interactor.joinGroup(new GroupInputData(groupCode));
     }
 }

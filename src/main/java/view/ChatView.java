@@ -138,7 +138,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String simulatedUser = "Alice";
-            String simulatedMessage = "Hi everyone!";
+            String simulatedMessage = "Japan";
             chatController.sendMessage(simulatedMessage, simulatedUser);
         }
     }

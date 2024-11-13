@@ -12,11 +12,21 @@ public class GroupPresenter implements GroupOutputBoundary {
 
     @Override
     public void presentCreateGroupResult(GroupOutputData outputData) {
-        viewModel.setCreateMessage(outputData.getMessage());
+        System.out.println("[GroupPresenter] Create Group Result: " + outputData.getMessage());
+
+        GroupState state = viewModel.getState();
+        state.setCreateMessage(outputData.getMessage());
+        viewModel.setState(state);
+        viewModel.firePropertyChanged("createMessage");
     }
 
     @Override
     public void presentJoinGroupResult(GroupOutputData outputData) {
-        viewModel.setJoinMessage(outputData.getMessage());
+        System.out.println("[GroupPresenter] Join Group Result: " + outputData.getMessage());
+
+        GroupState state = viewModel.getState();
+        state.setJoinMessage(outputData.getMessage());
+        viewModel.setState(state);
+        viewModel.firePropertyChanged("joinMessage");
     }
 }

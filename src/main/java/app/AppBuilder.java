@@ -2,11 +2,9 @@ package app;
 
 import java.awt.*;
 import java.util.ArrayList;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import javax.swing.text.View;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
@@ -16,6 +14,10 @@ import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.chat.*;
+import interface_adapter.group.GroupController;
+import interface_adapter.group.GroupPresenter;
+import interface_adapter.group.GroupState;
+import interface_adapter.group.GroupViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -25,44 +27,20 @@ import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.welcome.WelcomeViewModel;
-import use_case.change_password.ChangePasswordInputBoundary;
-import use_case.change_password.ChangePasswordInteractor;
-import use_case.change_password.ChangePasswordOutputBoundary;
-import use_case.login.LoginInputBoundary;
-import use_case.login.LoginInteractor;
-import use_case.login.LoginOutputBoundary;
-import use_case.logout.LogoutInputBoundary;
-import use_case.logout.LogoutInteractor;
-import use_case.logout.LogoutOutputBoundary;
-import use_case.signup.SignupInputBoundary;
-import use_case.signup.SignupInteractor;
-import use_case.signup.SignupOutputBoundary;
-import use_case.vacation_bot.VacationBotInteractor;
+import use_case.chat.*;
+import use_case.group.*;
+import use_case.login.*;
+import use_case.logout.*;
+import use_case.signup.*;
+import use_case.change_password.*;
+import use_case.vacation_bot.*;
 import view.*;
 
-import interface_adapter.chat.ChatViewModel;
-import use_case.chat.*;
-
-/**
- * The AppBuilder class is responsible for putting together the pieces of
- * our CA architecture; piece by piece.
- * <p/>
- * This is done by adding each View and then adding related Use Cases.
- */
-// Checkstyle note: you can ignore the "Class Data Abstraction Coupling"
-//                  and the "Class Fan-Out Complexity" issues for this lab; we encourage
-//                  your team to think about ways to refactor the code to resolve these
-//                  if your team decides to work with this as your starter code
-//                  for your final project this term.
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
-    // thought question: is the hard dependency below a problem?
     private final UserFactory userFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
-
-    // thought question: is the hard dependency below a problem?
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
 
     private SignupView signupView;
@@ -70,12 +48,13 @@ public class AppBuilder {
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
     private ChatViewModel chatViewModel;
+    private GroupViewModel groupViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
     private WelcomeViewModel welcomeViewModel;
     private WelcomeView welcomeView;
     private JoinGroupView joinGroupView;
-    private CreateGroupView  createGroupView;
+    private CreateGroupView createGroupView;
     private VacationBotPresenter vacationBotPresenter;
     private VacationBotInteractor vacationBotInteractor;
     private VacationBotController vacationBotController;
@@ -84,21 +63,13 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
     }
 
-    /**
-     * Adds the Signup View to the application.
-     * @return this builder
-     */
     public AppBuilder addSignupView() {
         signupViewModel = new SignupViewModel();
         signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
-        cardPanel.add(signupView,   signupView.getViewName());
+        cardPanel.add(signupView, signupView.getViewName());
         return this;
     }
 
-    /**
-     * Adds the Login View to the application.
-     * @return this builder
-     */
     public AppBuilder addLoginView() {
         loginViewModel = new LoginViewModel();
         loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
@@ -108,15 +79,11 @@ public class AppBuilder {
 
     public AppBuilder addWelcomeView() {
         welcomeViewModel = new WelcomeViewModel();
-        welcomeView =  new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
+        welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
         cardPanel.add(welcomeView, welcomeView.getViewName());
         return this;
     }
 
-    /**
-     * Adds the LoggedIn View to the application.
-     * @return this builder
-     */
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
         loggedInView = new LoggedInView(loggedInViewModel);
@@ -124,104 +91,72 @@ public class AppBuilder {
         return this;
     }
 
-    /**
-     * Adds the Signup Use Case to the application.
-     * @return this builder
-     */
     public AppBuilder addSignupUseCase() {
-        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
-                signupViewModel, loginViewModel);
-        final SignupInputBoundary userSignupInteractor = new SignupInteractor(
-                userDataAccessObject, signupOutputBoundary, userFactory);
-
-        final SignupController controller = new SignupController(userSignupInteractor);
-        signupView.setSignupController(controller);
+        SignupPresenter signupPresenter = new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
+        SignupInteractor signupInteractor = new SignupInteractor(userDataAccessObject, signupPresenter, userFactory);
+        SignupController signupController = new SignupController(signupInteractor);
+        signupView.setSignupController(signupController);
         return this;
     }
 
-    /**
-     * Adds the Login Use Case to the application.
-     * @return this builder
-     */
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-        final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, loginOutputBoundary);
-
-        final LoginController loginController = new LoginController(loginInteractor);
+        LoginPresenter loginPresenter = new LoginPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
+        LoginInteractor loginInteractor = new LoginInteractor(userDataAccessObject, loginPresenter);
+        LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
         return this;
     }
 
-    /**
-     * Adds the Change Password Use Case to the application.
-     * @return this builder
-     */
     public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
-
-        final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
-
-        final ChangePasswordController changePasswordController =
-                new ChangePasswordController(changePasswordInteractor);
+        ChangePasswordPresenter changePasswordPresenter = new ChangePasswordPresenter(loggedInViewModel);
+        ChangePasswordInteractor changePasswordInteractor = new ChangePasswordInteractor(userDataAccessObject, changePasswordPresenter, userFactory);
+        ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
         loggedInView.setChangePasswordController(changePasswordController);
         return this;
     }
 
-    /**
-     * Adds the Logout Use Case to the application.
-     * @return this builder
-     */
     public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-
-        final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
-
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        LogoutPresenter logoutPresenter = new LogoutPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
+        LogoutInteractor logoutInteractor = new LogoutInteractor(userDataAccessObject, logoutPresenter);
+        LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
         return this;
     }
 
-    /**
-     * Creates the JFrame for the application and initially sets the SignupView to be displayed.
-     * @return the application
-     */
     public JFrame build() {
-        LoginViewModel loginViewModel = new LoginViewModel();
-        SignupViewModel signupViewModel = new SignupViewModel();
-        WelcomeViewModel welcomeViewModel = new WelcomeViewModel();
-        ChatViewModel chatViewModel = new ChatViewModel();
-        ChatState chatState = new ChatState();
+        loginViewModel = new LoginViewModel();
+        signupViewModel = new SignupViewModel();
+        welcomeViewModel = new WelcomeViewModel();
+        chatViewModel = new ChatViewModel();
+        groupViewModel = new GroupViewModel();
 
+        ChatState chatState = new ChatState();
         ChatPresenter chatPresenter = new ChatPresenter(chatViewModel, chatState);
         VacationBotPresenter vacationBotPresenter = new VacationBotPresenter(chatViewModel);
 
         ChatInteractor chatInteractor = new ChatInteractor(chatPresenter, chatState);
         VacationBotInteractor vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
-
         VacationBotController vacationBotController = new VacationBotController(vacationBotInteractor);
         ChatController chatController = new ChatController(chatInteractor, vacationBotInteractor);
 
+        GroupPresenter groupPresenter = new GroupPresenter(groupViewModel);
+        GroupInteractor groupInteractor = new GroupInteractor(groupPresenter, new GroupState());
+        GroupController groupController = new GroupController(groupInteractor);
 
         ArrayList<String> testMembers = new ArrayList<>();
-//        testMembers.add("Alice");
-//        testMembers.add("Bob");
+        testMembers.add("Alice");
         testMembers.add("Charlie");
-
         chatInteractor.setCurrentUser("Charlie");
         chatInteractor.setMembers(testMembers);
 
-        LoginView loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
-        SignupView signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
-        WelcomeView welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
-        JoinGroupView joinGroupView = new JoinGroupView(cardLayout, cardPanel);
-        CreateGroupView createGroupView = new CreateGroupView(cardLayout, cardPanel);
-        ChatView chatView = new ChatView(chatViewModel, chatController, "Test Group",testMembers, cardLayout, cardPanel);
+        loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
+        signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
+        welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
+
+        createGroupView = new CreateGroupView(groupViewModel, groupController,cardLayout, cardPanel);
+        joinGroupView = new JoinGroupView(groupViewModel, groupController, cardLayout, cardPanel);
+
+        ChatView chatView = new ChatView(chatViewModel, chatController, "Test Group", testMembers, cardLayout, cardPanel);
 
         cardPanel.add(loginView, "login");
         cardPanel.add(signupView, "signup");
@@ -232,20 +167,13 @@ public class AppBuilder {
 
         JFrame application = new JFrame("Application");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        // Set fixed size
         application.setSize(1280, 720);
         application.setMinimumSize(new Dimension(900, 600));
-        application.setMaximumSize(new Dimension(900, 600));
         application.setResizable(false);
-
         application.setLocationRelativeTo(null);
-
         application.add(cardPanel);
         application.setVisible(true);
 
         return application;
     }
-
-
 }
