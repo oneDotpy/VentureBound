@@ -5,6 +5,7 @@ import use_case.vacation_bot.VacationBotOutputData;
 
 public class VacationBotPresenter implements VacationBotOutputBoundary {
     private final ChatViewModel chatViewModel;
+    private final ChatState chatState = ChatState.getInstance(); // Use singleton
 
     public VacationBotPresenter(ChatViewModel chatViewModel) {
         this.chatViewModel = chatViewModel;
@@ -12,8 +13,6 @@ public class VacationBotPresenter implements VacationBotOutputBoundary {
 
     @Override
     public void presentBotResponse(VacationBotOutputData response) {
-        // Add the bot response to the chat
-        ChatState chatState = chatViewModel.getState();
         chatState.addMessage("Bot", response.getMessage());
         chatViewModel.setState(chatState);
         chatViewModel.firePropertyChanged("messages");
@@ -22,8 +21,6 @@ public class VacationBotPresenter implements VacationBotOutputBoundary {
 
     @Override
     public void sendBotMessage(String sender, String message) {
-        // Add the bot message to the chat
-        ChatState chatState = chatViewModel.getState();
         chatState.addMessage(sender, message);
         chatViewModel.setState(chatState);
         chatViewModel.firePropertyChanged("messages");

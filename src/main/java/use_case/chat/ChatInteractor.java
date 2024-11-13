@@ -44,4 +44,9 @@ public class ChatInteractor implements ChatInputBoundary {
     public void setMembers(List<String> members) {
         chatState.setMembers(members);
     }
+
+    public void updateGroupMembers(List<String> members) {
+        chatState.setMembers(members);
+        chatPresenter.updateMembers(members);
+    }
 }

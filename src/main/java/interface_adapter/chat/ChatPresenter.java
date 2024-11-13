@@ -3,13 +3,14 @@ package interface_adapter.chat;
 import use_case.chat.ChatOutputBoundary;
 import use_case.chat.ChatOutputData;
 
+import java.util.List;
+
 public class ChatPresenter implements ChatOutputBoundary {
     private final ChatViewModel chatViewModel;
-    private final ChatState chatState;
+    private final ChatState chatState = ChatState.getInstance(); // Use singleton
 
-    public ChatPresenter(ChatViewModel chatViewModel, ChatState chatState) {
+    public ChatPresenter(ChatViewModel chatViewModel) {
         this.chatViewModel = chatViewModel;
-        this.chatState = chatState;
     }
 
     @Override
@@ -20,6 +21,16 @@ public class ChatPresenter implements ChatOutputBoundary {
         // Notify the view model
         chatViewModel.setState(chatState);
         chatViewModel.firePropertyChanged("messages");
+        chatViewModel.firePropertyChanged("members");
     }
 
+    public void updateMembers(List<String> members) {
+        System.out.println("[ChatPresenter] Updating members list: " + members);
+        chatState.setMembers(members);
+
+        // Notify the view model about the updated members
+        chatViewModel.setState(chatState);
+        chatViewModel.firePropertyChanged("members");
+    }
 }
+

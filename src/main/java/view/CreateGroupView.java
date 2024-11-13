@@ -1,27 +1,37 @@
 package view;
 
+import interface_adapter.group.GroupController;
+import interface_adapter.group.GroupViewModel;
+
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class CreateGroupView extends JPanel {
+public class CreateGroupView extends JPanel implements PropertyChangeListener {
 
     private final JButton backButton;
     private final JTextField groupNameInputField;
     private final JButton createButton;
+    private final GroupController groupController;
+    private final GroupViewModel groupViewModel;
+    private final CardLayout cardLayout;
+    private final JPanel cardPanel;
 
-    public CreateGroupView(CardLayout cardLayout, JPanel cardPanel) {
-        // Set background color and layout
+    public CreateGroupView(GroupViewModel groupViewModel, GroupController groupController, CardLayout cardLayout, JPanel cardPanel) {
+        this.cardLayout = cardLayout;
+        this.cardPanel = cardPanel;
+        this.groupController = groupController;
+        this.groupViewModel = groupViewModel;
+
+        groupViewModel.addPropertyChangeListener(this);
+
         this.setBackground(Color.decode("#2c2c2e"));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBorder(BorderFactory.createEmptyBorder(20, 50, 250, 50)); // Padding around the content
+        this.setBorder(BorderFactory.createEmptyBorder(20, 50, 250, 50));
 
-        // Create a container for all components with top alignment
-        JPanel container = new JPanel();
-        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-        container.setBackground(Color.decode("#2c2c2e"));
-
-        // Back Button (Top Panel)
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // No gap
+        // Back Button
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topPanel.setBackground(Color.decode("#2c2c2e"));
         backButton = new JButton("< Back");
         backButton.setFont(new Font("SansSerif", Font.BOLD, 14));
@@ -30,17 +40,14 @@ public class CreateGroupView extends JPanel {
         backButton.setBorderPainted(false);
         backButton.setFocusPainted(false);
         backButton.setContentAreaFilled(false);
-        backButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-        topPanel.add(backButton);
-
         backButton.addActionListener(e -> {
-            // Switch to the "welcome" view
             cardLayout.show(cardPanel, "welcome");
             System.out.println("Redirecting to Welcome view...");
         });
+        topPanel.add(backButton);
 
-        // Title Label
-        JLabel title = new JLabel("Create a new group", SwingConstants.CENTER);
+        // Title
+        JLabel title = new JLabel("Create a new group");
         title.setFont(new Font("SansSerif", Font.BOLD, 18));
         title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -49,10 +56,6 @@ public class CreateGroupView extends JPanel {
         groupNameInputField = new JTextField(15);
         groupNameInputField.setMaximumSize(new Dimension(300, 40));
         groupNameInputField.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        groupNameInputField.setForeground(Color.BLACK);
-        groupNameInputField.setBackground(Color.WHITE);
-        groupNameInputField.setHorizontalAlignment(JTextField.CENTER);
-        groupNameInputField.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Create Button
         createButton = new JButton("Create");
@@ -61,26 +64,29 @@ public class CreateGroupView extends JPanel {
         createButton.setForeground(Color.WHITE);
         createButton.setFocusPainted(false);
         createButton.setBorderPainted(false);
-        createButton.setContentAreaFilled(true);
         createButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        createButton.setMaximumSize(new Dimension(200, 50));
-
         createButton.addActionListener(e -> {
             String groupName = groupNameInputField.getText().trim();
-            if (groupName.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter a group code.", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                System.out.println("Attempting to join group with code: " + groupName);
-            }
+            groupController.createGroup(groupName);
+            cardLayout.show(cardPanel, "chat");
+            System.out.println("Group created. Redirecting to Chat view...");
         });
 
-        // Add components to the container with reduced spacing
+        // Add components to the panel
         this.add(topPanel);
-        this.add(Box.createVerticalStrut(10)); // Small space below back button
+        this.add(Box.createVerticalStrut(10));
         this.add(title);
-        this.add(Box.createVerticalStrut(20)); // Space below title
+        this.add(Box.createVerticalStrut(20));
         this.add(groupNameInputField);
-        this.add(Box.createVerticalStrut(20)); // Space below input field
+        this.add(Box.createVerticalStrut(20));
         this.add(createButton);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("createMessage".equals(evt.getPropertyName())) {
+            String message = groupViewModel.getState().getCreateMessage();
+            JOptionPane.showMessageDialog(this, message, "Group Creation", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 }

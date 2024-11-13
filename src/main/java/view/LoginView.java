@@ -81,8 +81,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         logIn.setForeground(Color.WHITE);
         logIn.setFocusPainted(false);
         logIn.setBorderPainted(false);
-
-        // Set fixed size for the login button
         logIn.setPreferredSize(new Dimension(200, 40));
         logIn.setMaximumSize(new Dimension(200, 40));
 
@@ -93,9 +91,17 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         gbc.fill = GridBagConstraints.NONE;
         this.add(logIn, gbc);
 
+        // Action listener for Login button
         logIn.addActionListener(e -> {
+            String username = usernameInputField.getText();
+            String password = new String(passwordInputField.getPassword());
+//
+//            if (loginController != null) {
+//                loginController.execute(username, password);
+//            }
+
             cardLayout.show(cardPanel, "welcome");
-            System.out.println("Redirecting to Welcome view...");
+            System.out.println("Redirecting to welcome view...");
         });
 
         // Sign Up Button
