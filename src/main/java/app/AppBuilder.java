@@ -2,30 +2,18 @@ package app;
 
 import java.awt.*;
 import java.util.ArrayList;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.change_password.*;
 import interface_adapter.chat.*;
-import interface_adapter.group.GroupController;
-import interface_adapter.group.GroupPresenter;
-import interface_adapter.group.GroupState;
-import interface_adapter.group.GroupViewModel;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
-import interface_adapter.login.LoginViewModel;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.signup.SignupController;
-import interface_adapter.signup.SignupPresenter;
-import interface_adapter.signup.SignupViewModel;
+import interface_adapter.group.*;
+import interface_adapter.login.*;
+import interface_adapter.logout.*;
+import interface_adapter.signup.*;
 import interface_adapter.welcome.WelcomeViewModel;
 import use_case.chat.*;
 import use_case.group.*;
@@ -43,51 +31,77 @@ public class AppBuilder {
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
 
-    private SignupView signupView;
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
     private ChatViewModel chatViewModel;
     private GroupViewModel groupViewModel;
-    private LoggedInView loggedInView;
-    private LoginView loginView;
     private WelcomeViewModel welcomeViewModel;
-    private WelcomeView welcomeView;
-    private JoinGroupView joinGroupView;
-    private CreateGroupView createGroupView;
+
+    private ChatState chatState;
+    private ChatPresenter chatPresenter;
+    private ChatInteractor chatInteractor;
     private VacationBotPresenter vacationBotPresenter;
     private VacationBotInteractor vacationBotInteractor;
     private VacationBotController vacationBotController;
+    private ChatController chatController;
+    private GroupController groupController;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
 
+    // Step 1: Add Views
     public AppBuilder addSignupView() {
         signupViewModel = new SignupViewModel();
-        signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
-        cardPanel.add(signupView, signupView.getViewName());
+        SignupView signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
+        cardPanel.add(signupView, "signup");
         return this;
     }
 
     public AppBuilder addLoginView() {
         loginViewModel = new LoginViewModel();
-        loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
-        cardPanel.add(loginView, loginView.getViewName());
+        LoginView loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
+        cardPanel.add(loginView, "login");
         return this;
     }
 
     public AppBuilder addWelcomeView() {
         welcomeViewModel = new WelcomeViewModel();
-        welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
-        cardPanel.add(welcomeView, welcomeView.getViewName());
+        WelcomeView welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
+        cardPanel.add(welcomeView, "welcome");
         return this;
     }
 
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
+        LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addGroupViews() {
+        groupViewModel = new GroupViewModel();
+        if (groupController == null) {
+            addGroupUseCase();
+        }
+        CreateGroupView createGroupView = new CreateGroupView(groupViewModel, groupController, cardLayout, cardPanel);
+        JoinGroupView joinGroupView = new JoinGroupView(groupViewModel, groupController, cardLayout, cardPanel);
+
+        cardPanel.add(createGroupView, "create_group");
+        cardPanel.add(joinGroupView, "join_group");
+        return this;
+    }
+
+    public AppBuilder addChatView() {
+        chatViewModel = new ChatViewModel();
+
+        if (chatController == null) {
+            addChatUseCase();
+        }
+
+        ChatView chatView = new ChatView(chatViewModel, chatController, "Test Group", new ArrayList<>(), cardLayout, cardPanel);
+        cardPanel.add(chatView, "chat");
         return this;
     }
 
@@ -95,7 +109,6 @@ public class AppBuilder {
         SignupPresenter signupPresenter = new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
         SignupInteractor signupInteractor = new SignupInteractor(userDataAccessObject, signupPresenter, userFactory);
         SignupController signupController = new SignupController(signupInteractor);
-        signupView.setSignupController(signupController);
         return this;
     }
 
@@ -103,67 +116,61 @@ public class AppBuilder {
         LoginPresenter loginPresenter = new LoginPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
         LoginInteractor loginInteractor = new LoginInteractor(userDataAccessObject, loginPresenter);
         LoginController loginController = new LoginController(loginInteractor);
+
+        // Set the login controller to the LoginView
+        LoginView loginView = (LoginView) cardPanel.getComponent(0); // Assuming login is the second component added
         loginView.setLoginController(loginController);
+
+        // Listen for successful login to set the current user
+        loginPresenter.setOnLoginSuccessListener(username -> {
+            if (chatInteractor != null) {
+                chatInteractor.setCurrentUser(username);
+            }
+            if (groupController != null) {
+                groupController.setCurrentUser(username);
+            }
+        });
         return this;
     }
 
-    public AppBuilder addChangePasswordUseCase() {
-        ChangePasswordPresenter changePasswordPresenter = new ChangePasswordPresenter(loggedInViewModel);
-        ChangePasswordInteractor changePasswordInteractor = new ChangePasswordInteractor(userDataAccessObject, changePasswordPresenter, userFactory);
-        ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
+
+    public AppBuilder addChatUseCase() {
+        chatState = ChatState.getInstance(); // Use the singleton instance
+        chatPresenter = new ChatPresenter(chatViewModel);
+        chatInteractor = new ChatInteractor(chatPresenter, chatState);
+
+        vacationBotPresenter = new VacationBotPresenter(chatViewModel);
+        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
+        vacationBotController = new VacationBotController(vacationBotInteractor);
+
+        chatController = new ChatController(chatInteractor, vacationBotInteractor);
         return this;
     }
 
-    public AppBuilder addLogoutUseCase() {
-        LogoutPresenter logoutPresenter = new LogoutPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
-        LogoutInteractor logoutInteractor = new LogoutInteractor(userDataAccessObject, logoutPresenter);
-        LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
+
+    public AppBuilder addVacationBotUseCase() {
+        vacationBotPresenter = new VacationBotPresenter(chatViewModel);
+        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
+        vacationBotController = new VacationBotController(vacationBotInteractor);
         return this;
     }
+
+    public AppBuilder addGroupUseCase() {
+        GroupPresenter groupPresenter = new GroupPresenter(groupViewModel, chatViewModel);
+        GroupInteractor groupInteractor = new GroupInteractor(groupPresenter, new GroupState());
+        groupController = new GroupController(groupInteractor);
+
+        // Set current user if already logged in
+        if (chatInteractor != null && chatInteractor.getCurrentUser() != null) {
+            groupController.setCurrentUser(chatInteractor.getCurrentUser());
+        }
+        return this;
+    }
+
 
     public JFrame build() {
-        loginViewModel = new LoginViewModel();
-        signupViewModel = new SignupViewModel();
-        welcomeViewModel = new WelcomeViewModel();
-        chatViewModel = new ChatViewModel();
-        groupViewModel = new GroupViewModel();
-
-        ChatState chatState = new ChatState();
-        ChatPresenter chatPresenter = new ChatPresenter(chatViewModel, chatState);
-        VacationBotPresenter vacationBotPresenter = new VacationBotPresenter(chatViewModel);
-
-        ChatInteractor chatInteractor = new ChatInteractor(chatPresenter, chatState);
-        VacationBotInteractor vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
-        VacationBotController vacationBotController = new VacationBotController(vacationBotInteractor);
-        ChatController chatController = new ChatController(chatInteractor, vacationBotInteractor);
-
-        GroupPresenter groupPresenter = new GroupPresenter(groupViewModel);
-        GroupInteractor groupInteractor = new GroupInteractor(groupPresenter, new GroupState());
-        GroupController groupController = new GroupController(groupInteractor);
-
-        ArrayList<String> testMembers = new ArrayList<>();
-        testMembers.add("Alice");
-        testMembers.add("Charlie");
-        chatInteractor.setCurrentUser("Charlie");
-        chatInteractor.setMembers(testMembers);
-
-        loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
-        signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
-        welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
-
-        createGroupView = new CreateGroupView(groupViewModel, groupController,cardLayout, cardPanel);
-        joinGroupView = new JoinGroupView(groupViewModel, groupController, cardLayout, cardPanel);
-
-        ChatView chatView = new ChatView(chatViewModel, chatController, "Test Group", testMembers, cardLayout, cardPanel);
-
-        cardPanel.add(loginView, "login");
-        cardPanel.add(signupView, "signup");
-        cardPanel.add(welcomeView, "welcome");
-        cardPanel.add(joinGroupView, "join_group");
-        cardPanel.add(createGroupView, "create_group");
-        cardPanel.add(chatView, "chat");
+        // Pre-populate test data before adding views
+        prePopulateTestData();
 
         JFrame application = new JFrame("Application");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -175,5 +182,33 @@ public class AppBuilder {
         application.setVisible(true);
 
         return application;
+    }
+
+    // Method to pre-populate data for testing
+    private void prePopulateTestData() {
+        // Set the current user for testing
+        if (chatInteractor != null) {
+            chatInteractor.setCurrentUser("Charlie");
+            System.out.println("[Debug] Current User set to: Charlie");
+        }
+        if (groupController != null) {
+            groupController.setCurrentUser("Charlie");
+        }
+
+        // Pre-populate chat members
+        ArrayList<String> testMembers = new ArrayList<>();
+        testMembers.add("Alice");
+        testMembers.add("Charlie");
+
+        if (chatInteractor != null) {
+            chatInteractor.setMembers(testMembers);
+            System.out.println("[Debug] Members pre-populated: " + testMembers);
+        }
+
+        // Pre-populate a group for testing
+        if (groupController != null) {
+            groupController.createGroup("Test Group");
+            System.out.println("[Debug] Test Group created with members: " + testMembers);
+        }
     }
 }

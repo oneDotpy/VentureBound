@@ -20,7 +20,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final DefaultListModel<String> membersListModel;
     private final JList<String> membersList;
     private final ChatViewModel chatViewModel;
-    private ChatController chatController;
+    private final ChatController chatController;
 
     public ChatView(ChatViewModel chatViewModel, ChatController chatController, String groupName, List<String> members, CardLayout cardLayout, JPanel cardPanel) {
         this.chatViewModel = chatViewModel;
@@ -51,11 +51,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         leaveGroupButton.setForeground(Color.WHITE);
         leaveGroupButton.setFocusPainted(false);
         leaveGroupButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        leaveGroupButton.addActionListener(e -> {
-//            System.out.println("Leaving group...");
-//            cardLayout.show(cardPanel, "welcome");
-//        });
-        leaveGroupButton.addActionListener(new SimulButtonListener()); // Temporary
+        leaveGroupButton.addActionListener(new SimulButtonListener());
 
         // Members Label
         JLabel membersLabel = new JLabel("Members:");
@@ -132,17 +128,16 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         }
     }
 
-
-    // [TEMP] Simulation button listener
+    // Simulates a message from "Alice" saying "Japan"
     private class SimulButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String simulatedUser = "Alice";
             String simulatedMessage = "Japan";
             chatController.sendMessage(simulatedMessage, simulatedUser);
+            System.out.println("[SimulButtonListener] Simulated message from " + simulatedUser + ": " + simulatedMessage);
         }
     }
-
 
     private void updateMembers(List<String> members) {
         membersListModel.clear();
@@ -154,6 +149,11 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         if ("messages".equals(evt.getPropertyName())) {
             List<String> messages = chatViewModel.getState().getMessages();
             chatArea.setText(String.join("\n", messages));
+        } else if ("members".equals(evt.getPropertyName())) {
+            List<String> members = chatViewModel.getState().getMembers();
+            updateMembers(members);
+            System.out.println("[ChatView] Members list updated: " + members);
         }
     }
+
 }

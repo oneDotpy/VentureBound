@@ -1,13 +1,19 @@
 package interface_adapter.group;
 
+import interface_adapter.chat.ChatState;
+import interface_adapter.chat.ChatViewModel;
 import use_case.group.GroupOutputBoundary;
 import use_case.group.GroupOutputData;
 
+import java.util.List;
+
 public class GroupPresenter implements GroupOutputBoundary {
     private final GroupViewModel viewModel;
+    private final ChatViewModel chatViewModel;
 
-    public GroupPresenter(GroupViewModel viewModel) {
+    public GroupPresenter(GroupViewModel viewModel, ChatViewModel chatViewModel) {
         this.viewModel = viewModel;
+        this.chatViewModel = chatViewModel;
     }
 
     @Override
@@ -16,8 +22,10 @@ public class GroupPresenter implements GroupOutputBoundary {
 
         GroupState state = viewModel.getState();
         state.setCreateMessage(outputData.getMessage());
-        viewModel.setState(state);
-        viewModel.firePropertyChanged("createMessage");
+        state.setMembers(outputData.getMembers()); // Update members list
+        chatViewModel.setState(chatViewModel.getState());
+        chatViewModel.firePropertyChanged("createMessage");
+        chatViewModel.firePropertyChanged("members");
     }
 
     @Override
@@ -25,8 +33,11 @@ public class GroupPresenter implements GroupOutputBoundary {
         System.out.println("[GroupPresenter] Join Group Result: " + outputData.getMessage());
 
         GroupState state = viewModel.getState();
+        final ChatState chatState = chatViewModel.getState();
         state.setJoinMessage(outputData.getMessage());
+        state.setMembers(outputData.getMembers()); // Update members list
         viewModel.setState(state);
-        viewModel.firePropertyChanged("joinMessage");
+        chatViewModel.firePropertyChanged("joinMessage");
+        chatViewModel.firePropertyChanged("members");
     }
 }

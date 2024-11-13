@@ -13,8 +13,18 @@ public class Main {
     public static void main(String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
-                                            .addLoginView()
-                                            .build();
+                .addLoginView()
+                .addSignupView()
+                .addWelcomeView()
+                .addLoggedInView()
+                .addGroupViews()
+                .addChatView()
+                .addSignupUseCase()
+                .addLoginUseCase()
+                .addChatUseCase()
+                .addVacationBotUseCase()
+                .addGroupUseCase()
+                .build();
 
         application.pack();
         application.setVisible(true);
