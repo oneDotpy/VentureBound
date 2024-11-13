@@ -119,20 +119,19 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.add(rightPanel, BorderLayout.CENTER);
     }
 
-    // Listener for Send Button
     private class SendButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String message = messageInputField.getText().trim();
             if (!message.isEmpty()) {
-                System.out.println("[ChatView] Sending message: " + message); // Debug statement
-                chatController.sendMessage(message, chatViewModel.getCurrentUser());
+                String currentUser = chatController.getCurrentUser();
+                System.out.println("[ChatView] Sending message as current user: " + currentUser);
+                chatController.sendMessage(message, currentUser);
                 messageInputField.setText("");
-            } else {
-                System.out.println("[ChatView] No message to send."); // Debug statement
             }
         }
     }
+
 
     // [TEMP] Simulation button listener
     private class SimulButtonListener implements ActionListener {
@@ -140,20 +139,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         public void actionPerformed(ActionEvent e) {
             String simulatedUser = "Alice";
             String simulatedMessage = "Hi everyone!";
-            chatViewModel.simulateMemberMessage(simulatedUser, simulatedMessage);
-            messageInputField.setText("");
+            chatController.sendMessage(simulatedMessage, simulatedUser);
         }
     }
 
 
-
-    // Method to update chat area with new messages
-    public void addMessage(String user, String message) {
-        chatArea.append(user + ": " + message + "\n");
-    }
-
-    // Method to update members list
-    public void updateMembers(List<String> members) {
+    private void updateMembers(List<String> members) {
         membersListModel.clear();
         members.forEach(membersListModel::addElement);
     }
@@ -163,16 +154,6 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         if ("messages".equals(evt.getPropertyName())) {
             List<String> messages = chatViewModel.getState().getMessages();
             chatArea.setText(String.join("\n", messages));
-        } else if ("members".equals(evt.getPropertyName())) {
-            updateMembers(chatViewModel.getMembers());
         }
-    }
-
-    public String getViewName() {
-        return "chat";
-    }
-
-    public void setChatController(ChatController controller) {
-        this.chatController = controller;
     }
 }

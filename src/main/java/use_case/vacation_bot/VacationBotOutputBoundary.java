@@ -1,6 +1,6 @@
-package use_case.vacation;
+package use_case.vacation_bot;
 
 public interface VacationBotOutputBoundary {
+    void presentBotResponse(VacationBotOutputData response);
     void sendBotMessage(String sender, String message);
-    void generateRecommendations(String location, String activities);
 }

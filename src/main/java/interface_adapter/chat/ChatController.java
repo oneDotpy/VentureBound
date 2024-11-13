@@ -2,60 +2,50 @@ package interface_adapter.chat;
 
 import use_case.chat.ChatInputBoundary;
 import use_case.chat.ChatInputData;
+import use_case.chat.ChatInteractor;
+import use_case.vacation_bot.VacationBotInputBoundary;
+import java.util.List;
 
 public class ChatController {
     private final ChatInputBoundary chatInteractor;
-    private final ChatViewModel chatViewModel;
-    private final VacationBotManager vacationBotManager;
+    private final VacationBotInputBoundary botInteractor;
 
-    public ChatController(ChatInputBoundary chatInteractor, ChatViewModel chatViewModel) {
+    public ChatController(ChatInputBoundary chatInteractor, VacationBotInputBoundary botInteractor) {
         this.chatInteractor = chatInteractor;
-        this.chatViewModel = chatViewModel;
-        this.vacationBotManager = new VacationBotManager(this, chatViewModel);
+        this.botInteractor = botInteractor;
     }
 
-    /**
-     * Handles sending a message, either to the bot or to the chat.
-     * @param message - The message to send
-     * @param username - The sender's username
-     */
     public void sendMessage(String message, String username) {
         if (message == null || message.trim().isEmpty()) {
             System.out.println("[ChatController] Message is empty or null");
             return;
         }
+        System.out.println("[ChatController] Sending message from " + username + ": " + message);
 
-        System.out.println("[ChatController] Received message from " + username + ": " + message);
-
-        // Check if the message is the command to start the bot
-        if ("/start".equalsIgnoreCase(message.trim()) && !vacationBotManager.isBotActive()) {
-            vacationBotManager.startBot();
-            return;
-        }
-
-        else if ("/stop".equalsIgnoreCase(message.trim()) && vacationBotManager.isBotActive()) {
-            vacationBotManager.endBot();
-            return;
-        }
-
-        // If the bot is active, handle the message with the bot
-        if (vacationBotManager.isBotActive()) {
-            vacationBotManager.handleMessage(username, message);
+        if ("/start".equalsIgnoreCase(message.trim())) {
+            botInteractor.startBot();
+        } else if ("/stop".equalsIgnoreCase(message.trim())) {
+            botInteractor.stopBot();
+        } else if (botInteractor.isBotActive()) {
+            botInteractor.handleMessage(username, message);
         } else {
-            // Regular chat message
-            ChatInputData chatInputData = new ChatInputData(username, message);
-            chatInteractor.sendMessage(chatInputData);
+            // Only send the message to the interactor, do not update the state directly here
+            ChatInputData inputData = new ChatInputData(username, message);
+            chatInteractor.sendMessage(inputData);
         }
     }
 
-    /**
-     * Method to send a message directly from the bot to the chat.
-     * @param sender - The sender's name (e.g., "Bot")
-     * @param message - The message content
-     */
     public void sendBotMessage(String sender, String message) {
         System.out.println("[ChatController] Bot sending message: " + message);
-        ChatInputData chatInputData = new ChatInputData(sender, message);
-        chatInteractor.sendMessage(chatInputData);
+        ChatInputData inputData = new ChatInputData(sender, message);
+        chatInteractor.sendMessage(inputData);
+    }
+
+    public String getCurrentUser() {
+        return ((ChatInteractor) chatInteractor).getCurrentUser();
+    }
+
+    public List<String> getMembers() {
+        return ((ChatInteractor) chatInteractor).getMembers();
     }
 }
