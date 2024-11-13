@@ -2,13 +2,10 @@ package data_access;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import entity.*;
 import use_case.create_group.CreateGroupDataAccessInterface;
 
-import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;
 
 import java.util.*;
@@ -19,12 +16,16 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
     private final MessageFactory messageFactory;
+    private final RecommendationFactory recommendationFactory;
 
     public FirestoreGroupDataAccessObject(GroupFactory groupFactory,
-                                          ResponseFactory responseFactory, MessageFactory messageFactory) {
+                                          ResponseFactory responseFactory,
+                                          MessageFactory messageFactory,
+                                          RecommendationFactory recommendationFactory) {
         this.groupFactory = groupFactory;
         this.responseFactory = responseFactory;
         this.messageFactory = messageFactory;
+        this.recommendationFactory = recommendationFactory;
     }
 
     @Override
@@ -43,13 +44,24 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
             }
 
             List<String> usernames = (ArrayList)document.get("usernames");
-            List<String> recommendations = (ArrayList)document.get("recommendedLocations");
-            List<String> chosen = (ArrayList)document.get("chosenDestinations");
+            List<String> chosen = (ArrayList)document.get("chosenLocations");
+
+            List<Recommendation> recommendations = new ArrayList<>();
+            List<Object> recommendationArrayList = (ArrayList)document.get("recommendations");
+            for (Object obj : recommendationArrayList) {
+                Map<String, Object> recommendation = (Map)obj;
+                String location = (String)recommendation.get("location");
+                String description = (String)recommendation.get("description");
+                GeoPoint coordinates = (GeoPoint)recommendation.get("coordinates");
+                int rating = (int)(long)recommendation.get("rating");
+                ArrayList<Boolean> votes = (ArrayList<Boolean>)document.get("votes");
+                recommendations.add(recommendationFactory.create(location, description, coordinates, rating, votes));
+            }
 
             List<Response> responses = new ArrayList<>();
             List<Object> responseArrayList = (ArrayList)document.get("responses");
             for (Object obj : responseArrayList) {
-                Map<String, String> response = (Map<String, String>)obj;
+                Map<String, String> response = (Map)obj;
                 String question = response.get("question");
                 String answer = response.get("answer");
                 responses.add(responseFactory.create(question, answer));
@@ -58,7 +70,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
             List<Message> messages = new ArrayList<>();
             List<Object> messageArrayList = (ArrayList)document.get("messages");
             for (Object obj : messageArrayList) {
-                Map<String, Object> message = (Map<String, Object>)obj;
+                Map<String, Object> message = (Map)obj;
                 String user = (String)message.get("user");
                 Timestamp timestamp = (Timestamp)message.get("timestamp");
                 String content = (String)message.get("content");
@@ -76,13 +88,12 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
     public void save(Group group) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
         Map<String, Object> data = new HashMap<>();
-        data.put("ChosenDestinations", group.getChosenLocations());
         data.put("groupName", group.getGroupName());
-        data.put("ChosenLocations", group.getChosenLocations());
-        data.put("Messages", group.getMessages());
-        data.put("RecommendedLocations", group.getRecommendedLocations());
-        data.put("Responses", group.getResponses());
-        data.put("Users", group.getUsernames());
+        data.put("chosenLocations", group.getChosenLocations());
+        data.put("messages", group.getMessages());
+        data.put("recommendations", group.getRecommendedLocations());
+        data.put("responses", group.getResponses());
+        data.put("usernames", group.getUsernames());
 
         ApiFuture<WriteResult> future = db.collection("groups").document(group.getGroupName()).set(data);
         try {
@@ -92,5 +103,39 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         }
     }
 
+
+    public static void main(String[] args) {
+        FirestoreDataAccessObject db = new FirestoreDataAccessObject();
+        GroupFactory groupFactory = new CommonGroupFactory();
+        ResponseFactory responseFactory = new CommonResponseFactory();
+        MessageFactory messageFactory = new CommonMessageFactory();
+        RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
+        FirestoreGroupDataAccessObject groupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
+
+        String groupName = "testGroup";
+
+        List<String> usernames = new ArrayList<>();
+        usernames.add("Bob");
+
+        List<Response> responses = new ArrayList<>();
+        responses.add(responseFactory.create("Question", "Answer"));
+
+        List<Recommendation> recommendations = new ArrayList<>();
+        List<Boolean> votes = new ArrayList<>();
+        votes.add(true);
+        votes.add(false);
+        recommendations.add(recommendationFactory.create("location",
+                "description", new GeoPoint(0, 0), 5, votes));
+
+        List<String> chosenLocations = new ArrayList<>();
+        chosenLocations.add("chosenLocation");
+
+        List<Message> messages = new ArrayList<>();
+        messages.add(messageFactory.createMessage("Bob", "content"
+                , Timestamp.now()));
+
+        Group group = groupDataAccessObject.get(groupName);
+        System.out.println(group.getGroupName());
+    }
 }
 

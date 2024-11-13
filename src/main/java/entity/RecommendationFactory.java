@@ -16,5 +16,5 @@ public interface RecommendationFactory {
      * @param rating the rating of the place
      * @param votes the boolean that show either a specific member has been vote or not
      */
-    public CommonRecommendation createRecommendation(String location, String description, GeoPoint coordinates, int rating, List<Boolean> votes);
+    public CommonRecommendation create(String location, String description, GeoPoint coordinates, int rating, List<Boolean> votes);
 }

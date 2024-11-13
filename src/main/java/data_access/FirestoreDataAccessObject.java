@@ -16,10 +16,10 @@ public class FirestoreDataAccessObject {
 
     public FirestoreDataAccessObject() {
         try{
-            FileInputStream inputStream = new FileInputStream("src/main/resources/firestoretesting-natuap-firebase-adminsdk-co880-01fe6ae1db.json");
+            FileInputStream inputStream = new FileInputStream("src/main/resources/venturebound-92fe9-firebase-adminsdk-h78vn-86fc202401.json");
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(inputStream))
-                    .setProjectId("VentureBound") // Your project ID
+                    .setProjectId("venturebound-92fe9") // Your project ID
                     .build();
 
             if (FirebaseApp.getApps().isEmpty()) {
