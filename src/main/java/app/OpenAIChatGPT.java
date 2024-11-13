@@ -11,7 +11,7 @@ public class OpenAIChatGPT {
     private static final String API_KEY = loadApiKey(); // Replace with actual API key
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
-    private final OkHttpClient client;
+    private static OkHttpClient client;
 
     public OpenAIChatGPT() {
         client = new OkHttpClient();
@@ -25,7 +25,7 @@ public class OpenAIChatGPT {
         }
         return apiKey;
     }
-    public String getVacationRecommendations(String activities, String locations) throws IOException {
+    public static String getVacationRecommendations(String activities, String locations) throws IOException {
         String prompt = String.format(
                 "Me and my friends like %s. Sticking with %s locations, provide a JSON object with 5 recommended vacation spots based of our interests. " +
                         "Include name, latitude, longitude, and a Google Maps link for each spot. ",
@@ -72,7 +72,7 @@ public class OpenAIChatGPT {
         }
     }
 
-    private String addGoogleMapsLinks(String jsonResponse) {
+    private static String addGoogleMapsLinks(String jsonResponse) {
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
 
