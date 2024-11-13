@@ -33,6 +33,11 @@ public class ChatController {
             return;
         }
 
+        else if ("/stop".equalsIgnoreCase(message.trim()) && vacationBotManager.isBotActive()) {
+            vacationBotManager.endBot();
+            return;
+        }
+
         // If the bot is active, handle the message with the bot
         if (vacationBotManager.isBotActive()) {
             vacationBotManager.handleMessage(username, message);
