@@ -21,7 +21,7 @@ public class OpenAIChatGPT {
         Dotenv dotenv = Dotenv.load();
         String apiKey = dotenv.get("OPENAI_API_KEY");
         if (apiKey == null || apiKey.isEmpty()) {
-            throw new RuntimeException("API_KEY not found in .env file");
+            throw new RuntimeException("API_KEY not found in ..env file");
         }
         return apiKey;
     }

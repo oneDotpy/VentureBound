@@ -20,11 +20,10 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final DefaultListModel<String> membersListModel;
     private final JList<String> membersList;
     private final ChatViewModel chatViewModel;
-    private final ChatController chatController;
+    private ChatController chatController;
 
-    public ChatView(ChatViewModel chatViewModel, ChatController chatController, String groupName, List<String> members, CardLayout cardLayout, JPanel cardPanel) {
+    public ChatView(ChatViewModel chatViewModel, String groupName, List<String> members, CardLayout cardLayout, JPanel cardPanel) {
         this.chatViewModel = chatViewModel;
-        this.chatController = chatController;
 
         // Add this class as a property change listener to the ViewModel
         chatViewModel.addPropertyChangeListener(this);
@@ -155,5 +154,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             System.out.println("[ChatView] Members list updated: " + members);
         }
     }
+
+    public void setChatController(ChatController chatController){ this.chatController = chatController;}
 
 }
