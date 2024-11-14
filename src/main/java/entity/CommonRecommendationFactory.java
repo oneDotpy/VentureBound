@@ -8,7 +8,7 @@ import java.util.List;
 public class CommonRecommendationFactory implements RecommendationFactory{
 
     @Override
-    public CommonRecommendation create(String location, String description, GeoPoint coordinates, int rating, List<Boolean> votes) {
-        return new CommonRecommendation(location, description, coordinates, rating, votes);
+    public CommonRecommendation create(String location, String description, GeoPoint coordinates, int rating) {
+        return new CommonRecommendation(location, description, coordinates, rating);
     }
 }

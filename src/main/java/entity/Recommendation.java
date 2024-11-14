@@ -30,10 +30,4 @@ public interface Recommendation {
      * @return the question
      */
     int getRating();
-
-    /**
-     * Returns the vote of this place from users.
-     * @return the question
-     */
-    List<Boolean> getVote();
 }

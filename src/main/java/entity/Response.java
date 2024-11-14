@@ -5,14 +5,14 @@ package entity;
  */
 public interface Response {
     /**
-     * Returns the question that is being asked.
-     * @return the question
+     * Returns the user that is being asked.
+     * @return the user
      */
-    String getPromptQuestion();
+    String getUser();
 
     /**
      * Returns the answer from GPT API.
      * @return the answer
      */
-    String getAnswer();
+    String getResponse();
 }

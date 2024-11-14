@@ -9,14 +9,12 @@ public class CommonRecommendation implements Recommendation {
     private final String description;
     private final GeoPoint coordinates;
     private final int rating;
-    private final List<Boolean> votes;
 
-    public CommonRecommendation(String location, String description, GeoPoint coordinates, int rating, List<Boolean> votes) {
+    public CommonRecommendation(String location, String description, GeoPoint coordinates, int rating) {
         this.location = location;
         this.description = description;
         this.coordinates = coordinates;
         this.rating = rating;
-        this.votes = votes;
     }
 
     @Override
@@ -37,10 +35,5 @@ public class CommonRecommendation implements Recommendation {
     @Override
     public int getRating() {
         return rating;
-    }
-
-    @Override
-    public List<Boolean> getVote() {
-        return votes;
     }
 }

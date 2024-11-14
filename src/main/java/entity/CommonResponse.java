@@ -1,21 +1,21 @@
 package entity;
 
 public class CommonResponse implements Response{
-    private final String promptQuestion;
-    private final String answer;
+    private final String user;
+    private final String response;
 
     public CommonResponse(String promptQuestion, String answer) {
-        this.promptQuestion = promptQuestion;
-        this.answer = answer;
+        this.user = promptQuestion;
+        this.response = answer;
     }
 
     @Override
-    public String getPromptQuestion() {
-        return promptQuestion;
+    public String getUser() {
+        return user;
     }
 
     @Override
-    public String getAnswer() {
-        return answer;
+    public String getResponse() {
+        return response;
     }
 }
