@@ -109,16 +109,29 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         }
     }
 
-    public void updateInfo(Group group) {
+    public void updateUsers(Group group) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
         DocumentReference ref = db.collection("groups").document(group.getGroupName());
         String groupName = group.getGroupName();
 
         Map<String, Object> data = new HashMap<>();
-        data.put("groupName", group.getGroupName());
         data.put("usernames", group.getUsernames());
+        ApiFuture<WriteResult> future = ref.update(data);
+        try {
+            System.out.println("Successfully updated at: " + future.get().getUpdateTime());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateChosenLocations(Group group) {
+        Firestore db = FirestoreDataAccessObject.getFirestore();
+        DocumentReference ref = db.collection("groups").document(group.getGroupName());
+        String groupName = group.getGroupName();
+
+        Map<String, Object> data = new HashMap<>();
         data.put("chosenLocations", group.getChosenLocations());
-        ApiFuture<WriteResult> future = ref.set(data);
+        ApiFuture<WriteResult> future = ref.update(data);
         try {
             System.out.println("Successfully updated at: " + future.get().getUpdateTime());
         } catch(Exception e) {
@@ -168,7 +181,20 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
     @Override
     public void save(Group group) {
         String groupName = group.getGroupName();
-        updateInfo(group);
+        Firestore db = FirestoreDataAccessObject.getFirestore();
+        DocumentReference ref = db.collection("groups").document(group.getGroupName());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("groupName", group.getGroupName());
+        data.put("usernames", group.getUsernames());
+        data.put("chosenLocations", group.getChosenLocations());
+        ApiFuture<WriteResult> future = ref.set(data);
+        try {
+            System.out.println("Successfully updated at: " + future.get().getUpdateTime());
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
         updateResponses(groupName, group.getResponses());
         updateRecommendations(groupName, group.getRecommendedLocations());
         updateMessages(groupName, group.getMessages());
