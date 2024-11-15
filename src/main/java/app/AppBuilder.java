@@ -30,7 +30,6 @@ public class AppBuilder {
     private final UserFactory userFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
-    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -38,14 +37,6 @@ public class AppBuilder {
     private ChatViewModel chatViewModel;
     private GroupViewModel groupViewModel;
     private WelcomeViewModel welcomeViewModel;
-
-    private SignupView signupView;
-    private LoginView loginView;
-    private LoggedInView loggedInView;
-    private ChatView chatView;
-    private CreateGroupView createGroupView;
-    private JoinGroupView joinGroupView;
-    private WelcomeView welcomeView;
 
     private ChatState chatState;
     private ChatPresenter chatPresenter;
@@ -55,6 +46,14 @@ public class AppBuilder {
     private VacationBotController vacationBotController;
     private ChatController chatController;
     private GroupController groupController;
+
+    private SignupView signupView;
+    private LoginView loginView;
+    private WelcomeView welcomeView;
+    private LoggedInView loggedInView;
+    private CreateGroupView createGroupView;
+    private JoinGroupView joinGroupView;
+    private ChatView chatView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -91,11 +90,8 @@ public class AppBuilder {
 
     public AppBuilder addGroupViews() {
         groupViewModel = new GroupViewModel();
-        if (groupController == null) {
-            addGroupUseCase();
-        }
-        createGroupView = new CreateGroupView(groupViewModel, groupController, cardLayout, cardPanel);
-        joinGroupView = new JoinGroupView(groupViewModel, groupController, cardLayout, cardPanel);
+        createGroupView = new CreateGroupView(groupViewModel, cardLayout, cardPanel);
+        joinGroupView = new JoinGroupView(groupViewModel, cardLayout, cardPanel);
 
         cardPanel.add(createGroupView, "create_group");
         cardPanel.add(joinGroupView, "join_group");
@@ -104,12 +100,7 @@ public class AppBuilder {
 
     public AppBuilder addChatView() {
         chatViewModel = new ChatViewModel();
-
-        if (chatController == null) {
-            addChatUseCase();
-        }
-
-        ChatView chatView = new ChatView(chatViewModel, chatController, "Test Group", new ArrayList<>(), cardLayout, cardPanel);
+        chatView = new ChatView(chatViewModel, "Test Group", new ArrayList<>(), cardLayout, cardPanel);
         cardPanel.add(chatView, "chat");
         return this;
     }
@@ -118,6 +109,7 @@ public class AppBuilder {
         SignupPresenter signupPresenter = new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
         SignupInteractor signupInteractor = new SignupInteractor(userDataAccessObject, signupPresenter, userFactory);
         SignupController signupController = new SignupController(signupInteractor);
+        signupView.setSignupController(signupController);
         return this;
     }
 
@@ -126,8 +118,6 @@ public class AppBuilder {
         LoginInteractor loginInteractor = new LoginInteractor(userDataAccessObject, loginPresenter);
         LoginController loginController = new LoginController(loginInteractor);
 
-        // Set the login controller to the LoginView
-        LoginView loginView = (LoginView) cardPanel.getComponent(0); // Assuming login is the second component added
         loginView.setLoginController(loginController);
 
         // Listen for successful login to set the current user
@@ -147,27 +137,29 @@ public class AppBuilder {
         chatState = ChatState.getInstance(); // Use the singleton instance
         chatPresenter = new ChatPresenter(viewManagerModel, chatViewModel);
         chatInteractor = new ChatInteractor(chatPresenter, chatState);
-
-        vacationBotPresenter = new VacationBotPresenter(chatViewModel);
+        vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
         vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
         vacationBotController = new VacationBotController(vacationBotInteractor);
 
         chatController = new ChatController(chatInteractor, vacationBotInteractor);
+        chatView.setChatController(chatController);
         return this;
     }
 
 
     public AppBuilder addVacationBotUseCase() {
-        vacationBotPresenter = new VacationBotPresenter(chatViewModel);
+        vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
         vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
         vacationBotController = new VacationBotController(vacationBotInteractor);
         return this;
     }
 
     public AppBuilder addGroupUseCase() {
-        GroupPresenter groupPresenter = new GroupPresenter(groupViewModel, chatViewModel);
+        GroupPresenter groupPresenter = new GroupPresenter(groupViewModel, chatViewModel, viewManagerModel);
         GroupInteractor groupInteractor = new GroupInteractor(groupPresenter, new GroupState());
         groupController = new GroupController(groupInteractor);
+        joinGroupView.setGroupController(groupController);
+        createGroupView.setGroupController(groupController);
 
         // Set current user if already logged in
         if (chatInteractor != null && chatInteractor.getCurrentUser() != null) {
@@ -188,9 +180,8 @@ public class AppBuilder {
         application.setResizable(false);
         application.setLocationRelativeTo(null);
         application.add(cardPanel);
+        application.setVisible(true);
 
-        viewManagerModel.setState(welcomeView.getViewName());
-        viewManagerModel.firePropertyChanged();
         return application;
     }
 

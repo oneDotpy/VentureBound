@@ -13,15 +13,14 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
     private final JButton backButton;
     private final JTextField groupNameInputField;
     private final JButton createButton;
-    private final GroupController groupController;
+    private GroupController groupController;
     private final GroupViewModel groupViewModel;
     private final CardLayout cardLayout;
     private final JPanel cardPanel;
 
-    public CreateGroupView(GroupViewModel groupViewModel, GroupController groupController, CardLayout cardLayout, JPanel cardPanel) {
+    public CreateGroupView(GroupViewModel groupViewModel, CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
-        this.groupController = groupController;
         this.groupViewModel = groupViewModel;
 
         groupViewModel.addPropertyChangeListener(this);
@@ -80,6 +79,10 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
         this.add(groupNameInputField);
         this.add(Box.createVerticalStrut(20));
         this.add(createButton);
+    }
+
+    public void setGroupController(GroupController groupController) {
+        this.groupController = groupController;
     }
 
     @Override
