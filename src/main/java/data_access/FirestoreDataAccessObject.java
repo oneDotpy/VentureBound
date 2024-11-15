@@ -16,7 +16,7 @@ public class FirestoreDataAccessObject {
 
     public FirestoreDataAccessObject() {
         try{
-            FileInputStream inputStream = new FileInputStream("src/main/resources/venturebound-92fe9-firebase-adminsdk-h78vn-86fc202401.json");
+            FileInputStream inputStream = new FileInputStream("src/main/resources/venturebound-92fe9-firebase-adminsdk-h78vn-eca22f2a8a.json");
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(inputStream))
                     .setProjectId("venturebound-92fe9") // Your project ID

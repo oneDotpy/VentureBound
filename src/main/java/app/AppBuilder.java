@@ -4,9 +4,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
+import data_access.FirestoreDataAccessObject;
+import data_access.FirestoreGroupDataAccessObject;
+import data_access.FirestoreUserDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
-import entity.CommonUserFactory;
-import entity.UserFactory;
+import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.chat.*;
@@ -27,9 +29,18 @@ import view.*;
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
-    private final UserFactory userFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+
+    private final UserFactory userFactory = new CommonUserFactory();
+    private final GroupFactory groupFactory = new CommonGroupFactory();
+    private final ResponseFactory responseFactory = new CommonResponseFactory();
+    private final MessageFactory messageFactory = new CommonMessageFactory();
+    private final RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
+
+    private final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
+    private final FirestoreGroupDataAccessObject firestoreGroupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
+    private final FirestoreUserDataAccessObject firestoreUserDataAccessObject = new FirestoreUserDataAccessObject(userFactory, firestoreGroupDataAccessObject);
 
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -108,7 +119,7 @@ public class AppBuilder {
 
     public AppBuilder addSignupUseCase() {
         SignupPresenter signupPresenter = new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
-        SignupInteractor signupInteractor = new SignupInteractor(userDataAccessObject, signupPresenter, userFactory);
+        SignupInteractor signupInteractor = new SignupInteractor(firestoreUserDataAccessObject, signupPresenter, userFactory);
         SignupController signupController = new SignupController(signupInteractor);
         signupView.setSignupController(signupController);
         return this;

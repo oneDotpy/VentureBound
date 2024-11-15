@@ -21,7 +21,7 @@ public interface UserFactory {
      * @param group the group of the new user
      * @return the new user
      */
-    User create(String name, String password, String email, Group group);
+    User create(String name, String password, String email, String group);
 
     User create(String username, String password);
 }

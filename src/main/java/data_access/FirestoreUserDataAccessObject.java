@@ -15,10 +15,11 @@ import use_case.signup.SignupUserDataAccessInterface;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface {
+public class FirestoreUserDataAccessObject{
 
     private UserFactory userFactory;
     private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;
+    private Firestore firestore;
 
     public FirestoreUserDataAccessObject(UserFactory userFactory,
                                          FirestoreGroupDataAccessObject firestoreGroupDataAccessObject) {
@@ -42,8 +43,7 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
             String password = document.get("password").toString();
             String email = document.get("email").toString();
             String groupName = document.get("group").toString();
-            Group group = firestoreGroupDataAccessObject.get("groupName");
-            return userFactory.create(email, password, email, group);
+            return userFactory.create(email, password, email, "");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -57,6 +57,7 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
         data.put("password", user.getPassword());
         data.put("email", user.getEmail());
         data.put("group", user.getGroup());
+        System.out.println(user.getName());
 
         ApiFuture<WriteResult> future = db.collection("users").document(user.getName()).set(data);
         try {

@@ -1,5 +1,6 @@
 package use_case.signup;
 
+import data_access.FirestoreUserDataAccessObject;
 import entity.User;
 import entity.UserFactory;
 
@@ -7,14 +8,14 @@ import entity.UserFactory;
  * The Signup Interactor.
  */
 public class SignupInteractor implements SignupInputBoundary {
-    private final SignupUserDataAccessInterface userDataAccessObject;
+    private final FirestoreUserDataAccessObject firestoreUserDataAccessObject;
     private final SignupOutputBoundary userPresenter;
     private final UserFactory userFactory;
 
-    public SignupInteractor(SignupUserDataAccessInterface signupDataAccessInterface,
+    public SignupInteractor(FirestoreUserDataAccessObject firestoreUserDataAccessObject,
                             SignupOutputBoundary signupOutputBoundary,
                             UserFactory userFactory) {
-        this.userDataAccessObject = signupDataAccessInterface;
+        this.firestoreUserDataAccessObject = firestoreUserDataAccessObject;
         this.userPresenter = signupOutputBoundary;
         this.userFactory = userFactory;
     }
@@ -25,8 +26,9 @@ public class SignupInteractor implements SignupInputBoundary {
             userPresenter.prepareFailView("Passwords don't match.");
         }
         else {
-            final User user = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword());
-            userDataAccessObject.save(user);
+            final User user = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword(), signupInputData.getRepeatPassword());
+
+            firestoreUserDataAccessObject.save(user);
 
             final SignupOutputData signupOutputData = new SignupOutputData(user.getName(), false);
             userPresenter.prepareSuccessView(signupOutputData);

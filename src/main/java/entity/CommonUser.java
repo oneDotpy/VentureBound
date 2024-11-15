@@ -8,9 +8,9 @@ public class CommonUser implements User {
     private final String name;
     private final String password;
     private final String email;
-    private final Group group;
+    private final String group;
 
-    public CommonUser(String name, String password, String email, Group group) {
+    public CommonUser(String name, String password, String email, String group) {
         this.name = name;
         this.password = password;
         this.email = email;
@@ -31,6 +31,6 @@ public class CommonUser implements User {
     public String getEmail() { return email; }
 
     @Override
-    public Group getGroup() { return group; }
+    public String getGroup() { return group; }
 
 }

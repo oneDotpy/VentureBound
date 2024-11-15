@@ -27,6 +27,6 @@ public interface User {
      * Returns the group of the user.
      * @return the grouop of the user.
      */
-    Group getGroup();
+    String getGroup();
 
 }
