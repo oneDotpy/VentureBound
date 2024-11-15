@@ -1,5 +1,6 @@
 package interface_adapter.chat;
 
+import interface_adapter.ViewManagerModel;
 import use_case.chat.ChatOutputBoundary;
 import use_case.chat.ChatOutputData;
 
@@ -8,8 +9,10 @@ import java.util.List;
 public class ChatPresenter implements ChatOutputBoundary {
     private final ChatViewModel chatViewModel;
     private final ChatState chatState = ChatState.getInstance(); // Use singleton
+    private final ViewManagerModel viewManagerModel;
 
-    public ChatPresenter(ChatViewModel chatViewModel) {
+    public ChatPresenter(ViewManagerModel viewManagerModel, ChatViewModel chatViewModel) {
+        this.viewManagerModel = viewManagerModel;
         this.chatViewModel = chatViewModel;
     }
 

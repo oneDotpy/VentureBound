@@ -135,9 +135,9 @@ public class AppBuilder {
 
     public AppBuilder addChatUseCase() {
         chatState = ChatState.getInstance(); // Use the singleton instance
-        chatPresenter = new ChatPresenter(chatViewModel);
+        chatPresenter = new ChatPresenter(viewManagerModel, chatViewModel);
         chatInteractor = new ChatInteractor(chatPresenter, chatState);
-        vacationBotPresenter = new VacationBotPresenter(chatViewModel);
+        vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
         vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
         vacationBotController = new VacationBotController(vacationBotInteractor);
 
@@ -148,14 +148,14 @@ public class AppBuilder {
 
 
     public AppBuilder addVacationBotUseCase() {
-        vacationBotPresenter = new VacationBotPresenter(chatViewModel);
+        vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
         vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
         vacationBotController = new VacationBotController(vacationBotInteractor);
         return this;
     }
 
     public AppBuilder addGroupUseCase() {
-        GroupPresenter groupPresenter = new GroupPresenter(groupViewModel, chatViewModel);
+        GroupPresenter groupPresenter = new GroupPresenter(groupViewModel, chatViewModel, viewManagerModel);
         GroupInteractor groupInteractor = new GroupInteractor(groupPresenter, new GroupState());
         groupController = new GroupController(groupInteractor);
         joinGroupView.setGroupController(groupController);
