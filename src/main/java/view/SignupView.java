@@ -180,7 +180,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     }
 
     public String getViewName() {
-        return "sign up";
+        return "signup";
     }
 
     public void setSignupController(SignupController controller) {
