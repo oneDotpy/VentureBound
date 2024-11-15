@@ -89,4 +89,8 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
             JOptionPane.showMessageDialog(this, message, "Group Creation", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
+    public String getViewName() {
+        return groupViewModel.getState().getGroupName();
+    }
 }

@@ -30,6 +30,7 @@ public class AppBuilder {
     private final UserFactory userFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -37,6 +38,14 @@ public class AppBuilder {
     private ChatViewModel chatViewModel;
     private GroupViewModel groupViewModel;
     private WelcomeViewModel welcomeViewModel;
+
+    private SignupView signupView;
+    private LoginView loginView;
+    private LoggedInView loggedInView;
+    private ChatView chatView;
+    private CreateGroupView createGroupView;
+    private JoinGroupView joinGroupView;
+    private WelcomeView welcomeView;
 
     private ChatState chatState;
     private ChatPresenter chatPresenter;
@@ -54,28 +63,28 @@ public class AppBuilder {
     // Step 1: Add Views
     public AppBuilder addSignupView() {
         signupViewModel = new SignupViewModel();
-        SignupView signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
+        signupView = new SignupView(signupViewModel, cardLayout, cardPanel);
         cardPanel.add(signupView, "signup");
         return this;
     }
 
     public AppBuilder addLoginView() {
         loginViewModel = new LoginViewModel();
-        LoginView loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
+        loginView = new LoginView(loginViewModel, cardLayout, cardPanel);
         cardPanel.add(loginView, "login");
         return this;
     }
 
     public AppBuilder addWelcomeView() {
         welcomeViewModel = new WelcomeViewModel();
-        WelcomeView welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
+        welcomeView = new WelcomeView(welcomeViewModel, cardLayout, cardPanel);
         cardPanel.add(welcomeView, "welcome");
         return this;
     }
 
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
-        LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
+        loggedInView = new LoggedInView(loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
@@ -85,8 +94,8 @@ public class AppBuilder {
         if (groupController == null) {
             addGroupUseCase();
         }
-        CreateGroupView createGroupView = new CreateGroupView(groupViewModel, groupController, cardLayout, cardPanel);
-        JoinGroupView joinGroupView = new JoinGroupView(groupViewModel, groupController, cardLayout, cardPanel);
+        createGroupView = new CreateGroupView(groupViewModel, groupController, cardLayout, cardPanel);
+        joinGroupView = new JoinGroupView(groupViewModel, groupController, cardLayout, cardPanel);
 
         cardPanel.add(createGroupView, "create_group");
         cardPanel.add(joinGroupView, "join_group");
@@ -136,7 +145,7 @@ public class AppBuilder {
 
     public AppBuilder addChatUseCase() {
         chatState = ChatState.getInstance(); // Use the singleton instance
-        chatPresenter = new ChatPresenter(chatViewModel);
+        chatPresenter = new ChatPresenter(viewManagerModel, chatViewModel);
         chatInteractor = new ChatInteractor(chatPresenter, chatState);
 
         vacationBotPresenter = new VacationBotPresenter(chatViewModel);
@@ -179,8 +188,9 @@ public class AppBuilder {
         application.setResizable(false);
         application.setLocationRelativeTo(null);
         application.add(cardPanel);
-        application.setVisible(true);
 
+        viewManagerModel.setState(welcomeView.getViewName());
+        viewManagerModel.firePropertyChanged();
         return application;
     }
 
