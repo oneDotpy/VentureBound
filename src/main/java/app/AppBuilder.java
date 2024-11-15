@@ -30,6 +30,7 @@ public class AppBuilder {
     private final UserFactory userFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -180,7 +181,10 @@ public class AppBuilder {
         application.setResizable(false);
         application.setLocationRelativeTo(null);
         application.add(cardPanel);
-        application.setVisible(true);
+
+        viewManagerModel.setState(welcomeView.getViewName());
+        viewManagerModel.firePropertyChanged();
+
 
         return application;
     }
