@@ -8,7 +8,7 @@ import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.*;
+import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.chat.*;
 import interface_adapter.group.*;
 import interface_adapter.login.*;
@@ -33,10 +33,10 @@ public class AppBuilder {
 
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
-    private LoggedInViewModel loggedInViewModel;
     private ChatViewModel chatViewModel;
     private GroupViewModel groupViewModel;
     private WelcomeViewModel welcomeViewModel;
+    private LoggedInViewModel loggedInViewModel;
 
     private ChatState chatState;
     private ChatPresenter chatPresenter;
@@ -81,12 +81,6 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addLoggedInView() {
-        loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
-        cardPanel.add(loggedInView, loggedInView.getViewName());
-        return this;
-    }
 
     public AppBuilder addGroupViews() {
         groupViewModel = new GroupViewModel();
@@ -102,6 +96,13 @@ public class AppBuilder {
         chatViewModel = new ChatViewModel();
         chatView = new ChatView(chatViewModel, "Test Group", new ArrayList<>(), cardLayout, cardPanel);
         cardPanel.add(chatView, "chat");
+        return this;
+    }
+
+    public AppBuilder addLoggedInView() {
+        loggedInViewModel = new LoggedInViewModel();
+        LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
+        cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
 

@@ -11,8 +11,7 @@ public interface UserFactory {
      * @param email the email of the new user
      * @return the new user
      */
-    User create(String name, String password);
-
+    User create(String name, String password, String email);
 
     /**
      * Creates a new User.
@@ -24,4 +23,5 @@ public interface UserFactory {
      */
     User create(String name, String password, String email, Group group);
 
+    User create(String username, String password);
 }
