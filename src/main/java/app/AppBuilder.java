@@ -29,7 +29,6 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
     private final UserFactory userFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
 
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -50,7 +49,6 @@ public class AppBuilder {
     private SignupView signupView;
     private LoginView loginView;
     private WelcomeView welcomeView;
-    private LoggedInView loggedInView;
     private CreateGroupView createGroupView;
     private JoinGroupView joinGroupView;
     private ChatView chatView;
