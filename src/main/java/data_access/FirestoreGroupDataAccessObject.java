@@ -32,7 +32,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         this.recommendationFactory = recommendationFactory;
     }
 
-    @NotNull
     public List<Recommendation> getRecommendations(String groupName) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupName);
@@ -49,7 +48,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         return recommendations;
     }
 
-    @NotNull
     public List<Response> getResponses(String groupName) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupName);
@@ -64,7 +62,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         return responses;
     }
 
-    @NotNull
     public List<Message> getMessages(String groupName, int index) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupName);
