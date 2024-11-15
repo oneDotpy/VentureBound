@@ -1,5 +1,6 @@
 package interface_adapter.group;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.chat.ChatState;
 import interface_adapter.chat.ChatViewModel;
 import use_case.group.GroupOutputBoundary;
@@ -10,10 +11,12 @@ import java.util.List;
 public class GroupPresenter implements GroupOutputBoundary {
     private final GroupViewModel viewModel;
     private final ChatViewModel chatViewModel;
+    private final ViewManagerModel viewManagerModel;
 
-    public GroupPresenter(GroupViewModel viewModel, ChatViewModel chatViewModel) {
+    public GroupPresenter(GroupViewModel viewModel, ChatViewModel chatViewModel, ViewManagerModel viewManagerModel) {
         this.viewModel = viewModel;
         this.chatViewModel = chatViewModel;
+        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
