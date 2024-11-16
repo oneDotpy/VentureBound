@@ -25,6 +25,7 @@ public class FirestoreUserDataAccessObject{
         this.firestoreGroupDataAccessObject = firestoreGroupDataAccessObject;
     }
 
+
     public User get(String username) {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("users").document(username);

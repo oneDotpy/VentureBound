@@ -32,6 +32,17 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         this.recommendationFactory = recommendationFactory;
     }
 
+    public boolean existByName(final String name) {
+        Firestore db = FirestoreClient.getFirestore();
+        try {
+            DocumentReference docRef = db.collection("groups").document(name);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
     public List<Recommendation> getRecommendations(String groupName) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupName);
@@ -176,25 +187,48 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
     }
 
     @Override
-    public void save(Group group) {
+    public String save(Group group) {
         String groupName = group.getGroupName();
         Firestore db = FirestoreDataAccessObject.getFirestore();
-        DocumentReference ref = db.collection("groups").document(group.getGroupName());
-
+        String groupID = group.getGroupID();
         Map<String, Object> data = new HashMap<>();
         data.put("groupName", group.getGroupName());
         data.put("usernames", group.getUsernames());
         data.put("chosenLocations", group.getChosenLocations());
-        ApiFuture<WriteResult> future = ref.set(data);
-        try {
-            System.out.println("Successfully updated at: " + future.get().getUpdateTime());
-        } catch(Exception e) {
-            e.printStackTrace();
+        data.put("groupID", group.getGroupID());
+        if ("".equals(groupID)){
+            try {
+                DocumentReference docRef = db.collection("groups").add(data).get();
+                String documentID = docRef.getId();
+                group.setGroupID(documentID);
+                db.collection("groups").document(group.getGroupID()).update("groupID", group.getGroupID()).get();
+
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else {
+            try {
+                DocumentReference docRef = db.collection("groups").document(group.getGroupID());
+                docRef.set(data).get();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        updateResponses(groupName, group.getResponses());
-        updateRecommendations(groupName, group.getRecommendedLocations());
-        updateMessages(groupName, group.getMessages());
+        // DocumentReference ref = db.collection("groups").document(group.getGroupName());
+        // ApiFuture<WriteResult> future = ref.set(data);
+        // try {
+        //    System.out.println("Successfully updated at: " + future.get().getUpdateTime());
+        // } catch(Exception e) {
+            // e.printStackTrace();
+        // }
+        updateResponses(group.getGroupID(), group.getResponses());
+        updateRecommendations(group.getGroupID(), group.getRecommendedLocations());
+        updateMessages(group.getGroupID(), group.getMessages());
+        return group.getGroupID();
     }
 
     public static void main(String[] args) {
