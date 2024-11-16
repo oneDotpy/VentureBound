@@ -29,4 +29,16 @@ public interface User {
      */
     Group getGroup();
 
+    /**
+     * Return the groupID of the user
+     * @return the groupID of the user
+     */
+    String getGroupID();
+
+    /**
+     * Set the groupID of the user
+     * @param groupID groupID of the user
+     */
+    void setGroupID(String groupID);
+
 }

@@ -16,4 +16,9 @@ public class CommonGroupFactory implements GroupFactory{
     public Group create(String groupName, List<String> usernames){
         return new CommonGroup(groupName, usernames);
     }
+
+    @Override
+    public Group create(String groupName, List<String> usernames, List<Response> responses, List<Recommendation> recommendations, List<String> chosen, List<Message> messages, String groupID) {
+        return new CommonGroup(groupName, usernames, responses, recommendations, chosen, messages, groupID);
+    }
 }

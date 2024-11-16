@@ -10,6 +10,8 @@ public class CommonGroup implements Group{
     private final List<Recommendation> recommendations;
     private final List<String> chosen;
     private final List<Message> messages;
+    private String groupID;
+
 
     public CommonGroup(String groupName, List<String> usernames, List<Response> responses, List<Recommendation> recommendations, List<String> chosen, List<Message> messages){
         this.groupName = groupName;
@@ -18,7 +20,9 @@ public class CommonGroup implements Group{
         this.recommendations = recommendations;
         this.chosen = chosen;
         this.messages = messages;
+        this.groupID = "";
     }
+
 
     public CommonGroup(String groupName, List<String> usernames){
         this.groupName = groupName;
@@ -27,6 +31,18 @@ public class CommonGroup implements Group{
         this.recommendations = new ArrayList<>();
         this.chosen = new ArrayList<>();
         this.messages = new ArrayList<>();
+        this.groupID = "";
+    }
+
+
+    public CommonGroup(String groupName, List<String> usernames, List<Response> responses, List<Recommendation> recommendations, List<String> chosen, List<Message> messages, String groupID){
+        this.groupName = groupName;
+        this.usernames = usernames;
+        this.responses = responses;
+        this.recommendations = recommendations;
+        this.chosen = chosen;
+        this.messages = messages;
+        this.groupID = groupID;
     }
 
     @Override
@@ -56,4 +72,14 @@ public class CommonGroup implements Group{
 
     @Override
     public List<Message> getMessages() { return messages; }
+
+    @Override
+    public String getGroupID() {
+        return groupID;
+    }
+
+    @Override
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
+    }
 }

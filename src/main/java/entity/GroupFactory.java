@@ -25,4 +25,17 @@ public interface GroupFactory {
      * @return the new group
      */
     Group create(String groupName, List<String> usernames);
+
+    /**
+     * Make a new group that already have ID. Most likely used for user that have joined, or group that already in database.
+     * @param groupName the name of the new group
+     * @param usernames the list of members
+     * @param responses the list of responses in the group
+     * @param recommendations the list of recommended locations
+     * @param chosen the list of chosen locations
+     * @param messages the list of messages
+     * @param groupID the groupID
+     * @return the new group that are ready to use
+     */
+    Group create(String groupName, List<String> usernames, List<Response> responses, List<Recommendation> recommendations, List<String> chosen, List<Message> messages, String groupID);
 }

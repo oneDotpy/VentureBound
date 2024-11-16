@@ -42,4 +42,16 @@ public interface Group {
      * @return the messages in the group.
      */
     List<Message> getMessages();
+
+    /**
+     * Returns the groupID of the group
+     * @return the groupID of this group
+     */
+    String getGroupID();
+
+    /**
+     * Set the groupID of this group
+     * @param groupID the groupID for this group
+     */
+    void setGroupID(String groupID);
 }
