@@ -228,6 +228,18 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         return group.getGroupID();
     }
 
+    public void join(String groupID, String username) {
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference docRef = db.collection("groups").document(groupID);
+        ApiFuture<WriteResult> arrayUnion =
+                docRef.update("usernames", FieldValue.arrayUnion(username));
+        try {
+            System.out.println("Update time : " + arrayUnion.get());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) {
         FirestoreDataAccessObject db = new FirestoreDataAccessObject();
         GroupFactory groupFactory = new CommonGroupFactory();
