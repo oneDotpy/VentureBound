@@ -8,8 +8,12 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.text.View;
 
+import data_access.FirestoreGroupDataAccessObject;
+import data_access.FirestoreUserDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
+import entity.CommonGroupFactory;
 import entity.CommonUserFactory;
+import entity.GroupFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.ChangePasswordController;
@@ -59,12 +63,17 @@ public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
     // thought question: is the hard dependency below a problem?
-    private final UserFactory userFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     // thought question: is the hard dependency below a problem?
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final GroupFactory groupFactory = new CommonGroupFactory();
+    private final UserFactory userFactory = new CommonUserFactory();
+
+    private final FirestoreGroupDataAccessObject groupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory);
+    private final FirestoreUserDataAccessObject userDataAccessObject = new FirestoreUserDataAccessObject(
+            userFactory, groupDataAccessObject
+    );
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -122,68 +131,68 @@ public class AppBuilder {
         return this;
     }
 
-    /**
-     * Adds the Signup Use Case to the application.
-     * @return this builder
-     */
-    public AppBuilder addSignupUseCase() {
-        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
-                signupViewModel, loginViewModel);
-        final SignupInputBoundary userSignupInteractor = new SignupInteractor(
-                userDataAccessObject, signupOutputBoundary, userFactory);
-
-        final SignupController controller = new SignupController(userSignupInteractor);
-        signupView.setSignupController(controller);
-        return this;
-    }
+//    /**
+//     * Adds the Signup Use Case to the application.
+//     * @return this builder
+//     */
+//    public AppBuilder addSignupUseCase() {
+//        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
+//                signupViewModel, loginViewModel);
+//        final SignupInputBoundary userSignupInteractor = new SignupInteractor(
+//                userDataAccessObject, signupOutputBoundary, userFactory);
+//
+//        final SignupController controller = new SignupController(userSignupInteractor);
+//        signupView.setSignupController(controller);
+//        return this;
+//    }
 
     /**
      * Adds the Login Use Case to the application.
      * @return this builder
      */
-    public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-        final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, loginOutputBoundary);
+//    public AppBuilder addLoginUseCase() {
+//        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
+//                loggedInViewModel, loginViewModel);
+//        final LoginInputBoundary loginInteractor = new LoginInteractor(
+//                userDataAccessObject, loginOutputBoundary);
+//
+//        final LoginController loginController = new LoginController(loginInteractor);
+//        loginView.setLoginController(loginController);
+//        return this;
+//    }
 
-        final LoginController loginController = new LoginController(loginInteractor);
-        loginView.setLoginController(loginController);
-        return this;
-    }
-
-    /**
-     * Adds the Change Password Use Case to the application.
-     * @return this builder
-     */
-    public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
-
-        final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
-
-        final ChangePasswordController changePasswordController =
-                new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
-        return this;
-    }
+//    /**
+//     * Adds the Change Password Use Case to the application.
+//     * @return this builder
+//     */
+//    public AppBuilder addChangePasswordUseCase() {
+//        final ChangePasswordOutputBoundary changePasswordOutputBoundary =
+//                new ChangePasswordPresenter(loggedInViewModel);
+//
+//        final ChangePasswordInputBoundary changePasswordInteractor =
+//                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
+//
+//        final ChangePasswordController changePasswordController =
+//                new ChangePasswordController(changePasswordInteractor);
+//        loggedInView.setChangePasswordController(changePasswordController);
+//        return this;
+//    }
 
     /**
      * Adds the Logout Use Case to the application.
      * @return this builder
      */
-    public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-
-        final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
-
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
-        return this;
-    }
+//    public AppBuilder addLogoutUseCase() {
+//        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
+//                loggedInViewModel, loginViewModel);
+//
+//        final LogoutInputBoundary logoutInteractor =
+//                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+//
+//        final LogoutController logoutController = new LogoutController(logoutInteractor);
+//        loggedInView.setLogoutController(logoutController);
+//        return this;
+//    }
 
     /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.

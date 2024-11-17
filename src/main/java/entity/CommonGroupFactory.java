@@ -8,7 +8,7 @@ import java.util.List;
 public class CommonGroupFactory implements GroupFactory{
 
     @Override
-    public Group create(String groupName, List<User> users, List<Response> responses, List<String> recommendations, List<String> chosen, List<Message> messages) {
+    public Group create(String groupName, List<String> users, List<Response> responses, List<String> recommendations, List<String> chosen, List<Message> messages) {
         return new CommonGroup(groupName, users, responses, recommendations, chosen, messages);
     }
 

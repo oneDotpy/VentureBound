@@ -15,12 +15,6 @@ public interface Group {
     String getGroupName();
 
     /**
-     * Returns the users of the group.
-     * @return the users of the group.
-     */
-    List<User> getUsers();
-
-    /**
      * Returns the responses of the group.
      * @return the responses of the group.
      */
@@ -37,4 +31,10 @@ public interface Group {
      * @return the chosen location of the group.
      */
     List<String> getChosenLocations();
+
+    /**
+     * Return the usernames of the group
+     * @return list of usernames
+     */
+    List<String> getUsernames();
 }

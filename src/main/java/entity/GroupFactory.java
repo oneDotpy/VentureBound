@@ -16,7 +16,7 @@ public interface GroupFactory {
      * @param messages the list of messages in the group
      * @return the group from database
      */
-    Group create(String groupName, List<User> users, List<Response> responses, List<String> recommendations, List<String> chosen, List<Message> messages);
+    Group create(String groupName, List<String> usernames , List<Response> responses, List<String> recommendations, List<String> chosen, List<Message> messages);
 
     /**
      * Creates a new group not from database
