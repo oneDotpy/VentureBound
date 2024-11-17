@@ -3,10 +3,7 @@ package data_access;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
-import com.google.cloud.firestore.EventListener;
-import com.google.firebase.database.annotations.Nullable;
 import entity.*;
-import org.jetbrains.annotations.NotNull;
 import use_case.create_group.CreateGroupDataAccessInterface;
 
 import com.google.firebase.cloud.FirestoreClient;
@@ -32,10 +29,10 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         this.recommendationFactory = recommendationFactory;
     }
 
-    public boolean existByName(final String name) {
+    public boolean existByID(final String ID) {
         Firestore db = FirestoreClient.getFirestore();
         try {
-            DocumentReference docRef = db.collection("groups").document(name);
+            DocumentReference docRef = db.collection("groups").document(ID);
             return true;
         }
         catch (Exception e) {
@@ -43,9 +40,9 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         }
     }
 
-    public List<Recommendation> getRecommendations(String groupName) throws InterruptedException, ExecutionException {
+    public List<Recommendation> getRecommendations(String groupID) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection("groups").document(groupName);
+        DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         List<QueryDocumentSnapshot> recommendationDocs = docRef.collection("recommendations").get().get().getDocuments();
         List<Recommendation> recommendations = new ArrayList<>();
@@ -59,9 +56,9 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         return recommendations;
     }
 
-    public List<Response> getResponses(String groupName) throws InterruptedException, ExecutionException {
+    public List<Response> getResponses(String groupID) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection("groups").document(groupName);
+        DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         List<QueryDocumentSnapshot> responseDocs = docRef.collection("responses").get().get().getDocuments();
         List<Response> responses = new ArrayList<>();
@@ -73,9 +70,9 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         return responses;
     }
 
-    public List<Message> getMessages(String groupName, int index) throws InterruptedException, ExecutionException {
+    public List<Message> getMessages(String groupID, int index) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection("groups").document(groupName);
+        DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         List<QueryDocumentSnapshot> messageDocs = docRef.collection("messages").get().get().getDocuments();
         List<Message> messages = new ArrayList<>();
@@ -90,9 +87,9 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
     }
 
     @Override
-    public Group get(String groupName) {
+    public Group get(String groupID) {
         Firestore db = FirestoreClient.getFirestore();
-        DocumentReference docRef = db.collection("groups").document(groupName);
+        DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
 
         try {
@@ -104,13 +101,14 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
                 return null;
             }
 
+            String groupName = (String)document.get("groupName");
             List<String> usernames = (ArrayList)document.get("usernames");
             List<String> chosen = (ArrayList)document.get("chosenLocations");
-            List<Recommendation> recommendations = getRecommendations(groupName);
-            List<Response> responses = getResponses(groupName);
-            List<Message> messages = getMessages(groupName, 0);
+            List<Recommendation> recommendations = getRecommendations(groupID);
+            List<Response> responses = getResponses(groupID);
+            List<Message> messages = getMessages(groupID, 0);
 
-            return groupFactory.create(groupName, usernames, responses, recommendations, chosen, messages);
+            return groupFactory.create(groupName, usernames, responses, recommendations, chosen, messages, groupID);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -119,7 +117,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
 
     public void updateUsers(Group group) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
-        DocumentReference ref = db.collection("groups").document(group.getGroupName());
+        DocumentReference ref = db.collection("groups").document(group.getGroupID());
         String groupName = group.getGroupName();
 
         Map<String, Object> data = new HashMap<>();
@@ -134,8 +132,8 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
 
     public void updateChosenLocations(Group group) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
-        DocumentReference ref = db.collection("groups").document(group.getGroupName());
-        String groupName = group.getGroupName();
+        DocumentReference ref = db.collection("groups").document(group.getGroupID());
+        String groupName = group.getGroupID();
 
         Map<String, Object> data = new HashMap<>();
         data.put("chosenLocations", group.getChosenLocations());
@@ -147,9 +145,9 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         }
     }
 
-    public void updateResponses(String groupName, List<Response> responses) {
+    public void updateResponses(String groupID, List<Response> responses) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
-        DocumentReference ref = db.collection("groups").document(groupName);
+        DocumentReference ref = db.collection("groups").document(groupID);
         for (Response response : responses) {
             ApiFuture<WriteResult> future = ref.collection("responses").document(response.getUser()).set(response);
             try {
@@ -160,9 +158,9 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         }
     }
 
-    public void updateRecommendations(String groupName, List<Recommendation> recommendations) {
+    public void updateRecommendations(String groupID, List<Recommendation> recommendations) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
-        DocumentReference ref = db.collection("groups").document(groupName);
+        DocumentReference ref = db.collection("groups").document(groupID);
         for (Recommendation recommendation : recommendations) {
             ApiFuture<WriteResult> future = ref.collection("recommendations").document(recommendation.getLocation()).set(recommendation);
             try {
@@ -173,9 +171,9 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         }
     }
 
-    public void updateMessages(String groupName, List<Message> messages) {
+    public void updateMessages(String groupID, List<Message> messages) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
-        DocumentReference ref = db.collection("groups").document(groupName);
+        DocumentReference ref = db.collection("groups").document(groupID);
         for (Message message : messages) {
             ApiFuture<WriteResult> future = ref.collection("messages").document(message.getTimestamp().toString()).set(message);
             try {
@@ -202,7 +200,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
                 String documentID = docRef.getId();
                 group.setGroupID(documentID);
                 db.collection("groups").document(group.getGroupID()).update("groupID", group.getGroupID()).get();
-
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }
@@ -257,7 +254,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         List<Message> messages = new ArrayList<>();
         messages.add(messageFactory.createMessage("Bob", "content", Timestamp.now()));
 
-        Group group = groupFactory.create(groupName, usernames, responses, recommendations, chosenLocations, messages);
+        Group group = groupFactory.create(groupName, usernames, responses, recommendations, chosenLocations, messages, "10090fdas");
         groupDataAccessObject.save(group);
     }
 }
