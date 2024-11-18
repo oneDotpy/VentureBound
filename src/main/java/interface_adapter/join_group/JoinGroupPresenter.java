@@ -5,6 +5,8 @@ import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.chat.ChatState;
 import interface_adapter.chat.ChatViewModel;
+import interface_adapter.welcome.WelcomeState;
+import interface_adapter.welcome.WelcomeViewModel;
 import use_case.join_group.JoinGroupOutputData;
 import view.ChatView;
 
@@ -14,14 +16,16 @@ public class JoinGroupPresenter {
     private final ViewManagerModel viewManagerModel;
     private final JoinGroupViewModel joinGroupViewModel;
     private final ChatViewModel chatViewModel;
+    private final WelcomeViewModel welcomeViewModel;
 
 
-    public JoinGroupPresenter(GroupFactory groupFactory, UserFactory userFactory, ViewManagerModel viewManagerModel, JoinGroupViewModel joinGroupViewModel, ChatViewModel chatViewModel) {
+    public JoinGroupPresenter(GroupFactory groupFactory, UserFactory userFactory, ViewManagerModel viewManagerModel, JoinGroupViewModel joinGroupViewModel, ChatViewModel chatViewModel, WelcomeViewModel welcomeViewModel) {
         this.groupFactory = groupFactory;
         this.userFactory = userFactory;
         this.viewManagerModel = viewManagerModel;
         this.joinGroupViewModel = joinGroupViewModel;
         this.chatViewModel = chatViewModel;
+        this.welcomeViewModel = welcomeViewModel;
     }
 
     public void presentChatView(JoinGroupOutputData joinGroupOutputData) {
@@ -39,5 +43,14 @@ public class JoinGroupPresenter {
 
         joinGroupViewModel.setState(joinGroupState);
         joinGroupViewModel.firePropertyChanged();
+    }
+
+    public void switchToWelcomeView(JoinGroupOutputData joinGroupOutputData) {
+        WelcomeState welcomeState = welcomeViewModel.getState();
+        welcomeState.setUser(joinGroupOutputData.getUser());
+        welcomeViewModel.setState(welcomeState);
+
+        viewManagerModel.setState(welcomeViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

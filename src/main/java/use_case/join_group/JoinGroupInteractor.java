@@ -6,6 +6,7 @@ import entity.GroupFactory;
 import entity.User;
 import entity.UserFactory;
 import interface_adapter.join_group.JoinGroupPresenter;
+import interface_adapter.welcome.WelcomeState;
 
 public class JoinGroupInteractor {
     private final GroupFactory groupFactory;
@@ -41,5 +42,10 @@ public class JoinGroupInteractor {
         else {
             joinGroupPresenter.presentFailView("Invalid GroupID");
         }
+    }
+
+    public void switchToWelcomeView(JoinGroupInputData joinGroupInputData) {
+        JoinGroupOutputData joinGroupOutputData = new JoinGroupOutputData(null, joinGroupInputData.getUser());
+        joinGroupPresenter.switchToWelcomeView(joinGroupOutputData);
     }
 }

@@ -17,4 +17,9 @@ public class JoinGroupController implements JoinGroupInputBoundary {
         JoinGroupInputData joinGroupInputData = new JoinGroupInputData(user, groupID);
         joinGroupInteractor.joinGroup(joinGroupInputData);
     }
+
+    public void switchToWelcomeView(User user) {
+        JoinGroupInputData joinGroupInputData = new JoinGroupInputData(user, "");
+        joinGroupInteractor.switchToWelcomeView(joinGroupInputData);
+    }
 }

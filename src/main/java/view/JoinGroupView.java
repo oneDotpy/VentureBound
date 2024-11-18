@@ -45,8 +45,8 @@ public class JoinGroupView extends JPanel implements PropertyChangeListener {
         backButton.setFocusPainted(false);
         backButton.setContentAreaFilled(false);
         backButton.addActionListener(e -> {
-            cardLayout.show(cardPanel, "welcome");
-            System.out.println("Redirecting to Welcome view...");
+            JoinGroupState joinGroupState = joinGroupViewModel.getState();
+            joinGroupController.switchToWelcomeView(joinGroupState.getUser());
         });
         topPanel.add(backButton);
 
