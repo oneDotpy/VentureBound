@@ -120,6 +120,7 @@ public class AppBuilder {
      */
     public AppBuilder addGroupViews() {
         groupViewModel = new GroupViewModel();
+        createGroupViewModel = new CreateGroupViewModel();
         createGroupView = new CreateGroupView(createGroupViewModel, cardLayout, cardPanel);
         joinGroupView = new JoinGroupView(groupViewModel, cardLayout, cardPanel);
 
