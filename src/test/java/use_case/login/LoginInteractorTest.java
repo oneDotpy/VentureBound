@@ -14,8 +14,15 @@ class LoginInteractorTest {
         LoginInputData inputData = new LoginInputData("Bob", "1234");
         UserFactory userFactory = new CommonUserFactory();
         GroupFactory groupFactory = new CommonGroupFactory();
+        ResponseFactory resposeFactory = new CommonResponseFactory();
+        MessageFactory messageFactory = new CommonMessageFactory();
+        RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
 
-        FirestoreGroupDataAccessObject groupRepository = new FirestoreGroupDataAccessObject(groupFactory);
+        FirestoreGroupDataAccessObject groupRepository = new FirestoreGroupDataAccessObject(
+                groupFactory,
+                resposeFactory,
+                messageFactory,
+                recommendationFactory);
 
         LoginUserDataAccessInterface userRepository = new FirestoreUserDataAccessObject(userFactory, groupRepository);
 
