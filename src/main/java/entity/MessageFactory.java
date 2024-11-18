@@ -13,5 +13,5 @@ public interface MessageFactory {
      * @param timestamp the timestamp of the message
      * @return the message
      */
-    public Message createMessage(User user, String content, Timestamp timestamp);
+    public Message createMessage(String user, String content, Timestamp timestamp);
 }

@@ -9,12 +9,14 @@ public class CommonUser implements User {
     private final String password;
     private final String email;
     private final Group group;
+    private String groupID;
 
     public CommonUser(String name, String password, String email, Group group) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.group = group;
+        this.groupID = "";
     }
 
     @Override
@@ -33,4 +35,7 @@ public class CommonUser implements User {
     @Override
     public Group getGroup() { return group; }
 
+    public String getGroupID() {return groupID;}
+
+    public void setGroupID(String groupID) {this.groupID = groupID;}
 }

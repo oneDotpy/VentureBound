@@ -1,5 +1,7 @@
 package interface_adapter.chat;
 
+import entity.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class ChatState {
     private final List<String> messages = new ArrayList<>();
     private List<String> members = new ArrayList<>();
     private String currentUser;
+    private User user;
     private String groupName;
 
     // Private constructor to prevent instantiation
@@ -30,6 +33,14 @@ public class ChatState {
         this.currentUser = username;
     }
 
+    public void setUser (User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     public void addMessage(String sender, String message) {
         String formattedMessage;
         if (sender.equals(currentUser)) {
@@ -46,9 +57,17 @@ public class ChatState {
         System.out.println("[ChatState] Members set: " + this.members + " (Instance: " + this + ")");
     }
 
+    public void addMember(String member) {
+        this.members.add(member);
+    }
+
     public void setGroupName(String groupName) {
         this.groupName = groupName;
         System.out.println("[ChatState] Setting group name: " + groupName + " (Instance: " + this + ")");
+    }
+
+    public String getGroupName() {
+        return groupName;
     }
 
     public List<String> getMembers() {

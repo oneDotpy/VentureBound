@@ -5,8 +5,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.*;
 
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.logout.LogoutController;
+import interface_adapter.welcome.WelcomeController;
 import interface_adapter.welcome.WelcomeViewModel;
 
 /**
@@ -14,14 +13,14 @@ import interface_adapter.welcome.WelcomeViewModel;
  */
 public class WelcomeView extends JPanel implements PropertyChangeListener {
 
-    private final String viewName = "welcome";
+    private final String viewName = "logged in";
     private final WelcomeViewModel welcomeViewModel;
-    private LogoutController logoutController;
 
     private final JLabel greeting;
     private final JButton createGroup;
     private final JButton joinGroup;
     private final JButton logOut;
+    private WelcomeController welcomeController;
 
     public WelcomeView(WelcomeViewModel welcomeViewModel, CardLayout cardLayout, JPanel cardPanel) {
         this.welcomeViewModel = welcomeViewModel;
@@ -78,8 +77,9 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
 
         createGroup.addActionListener(e -> {
             // Switch to the "create group" view
-            cardLayout.show(cardPanel, "create_group");
-            System.out.println("Redirecting to create group view...");
+            welcomeController.switchToCreateGroupView();
+//            cardLayout.show(cardPanel, "create_group");
+//            System.out.println("Redirecting to create group view...");
         });
 
         // "Join a Group" button
@@ -96,8 +96,9 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
 
         joinGroup.addActionListener(e -> {
             // Switch to the "join group" view
-            cardLayout.show(cardPanel, "join_group");
-            System.out.println("Redirecting to join group view...");
+            welcomeController.switchToJoinGroupView();
+//            cardLayout.show(cardPanel, "join_group");
+//            System.out.println("Redirecting to join group view...");
         });
 
         // Add buttons to button panel with spacing
@@ -120,19 +121,15 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
 
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("state".equals(evt.getPropertyName())) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            greeting.setText("Welcome, " + state.getUsername());
-        }
-    }
-
     public String getViewName() {
         return viewName;
     }
 
-    public void setLogoutController(LogoutController logoutController) {
-        this.logoutController = logoutController;
+    public void setWelcomeController(WelcomeController welcomeController) {
+        this.welcomeController = welcomeController;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
     }
 }

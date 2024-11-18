@@ -5,20 +5,14 @@ package entity;
  */
 public interface Response {
     /**
-     * Returns the User of the sender of the question.
-     * @return the Sender.
+     * Returns the user that is being asked.
+     * @return the user
      */
-    User getSender();
-
-    /**
-     * Returns the question that is being asked.
-     * @return the question
-     */
-    String getPromptQuestion();
+    String getUser();
 
     /**
      * Returns the answer from GPT API.
      * @return the answer
      */
-    String getAnswer();
+    String getResponse();
 }

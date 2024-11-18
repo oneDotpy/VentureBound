@@ -1,4 +1,3 @@
-
 package entity;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public interface Group {
      * Returns the users of the group.
      * @return the users of the group.
      */
-    List<User> getUsers();
+    List<String> getUsernames();
 
     /**
      * Returns the responses of the group.
@@ -27,14 +26,32 @@ public interface Group {
     List<Response> getResponses();
 
     /**
-     * Returns the recommended location of the group.
-     * @return the recommended location of the group.
+     * Returns the recommended locations of the group.
+     * @return the recommended locations of the group.
      */
-    List<String> getRecommendedLocations();
+    List<Recommendation> getRecommendedLocations();
 
     /**
-     * Returns the chosen location of the group.
-     * @return the chosen location of the group.
+     * Returns the chosen locations of the group.
+     * @return the chosen locations of the group.
      */
     List<String> getChosenLocations();
+
+    /**
+     * Returns the messages in the group.
+     * @return the messages in the group.
+     */
+    List<Message> getMessages();
+
+    /**
+     * Returns the groupID of the group
+     * @return the groupID of this group
+     */
+    String getGroupID();
+
+    /**
+     * Set the groupID of this group
+     * @param groupID the groupID for this group
+     */
+    void setGroupID(String groupID);
 }

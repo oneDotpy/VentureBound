@@ -119,7 +119,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         public void actionPerformed(ActionEvent e) {
             String message = messageInputField.getText().trim();
             if (!message.isEmpty()) {
-                String currentUser = chatController.getCurrentUser();
+                String currentUser = chatViewModel.getState().getCurrentUser();
                 System.out.println("[ChatView] Sending message as current user: " + currentUser);
                 chatController.sendMessage(message, currentUser);
                 messageInputField.setText("");
@@ -152,6 +152,9 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             List<String> members = chatViewModel.getState().getMembers();
             updateMembers(members);
             System.out.println("[ChatView] Members list updated: " + members);
+            String updatedGroupName = chatViewModel.getState().getGroupName();
+            groupNameLabel.setText(updatedGroupName);
+            System.out.println("[ChatView] Group name updated: " + updatedGroupName);
         }
     }
 

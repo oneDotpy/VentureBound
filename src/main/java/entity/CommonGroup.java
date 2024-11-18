@@ -1,33 +1,48 @@
-
 package entity;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommonGroup implements Group{
     private final String groupName;
-    private final List<User> users;
+    private final List<String> usernames;
     private final List<Response> responses;
-    private final List<String> recommendations;
+    private final List<Recommendation> recommendations;
     private final List<String> chosen;
     private final List<Message> messages;
+    private String groupID;
 
-    public CommonGroup(String groupName, List<User> users, List<Response> responses, List<String> recommendations, List<String> chosen, List<Message> messages){
+
+    public CommonGroup(String groupName, List<String> usernames, List<Response> responses, List<Recommendation> recommendations, List<String> chosen, List<Message> messages){
         this.groupName = groupName;
-        this.users = users;
+        this.usernames = usernames;
         this.responses = responses;
         this.recommendations = recommendations;
         this.chosen = chosen;
         this.messages = messages;
+        this.groupID = "";
     }
 
-    public CommonGroup(String groupName, List<User> users){
+
+    public CommonGroup(String groupName, List<String> usernames){
         this.groupName = groupName;
-        this.users = users;
-        this.responses = new ArrayList<Response>();
+        this.usernames = usernames;
+        this.responses = new ArrayList<>();
         this.recommendations = new ArrayList<>();
         this.chosen = new ArrayList<>();
         this.messages = new ArrayList<>();
+        this.groupID = "";
+    }
+
+
+    public CommonGroup(String groupName, List<String> usernames, List<Response> responses, List<Recommendation> recommendations, List<String> chosen, List<Message> messages, String groupID){
+        this.groupName = groupName;
+        this.usernames = usernames;
+        this.responses = responses;
+        this.recommendations = recommendations;
+        this.chosen = chosen;
+        this.messages = messages;
+        this.groupID = groupID;
     }
 
     @Override
@@ -36,8 +51,8 @@ public class CommonGroup implements Group{
     }
 
     @Override
-    public List<User> getUsers() {
-        return users;
+    public List<String> getUsernames() {
+        return usernames;
     }
 
     @Override
@@ -46,12 +61,25 @@ public class CommonGroup implements Group{
     }
 
     @Override
-    public List<String> getRecommendedLocations() {
+    public List<Recommendation> getRecommendedLocations() {
         return recommendations;
     }
 
     @Override
     public List<String> getChosenLocations() {
         return chosen;
+    }
+
+    @Override
+    public List<Message> getMessages() { return messages; }
+
+    @Override
+    public String getGroupID() {
+        return groupID;
+    }
+
+    @Override
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
     }
 }

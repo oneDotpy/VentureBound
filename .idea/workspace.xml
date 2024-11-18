@@ -5,31 +5,111 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/google_firebase_admin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/DBUserDataAccessObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/FileUserDataAccessObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/InMemoryUserDataAccessObject.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonGroup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonGroupFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonGroupFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonMessageFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonMessageFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonResponseFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonResponseFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonUserFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonUserFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Group.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/GroupFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/GroupFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/MessageFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/MessageFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/ResponseFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/ResponseFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/UserFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/UserFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/change_password/ChangePasswordController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/change_password/ChangePasswordPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/change_password/LoggedInState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/change_password/LoggedInViewModel.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatInteractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatOutputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatOutputData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/login/LoginPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/login/LoginPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/logout/LogoutPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/logout/LogoutPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/welcome/WelcomeViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/welcome/WelcomeViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/change_password/ChangePasswordInputBoundary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/change_password/ChangePasswordInputData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/change_password/ChangePasswordInteractor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/change_password/ChangePasswordOutputBoundary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/change_password/ChangePasswordOutputData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/change_password/ChangePasswordUserDataAccessInterface.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/signup/SignupInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/signup/SignupInteractor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/view/ChatView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ChatView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/CreateGroupView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/CreateGroupView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/JoinGroupView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/JoinGroupView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/LoggedInView.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/WelcomeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/WelcomeView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/DBUserDataAccessObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FileUserDataAccessObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/InMemoryUserDataAccessObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonGroup.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonGroup.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonGroupFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonGroupFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonMessageFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonMessageFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonResponseFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonResponseFactory.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonUser.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonUserFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonUserFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/Group.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/Group.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/GroupFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/GroupFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/Message.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/Message.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/MessageFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/MessageFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/Response.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/Response.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/ResponseFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/ResponseFactory.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/User.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/entity/UserFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/UserFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/change_password/ChangePasswordController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/change_password/ChangePasswordPresenter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/change_password/LoggedInState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/change_password/LoggedInViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatState.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupPresenter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupViewModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupViewModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/login/LoginPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/login/LoginPresenter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/login/LoginState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/login/LoginState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/logout/LogoutPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/logout/LogoutPresenter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/welcome/WelcomeViewModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/welcome/WelcomeViewModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/change_password/ChangePasswordInputBoundary.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/change_password/ChangePasswordInputData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/change_password/ChangePasswordInteractor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/change_password/ChangePasswordOutputBoundary.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/change_password/ChangePasswordOutputData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/change_password/ChangePasswordUserDataAccessInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInputBoundary.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInteractor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/ChatOutputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/chat/ChatOutputData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/group/GroupInputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/group/GroupInputData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/group/GroupInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/group/GroupInteractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/group/GroupOutputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/group/GroupOutputData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/signup/SignupInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/signup/SignupInteractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView$SendButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView$SendButtonListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView$SimulButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView$SimulButtonListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/CreateGroupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/CreateGroupView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoggedInView$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoggedInView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/LoginView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/LoginView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/SignupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/SignupView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/WelcomeView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/WelcomeView.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +127,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="java-swing" />
+        <entry key="$PROJECT_DIR$" value="chat-function" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -73,30 +153,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ChatView.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.Unnamed.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "java-swing",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.14746094",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ChatView.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;java-swing&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.14746094&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="interface_adapter.group" />
@@ -139,6 +219,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.ChatView" />
+        <item itemvalue="Application.ChatView" />
       </list>
     </recent_temporary>
   </component>
@@ -168,10 +249,22 @@
       <workItem from="1731338194770" duration="520000" />
       <workItem from="1731338726746" duration="124000" />
       <workItem from="1731338859588" duration="150000" />
+      <workItem from="1731956628627" duration="310000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
