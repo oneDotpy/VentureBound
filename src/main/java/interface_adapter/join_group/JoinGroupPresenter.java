@@ -1,27 +1,24 @@
 package interface_adapter.join_group;
 
 import entity.GroupFactory;
+import entity.Message;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.chat.ChatState;
 import interface_adapter.chat.ChatViewModel;
 import interface_adapter.welcome.WelcomeState;
 import interface_adapter.welcome.WelcomeViewModel;
+import use_case.join_group.JoinGroupOutputBoundary;
 import use_case.join_group.JoinGroupOutputData;
-import view.ChatView;
 
-public class JoinGroupPresenter {
-    private final GroupFactory groupFactory;
-    private final UserFactory userFactory;
+public class JoinGroupPresenter implements JoinGroupOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final JoinGroupViewModel joinGroupViewModel;
     private final ChatViewModel chatViewModel;
     private final WelcomeViewModel welcomeViewModel;
 
 
-    public JoinGroupPresenter(GroupFactory groupFactory, UserFactory userFactory, ViewManagerModel viewManagerModel, JoinGroupViewModel joinGroupViewModel, ChatViewModel chatViewModel, WelcomeViewModel welcomeViewModel) {
-        this.groupFactory = groupFactory;
-        this.userFactory = userFactory;
+    public JoinGroupPresenter(ViewManagerModel viewManagerModel, JoinGroupViewModel joinGroupViewModel, ChatViewModel chatViewModel, WelcomeViewModel welcomeViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.joinGroupViewModel = joinGroupViewModel;
         this.chatViewModel = chatViewModel;
@@ -29,12 +26,26 @@ public class JoinGroupPresenter {
     }
 
     public void presentChatView(JoinGroupOutputData joinGroupOutputData) {
+        // Set Members, Current Users
         ChatState chatState = chatViewModel.getState();
         chatState.setUser(joinGroupOutputData.getUser());
         chatState.setCurrentUser(joinGroupOutputData.getUser().getName());
+        chatState.setMembers(joinGroupOutputData.getGroup().getUsernames());
+        chatViewModel.setState(chatState);
 
+        // Fire to switch into ChatViewModel
         viewManagerModel.setState(chatViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
+
+        // Fire to notify chatViewModel to update the members
+        chatViewModel.firePropertyChanged("members");
+
+        // Update the messages
+        for (Message message: joinGroupOutputData.getGroup().getMessages()) {
+            chatState.addMessage(message.getSender(), message.getContent());
+        }
+        chatViewModel.setState(chatState);
+        chatViewModel.firePropertyChanged("messages");
     }
 
     public void presentFailView(String message) {
@@ -42,7 +53,7 @@ public class JoinGroupPresenter {
         joinGroupState.setGroupError(message);
 
         joinGroupViewModel.setState(joinGroupState);
-        joinGroupViewModel.firePropertyChanged();
+        joinGroupViewModel.firePropertyChanged("error");
     }
 
     public void switchToWelcomeView(JoinGroupOutputData joinGroupOutputData) {

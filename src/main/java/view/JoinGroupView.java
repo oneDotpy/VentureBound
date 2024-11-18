@@ -99,6 +99,8 @@ public class JoinGroupView extends JPanel implements PropertyChangeListener {
         if ("error".equals(evt.getPropertyName())) {
             String message = joinGroupViewModel.getState().getGroupError();
             JOptionPane.showMessageDialog(this, message , "Error", JOptionPane.ERROR_MESSAGE);
+            JoinGroupState joinGroupState = joinGroupViewModel.getState();
+            joinGroupState.setGroupError("");
         }
     }
 }
