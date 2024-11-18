@@ -1,8 +1,5 @@
 package view;
 
-import entity.User;
-import interface_adapter.create_group.CreateGroupController;
-import interface_adapter.create_group.CreateGroupViewModel;
 import interface_adapter.group.GroupController;
 import interface_adapter.group.GroupViewModel;
 
@@ -16,17 +13,17 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
     private final JButton backButton;
     private final JTextField groupNameInputField;
     private final JButton createButton;
-    private CreateGroupController createGroupController;
-    private final CreateGroupViewModel createGroupViewModel;
+    private GroupController groupController;
+    private final GroupViewModel groupViewModel;
     private final CardLayout cardLayout;
     private final JPanel cardPanel;
 
-    public CreateGroupView(CreateGroupViewModel createGroupViewModel, CardLayout cardLayout, JPanel cardPanel) {
+    public CreateGroupView(GroupViewModel groupViewModel, CardLayout cardLayout, JPanel cardPanel) {
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
-        this.createGroupViewModel = createGroupViewModel;
+        this.groupViewModel = groupViewModel;
 
-        createGroupViewModel.addPropertyChangeListener(this);
+        groupViewModel.addPropertyChangeListener(this);
 
         this.setBackground(Color.decode("#2c2c2e"));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -69,8 +66,9 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
         createButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         createButton.addActionListener(e -> {
             String groupName = groupNameInputField.getText().trim();
-            User user = createGroupViewModel.getState().getUser();
-            createGroupController.createGroup(groupName, user);
+            groupController.createGroup(groupName);
+            cardLayout.show(cardPanel, "chat");
+            System.out.println("Group created. Redirecting to Chat view...");
         });
 
         // Add components to the panel
@@ -83,22 +81,19 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
         this.add(createButton);
     }
 
-    public void setCreateGroupController(CreateGroupController createGroupController) {
-        this.createGroupController = createGroupController;
+    public void setGroupController(GroupController groupController) {
+        this.groupController = groupController;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if("error".equals(evt.getPropertyName())){
-            String message = createGroupViewModel.getState().getGroupError();
-            JOptionPane.showMessageDialog(this, message);
+        if ("createMessage".equals(evt.getPropertyName())) {
+            String message = groupViewModel.getState().getCreateMessage();
+            JOptionPane.showMessageDialog(this, message, "Group Creation", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     public String getViewName() {
-        return createGroupViewModel.getState().getGroupName();
-    }
-
-    public void setGroupController(GroupController groupController) {
+        return groupViewModel.getState().getGroupName();
     }
 }
