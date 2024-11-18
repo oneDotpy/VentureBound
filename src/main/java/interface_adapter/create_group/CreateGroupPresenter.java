@@ -27,13 +27,17 @@ public class CreateGroupPresenter implements CreateGroupOutputBoundary {
         ChatState chatState = chatViewModel.getState();
         // TODO: Make a update implementation of chatState;
         chatState.setUser(createGroupOutputData.getUser());
+        chatState.setCurrentUser(createGroupOutputData.getUser().getName());
+        chatState.setMembers(createGroupOutputData.getGroup().getUsernames());
         chatViewModel.setState(chatState);
 
         viewManagerModel.setState(chatViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
+
+        chatViewModel.firePropertyChanged("members");
     }
 
-    public void prepareFailView(String message) {
+    public void presentFailView(String message) {
         CreateGroupState createGroupState = createGroupViewModel.getState();
         createGroupState.setGroupError(message);
 

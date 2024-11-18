@@ -4,8 +4,8 @@ import data_access.FirestoreGroupDataAccessObject;
 import entity.Group;
 import entity.GroupFactory;
 import entity.User;
+import entity.UserFactory;
 import interface_adapter.create_group.CreateGroupPresenter;
-import interface_adapter.welcome.WelcomeState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,38 +13,48 @@ import java.util.List;
 public class CreateGroupInteractor {
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final GroupFactory groupFactory;
-    private final CreateGroupPresenter presenter;
+    private final UserFactory userFactory;
+    private final CreateGroupPresenter createGroupPresenter;
 
 
-    public CreateGroupInteractor(FirestoreGroupDataAccessObject groupDataAccessObject, GroupFactory groupFactory, CreateGroupPresenter presenter) {
+    public CreateGroupInteractor(FirestoreGroupDataAccessObject groupDataAccessObject, GroupFactory groupFactory, UserFactory userFactory, CreateGroupPresenter createGroupPresenter) {
         this.groupDataAccessObject = groupDataAccessObject;
         this.groupFactory = groupFactory;
-        this.presenter = presenter;
+        this.userFactory = userFactory;
+        this.createGroupPresenter = createGroupPresenter;
     }
 
     public void createGroup(CreateGroupInputData createGroupInputData) {
-        if (groupDataAccessObject.existByID(createGroupInputData.getGroupname())){
-            presenter.prepareFailView("this name is already exist");
+        if ("".equals(createGroupInputData.getGroupname())){
+            createGroupPresenter.presentFailView("Empty group name");
         }
+
+        else if (groupDataAccessObject.existByID(createGroupInputData.getGroupname())){
+            createGroupPresenter.presentFailView("this name is already exist");
+        }
+
         else {
             List<String> users = new ArrayList<>();
             User user = createGroupInputData.getUser();
             users.add(user.getName());
             Group group = groupFactory.create(createGroupInputData.getGroupname(), users);
-
             String groupID = groupDataAccessObject.save(group);
-            group.setGroupID(groupID);
+            Group new_group = groupFactory.create(createGroupInputData.getGroupname(), users, groupID);
 
-            user.setGroupID(group.getGroupID());
-            CreateGroupOutputData createGroupOutputData = new CreateGroupOutputData(group, user);
-            presenter.prepareChatView(createGroupOutputData);
+            String username = user.getName();
+            String password = user.getPassword();
+            String email = user.getEmail();
+            User new_user = userFactory.create(username, password, email, new_group, groupID);
+
+            CreateGroupOutputData createGroupOutputData = new CreateGroupOutputData(new_group, new_user);
+            createGroupPresenter.prepareChatView(createGroupOutputData);
         }
     }
 
     public void switchToWelcomeView(CreateGroupInputData createGroupInputData) {
         User user = createGroupInputData.getUser();
         CreateGroupOutputData createGroupOutputData = new CreateGroupOutputData(null, user);
-        presenter.switchToWelcomeView(createGroupOutputData);
+        createGroupPresenter.switchToWelcomeView(createGroupOutputData);
     }
 
 }
