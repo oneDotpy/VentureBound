@@ -38,4 +38,13 @@ public interface GroupFactory {
      * @return the new group that are ready to use
      */
     Group create(String groupName, List<String> usernames, List<Response> responses, List<Recommendation> recommendations, List<String> chosen, List<Message> messages, String groupID);
+
+    /**
+     * Make a new group that already ID. Most likely used for new group.
+     * @param groupName the name of the new group
+     * @param usernames the list of members
+     * @param groupID the groupID
+     * @return the new group that are ready to use
+     */
+    Group create(String groupName, List<String> usernames, String groupID);
 }

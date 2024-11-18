@@ -34,6 +34,16 @@ public class CommonGroup implements Group{
         this.groupID = "";
     }
 
+    public CommonGroup(String groupName, List<String> usernames, String groupID) {
+        this.groupName = groupName;
+        this.usernames = usernames;
+        this.responses = new ArrayList<>();
+        this.recommendations = new ArrayList<>();
+        this.chosen = new ArrayList<>();
+        this.messages = new ArrayList<>();
+        this.groupID = groupID;
+    }
+
 
     public CommonGroup(String groupName, List<String> usernames, List<Response> responses, List<Recommendation> recommendations, List<String> chosen, List<Message> messages, String groupID){
         this.groupName = groupName;
@@ -76,10 +86,5 @@ public class CommonGroup implements Group{
     @Override
     public String getGroupID() {
         return groupID;
-    }
-
-    @Override
-    public void setGroupID(String groupID) {
-        this.groupID = groupID;
     }
 }

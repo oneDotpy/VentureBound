@@ -206,8 +206,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
             try {
                 DocumentReference docRef = db.collection("groups").add(data).get();
                 String documentID = docRef.getId();
-                group.setGroupID(documentID);
-                db.collection("groups").document(group.getGroupID()).update("groupID", group.getGroupID()).get();
+                db.collection("groups").document(documentID).update("groupID", documentID).get();
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }

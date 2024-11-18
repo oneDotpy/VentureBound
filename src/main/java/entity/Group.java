@@ -48,10 +48,4 @@ public interface Group {
      * @return the groupID of this group
      */
     String getGroupID();
-
-    /**
-     * Set the groupID of this group
-     * @param groupID the groupID for this group
-     */
-    void setGroupID(String groupID);
 }
