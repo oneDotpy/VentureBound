@@ -7,12 +7,13 @@ import entity.*;
 import use_case.create_group.CreateGroupDataAccessInterface;
 
 import com.google.firebase.cloud.FirestoreClient;
+import use_case.send_message.SendMessageDataAccessInterface;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInterface {
+public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInterface, SendMessageDataAccessInterface {
 
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
@@ -182,6 +183,13 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void updateMessage(String groupID, Message message) {
+        ArrayList<Message> messages = new ArrayList<>();
+        messages.add(message);
+        updateMessages(groupID, messages);
     }
 
     @Override
