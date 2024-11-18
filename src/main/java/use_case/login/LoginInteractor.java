@@ -1,6 +1,7 @@
 package use_case.login;
 
 import entity.User;
+import use_case.encryption.PasswordEncryption;
 
 /**
  * The Login Interactor.
@@ -25,8 +26,9 @@ public class LoginInteractor implements LoginInputBoundary {
             loginPresenter.prepareFailView(username + ": Account does not exist.");
         }
         else {
-            final String pwd = userDb.getPassword();
-            if (!password.equals(pwd)) {
+            PasswordEncryption passwordEncryption = new PasswordEncryption();
+
+            if (!passwordEncryption.verify(password, userDb.getPassword())) {
                 loginPresenter.prepareFailView("Incorrect password for \"" + username + "\".");
             }
             else {
