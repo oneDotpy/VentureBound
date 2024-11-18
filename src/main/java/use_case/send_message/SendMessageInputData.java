@@ -1,19 +1,19 @@
 package use_case.send_message;
 
-import entity.Group;
 import entity.Message;
+import entity.User;
 
 public class SendMessageInputData {
-    private final Group group;
-    private final Message message;
+    private final User user;
+    private final String content;
 
-    public SendMessageInputData(Group group, Message message) {
-        this.group = group;
-        this.message = message;
+    public SendMessageInputData(User user, String content) {
+        this.user = user;
+        this.content = content;
     }
 
-    public String getGroupID() { return group.getGroupID(); }
+    public User getUser() { return user; }
 
-    public Message getMessage() { return message; }
+    public String getContent() { return content; }
 
 }
