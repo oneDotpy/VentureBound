@@ -13,7 +13,7 @@ import interface_adapter.welcome.WelcomeViewModel;
  */
 public class WelcomeView extends JPanel implements PropertyChangeListener {
 
-    private final String viewName = "logged in";
+    private final String viewName = "welcome";
     private final WelcomeViewModel welcomeViewModel;
 
     private final JLabel greeting;
