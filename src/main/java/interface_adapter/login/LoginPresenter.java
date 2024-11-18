@@ -6,14 +6,13 @@ import interface_adapter.change_password.LoggedInViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
-/**
- * The Presenter for the Login Use Case.
- */
-public class LoginPresenter implements LoginOutputBoundary {
+import java.util.function.Consumer;
 
+public class LoginPresenter implements LoginOutputBoundary {
     private final LoginViewModel loginViewModel;
     private final LoggedInViewModel loggedInViewModel;
     private final ViewManagerModel viewManagerModel;
+    private Consumer<String> onLoginSuccessListener;
 
     public LoginPresenter(ViewManagerModel viewManagerModel,
                           LoggedInViewModel loggedInViewModel,
@@ -23,23 +22,31 @@ public class LoginPresenter implements LoginOutputBoundary {
         this.loginViewModel = loginViewModel;
     }
 
+    // Method to set the success listener
+    public void setOnLoginSuccessListener(Consumer<String> listener) {
+        this.onLoginSuccessListener = listener;
+    }
+
     @Override
     public void prepareSuccessView(LoginOutputData response) {
-        // On success, switch to the logged in view.
+        if (onLoginSuccessListener != null) {
+            onLoginSuccessListener.accept(response.getUsername()); // Use the Consumer here
+        }
 
-        final LoggedInState loggedInState = loggedInViewModel.getState();
+        LoggedInState loggedInState = loggedInViewModel.getState();
         loggedInState.setUsername(response.getUsername());
-        this.loggedInViewModel.setState(loggedInState);
-        this.loggedInViewModel.firePropertyChanged();
+        loggedInViewModel.setState(loggedInState);
+        loggedInViewModel.firePropertyChanged();
 
-        this.viewManagerModel.setState(loggedInViewModel.getViewName());
-        this.viewManagerModel.firePropertyChanged();
+        viewManagerModel.setState(loggedInViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String error) {
-        final LoginState loginState = loginViewModel.getState();
+        LoginState loginState = loginViewModel.getState();
         loginState.setLoginError(error);
+        loginViewModel.setState(loginState);
         loginViewModel.firePropertyChanged();
     }
 }

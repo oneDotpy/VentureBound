@@ -22,9 +22,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final ChatViewModel chatViewModel;
     private ChatController chatController;
 
-    public ChatView(ChatViewModel chatViewModel, ChatController chatController, String groupName, List<String> members, CardLayout cardLayout, JPanel cardPanel) {
+    public ChatView(ChatViewModel chatViewModel, String groupName, List<String> members, CardLayout cardLayout, JPanel cardPanel) {
         this.chatViewModel = chatViewModel;
-        this.chatController = chatController;
 
         // Add this class as a property change listener to the ViewModel
         chatViewModel.addPropertyChangeListener(this);
@@ -51,11 +50,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         leaveGroupButton.setForeground(Color.WHITE);
         leaveGroupButton.setFocusPainted(false);
         leaveGroupButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        leaveGroupButton.addActionListener(e -> {
-//            System.out.println("Leaving group...");
-//            cardLayout.show(cardPanel, "welcome");
-//        });
-        leaveGroupButton.addActionListener(new SimulButtonListener()); // Temporary
+        leaveGroupButton.addActionListener(new SimulButtonListener());
 
         // Members Label
         JLabel membersLabel = new JLabel("Members:");
@@ -119,41 +114,31 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.add(rightPanel, BorderLayout.CENTER);
     }
 
-    // Listener for Send Button
     private class SendButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String message = messageInputField.getText().trim();
             if (!message.isEmpty()) {
-                System.out.println("[ChatView] Sending message: " + message); // Debug statement
-                chatController.sendMessage(message, chatViewModel.getCurrentUser());
+                String currentUser = chatController.getCurrentUser();
+                System.out.println("[ChatView] Sending message as current user: " + currentUser);
+                chatController.sendMessage(message, currentUser);
                 messageInputField.setText("");
-            } else {
-                System.out.println("[ChatView] No message to send."); // Debug statement
             }
         }
     }
 
-    // [TEMP] Simulation button listener
+    // Simulates a message from "Alice" saying "Japan"
     private class SimulButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String simulatedUser = "Alice";
-            String simulatedMessage = "Hi everyone!";
-            chatViewModel.simulateMemberMessage(simulatedUser, simulatedMessage);
-            messageInputField.setText("");
+            String simulatedMessage = "Japan";
+            chatController.sendMessage(simulatedMessage, simulatedUser);
+            System.out.println("[SimulButtonListener] Simulated message from " + simulatedUser + ": " + simulatedMessage);
         }
     }
 
-
-
-    // Method to update chat area with new messages
-    public void addMessage(String user, String message) {
-        chatArea.append(user + ": " + message + "\n");
-    }
-
-    // Method to update members list
-    public void updateMembers(List<String> members) {
+    private void updateMembers(List<String> members) {
         membersListModel.clear();
         members.forEach(membersListModel::addElement);
     }
@@ -164,15 +149,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             List<String> messages = chatViewModel.getState().getMessages();
             chatArea.setText(String.join("\n", messages));
         } else if ("members".equals(evt.getPropertyName())) {
-            updateMembers(chatViewModel.getMembers());
+            List<String> members = chatViewModel.getState().getMembers();
+            updateMembers(members);
+            System.out.println("[ChatView] Members list updated: " + members);
         }
     }
 
-    public String getViewName() {
-        return "chat";
-    }
+    public void setChatController(ChatController chatController){ this.chatController = chatController;}
 
-    public void setChatController(ChatController controller) {
-        this.chatController = controller;
-    }
 }

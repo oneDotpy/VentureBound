@@ -14,7 +14,15 @@ public class Main {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
                                             .addLoginView()
+                                            .addSignupView()
+                                            .addWelcomeView()
+                                            .addGroupViews()
+                                            .addChatView()
+                                            .addSignupUseCase()
                                             .addLoginUseCase()
+                                            .addChatUseCase()
+                                            .addVacationBotUseCase()
+                                            .addGroupUseCase()
                                             .build();
 
         application.pack();

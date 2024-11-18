@@ -10,8 +10,9 @@ public interface CreateGroupDataAccessInterface {
     /**
      * Saves the user.
      * @param group the user to save
+     * @return return the groupID of the that group
      */
-    void save(Group group);
+    String save(Group group);
 
     Group get(String groupName);
 }

@@ -1,22 +1,11 @@
 package interface_adapter.group;
 
-public class GroupViewModel {
-    private String createMessage;
-    private String joinMessage;
+import interface_adapter.ViewModel;
 
-    public String getCreateMessage() {
-        return createMessage;
-    }
+public class GroupViewModel extends ViewModel<GroupState> {
 
-    public void setCreateMessage(String createMessage) {
-        this.createMessage = createMessage;
-    }
-
-    public String getJoinMessage() {
-        return joinMessage;
-    }
-
-    public void setJoinMessage(String joinMessage) {
-        this.joinMessage = joinMessage;
+    public GroupViewModel() {
+        super("group");
+        setState(new GroupState());
     }
 }
