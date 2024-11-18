@@ -4,7 +4,12 @@ import entity.User;
 
 public class CreateGroupState {
     private User user;
+    private String groupName;
     private String groupError;
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 
     public void setGroupError(String groupError) {this.groupError = groupError;}
 
@@ -13,4 +18,8 @@ public class CreateGroupState {
     public User getUser() {return user;}
 
     public String getGroupError() {return groupError;}
+
+    public String getGroupName() {
+        return groupName;
+    }
 }

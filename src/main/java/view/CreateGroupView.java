@@ -96,6 +96,9 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
     }
 
     public String getViewName() {
-        return groupViewModel.getState().getGroupName();
+        return createGroupViewModel.getState().getGroupName();
+    }
+
+    public void setGroupController(GroupController groupController) {
     }
 }

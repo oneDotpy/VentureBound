@@ -10,4 +10,6 @@ public interface SignupInputBoundary {
      * @param signupInputData the input data
      */
     void execute(SignupInputData signupInputData);
+
+    void switchToLoginView();
 }

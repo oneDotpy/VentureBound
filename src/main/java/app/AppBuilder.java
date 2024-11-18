@@ -6,22 +6,21 @@ import javax.swing.*;
 
 import data_access.FirestoreGroupDataAccessObject;
 import data_access.FirestoreUserDataAccessObject;
-import entity.CommonGroupFactory;
-import entity.CommonUserFactory;
-import entity.GroupFactory;
-import entity.UserFactory;
+import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.*;
 import interface_adapter.chat.*;
+import interface_adapter.create_group.*;
 import interface_adapter.group.*;
+import interface_adapter.join_group.*;
 import interface_adapter.login.*;
-import interface_adapter.logout.*;
+//import interface_adapter.logout.*;
 import interface_adapter.signup.*;
 import interface_adapter.welcome.WelcomeViewModel;
 import use_case.chat.*;
 import use_case.group.*;
 import use_case.login.*;
-//import use_case.logout.*;
+//import use_case.logout;
 import use_case.signup.*;
 import use_case.change_password.*;
 import use_case.vacation_bot.*;
@@ -34,11 +33,19 @@ public class AppBuilder {
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
 
     // Initialize Object Factories
-    private final GroupFactory groupFactory = new CommonGroupFactory();
-    private final UserFactory userFactory = new CommonUserFactory();
+    UserFactory userFactory = new CommonUserFactory();
+    GroupFactory groupFactory = new CommonGroupFactory();
+    ResponseFactory resposeFactory = new CommonResponseFactory();
+    MessageFactory messageFactory = new CommonMessageFactory();
+    RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
 
     // Initialize Data Access Objects
-    private final FirestoreGroupDataAccessObject groupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory);
+    FirestoreGroupDataAccessObject groupDataAccessObject = new FirestoreGroupDataAccessObject(
+            groupFactory,
+            resposeFactory,
+            messageFactory,
+            recommendationFactory);
+
     private final FirestoreUserDataAccessObject userDataAccessObject = new FirestoreUserDataAccessObject(
             userFactory, groupDataAccessObject
     );
@@ -49,6 +56,7 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private ChatViewModel chatViewModel;
     private GroupViewModel groupViewModel;
+    private CreateGroupViewModel createGroupViewModel;
     private WelcomeViewModel welcomeViewModel;
 
     // Initialize presenters
@@ -112,7 +120,7 @@ public class AppBuilder {
      */
     public AppBuilder addGroupViews() {
         groupViewModel = new GroupViewModel();
-        createGroupView = new CreateGroupView(groupViewModel, cardLayout, cardPanel);
+        createGroupView = new CreateGroupView(createGroupViewModel, cardLayout, cardPanel);
         joinGroupView = new JoinGroupView(groupViewModel, cardLayout, cardPanel);
 
         cardPanel.add(createGroupView, "create_group");

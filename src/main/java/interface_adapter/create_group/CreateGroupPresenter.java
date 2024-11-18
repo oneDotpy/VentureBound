@@ -22,7 +22,7 @@ public class CreateGroupPresenter implements CreateGroupOutputBoundary {
     public void prepareChatView(CreateGroupOutputData createGroupOutputData) {
         ChatState chatState = chatViewModel.getState();
         // TODO: Make a update implementation of chatState;
-        chatState.setUser(createGroupOutputData.getUser());
+        chatState.setCurrentUser(createGroupOutputData.getUser().getName());
         chatViewModel.setState(chatState);
 
         viewManagerModel.setState(chatViewModel.getViewName());

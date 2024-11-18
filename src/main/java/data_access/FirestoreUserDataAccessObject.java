@@ -11,7 +11,9 @@ import entity.User;
 import entity.UserFactory;
 import entity.Group;
 //import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.change_password.ChangePasswordDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
+import use_case.signup.SignupUserDataAccessInterface;
 //import use_case.logout.LogoutUserDataAccessInterface;
 //import use_case.signup.SignupUserDataAccessInterface;
 
@@ -19,8 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
-        implements //SignupUserDataAccessInterface,
-        LoginUserDataAccessInterface {
+        implements SignupUserDataAccessInterface,
+        LoginUserDataAccessInterface,
+        ChangePasswordDataAccessInterface {
         //LogoutUserDataAccessInterface {
 
     private UserFactory userFactory;
@@ -48,9 +51,12 @@ public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
 
             String password = document.get("password").toString();
             String email = document.get("email").toString();
-            String groupName = document.get("group").toString();
-            Group group = firestoreGroupDataAccessObject.get("groupName");
-            return userFactory.create(email, password, email, group);
+            Group group = null;
+            if (document.get("group") != null) {
+                String groupName = document.get("group").toString();
+                group = firestoreGroupDataAccessObject.get("groupName");
+            }
+            return userFactory.create(username, password, email, group);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
