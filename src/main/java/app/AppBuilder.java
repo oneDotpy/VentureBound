@@ -150,16 +150,16 @@ public class AppBuilder {
      * Adds the Login Use Case to the application.
      * @return this builder
      */
-//    public AppBuilder addLoginUseCase() {
-//        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-//                loggedInViewModel, loginViewModel);
-//        final LoginInputBoundary loginInteractor = new LoginInteractor(
-//                userDataAccessObject, loginOutputBoundary);
-//
-//        final LoginController loginController = new LoginController(loginInteractor);
-//        loginView.setLoginController(loginController);
-//        return this;
-//    }
+    public AppBuilder addLoginUseCase() {
+        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
+                loggedInViewModel, loginViewModel);
+        final LoginInputBoundary loginInteractor = new LoginInteractor(
+                userDataAccessObject, loginOutputBoundary);
+
+        final LoginController loginController = new LoginController(loginInteractor);
+        loginView.setLoginController(loginController);
+        return this;
+    }
 
 //    /**
 //     * Adds the Change Password Use Case to the application.
