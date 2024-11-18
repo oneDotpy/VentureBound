@@ -4,9 +4,8 @@ import data_access.FirestoreGroupDataAccessObject;
 import entity.Group;
 import entity.GroupFactory;
 import entity.User;
-import interface_adapter.ViewManagerModel;
 import interface_adapter.create_group.CreateGroupPresenter;
-import interface_adapter.create_group.CreateGroupViewModel;
+import interface_adapter.welcome.WelcomeState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class CreateGroupInteractor {
     }
 
     public void createGroup(CreateGroupInputData createGroupInputData) {
-        if (groupDataAccessObject.existByName(createGroupInputData.getGroupname())){
+        if (groupDataAccessObject.existByID(createGroupInputData.getGroupname())){
             presenter.prepareFailView("this name is already exist");
         }
         else {
@@ -40,6 +39,12 @@ public class CreateGroupInteractor {
             CreateGroupOutputData createGroupOutputData = new CreateGroupOutputData(group, user);
             presenter.prepareChatView(createGroupOutputData);
         }
+    }
+
+    public void switchToWelcomeView(CreateGroupInputData createGroupInputData) {
+        User user = createGroupInputData.getUser();
+        CreateGroupOutputData createGroupOutputData = new CreateGroupOutputData(null, user);
+        presenter.switchToWelcomeView(createGroupOutputData);
     }
 
 }

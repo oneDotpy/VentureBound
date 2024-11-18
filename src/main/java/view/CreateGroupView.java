@@ -2,6 +2,7 @@ package view;
 
 import entity.User;
 import interface_adapter.create_group.CreateGroupController;
+import interface_adapter.create_group.CreateGroupState;
 import interface_adapter.create_group.CreateGroupViewModel;
 import interface_adapter.group.GroupController;
 import interface_adapter.group.GroupViewModel;
@@ -43,8 +44,8 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
         backButton.setFocusPainted(false);
         backButton.setContentAreaFilled(false);
         backButton.addActionListener(e -> {
-            cardLayout.show(cardPanel, "welcome");
-            System.out.println("Redirecting to Welcome view...");
+            CreateGroupState createGroupState = createGroupViewModel.getState();
+            createGroupController.switchToLoginWelcomeView(createGroupState.getUser());
         });
         topPanel.add(backButton);
 

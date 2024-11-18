@@ -17,4 +17,9 @@ public class CreateGroupController implements CreateGroupInputBoundary {
         CreateGroupInputData createGroupInputData = new CreateGroupInputData(groupName, user);
         createGroupInteractor.createGroup(createGroupInputData);
     }
+
+    public void switchToLoginWelcomeView(User user) {
+        CreateGroupInputData createGroupInputData = new CreateGroupInputData("", user);
+        createGroupInteractor.switchToWelcomeView(createGroupInputData);
+    }
 }
