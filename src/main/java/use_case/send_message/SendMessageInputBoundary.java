@@ -1,4 +1,7 @@
 package use_case.send_message;
 
-public class SendMessageInputBoundary {
+import entity.Message;
+
+public interface SendMessageInputBoundary {
+    public void sendMessage(String groupID, Message message);
 }
