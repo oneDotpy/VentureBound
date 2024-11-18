@@ -198,10 +198,10 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addChangePasswordUseCase() {
-        ChangePasswordPresenter changePasswordPresenter = new ChangePasswordPresenter(viewManagerModel, signupViewModel, loginViewModel);
-        ChangePasswordInteractor changePasswordInteractor = new ChangePasswordInteractor(userDataAccessObject, ChangePasswordPresenter, userFactory);
-        ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
-        // TODO: Add Change Password View
+        // TODO: Add Change Password Presenter and View
+        // ChangePasswordPresenter changePasswordPresenter = new ChangePasswordPresenter(viewManagerModel, changePasswordViewModel, loginViewModel);
+        // ChangePasswordInteractor changePasswordInteractor = new ChangePasswordInteractor(userDataAccessObject, ChangePasswordPresenter, userFactory);
+        // ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
         // changePasswordView.setChangePasswordController(changePasswordController);
         return this;
     }

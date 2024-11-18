@@ -35,6 +35,8 @@ public class ChangePasswordInteractor implements ChangePasswordInputBoundary{
                 userDataAccessObject.changePassword(username, newPassword);
                 changePasswordPresenter.prepareSuccessView(new ChangePasswordOutputData(false));
             }
+        } else {
+            changePasswordPresenter.prepareFailView(username + ": Account does not exist.");
         }
 
     }
