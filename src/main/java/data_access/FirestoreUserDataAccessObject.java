@@ -74,11 +74,11 @@ public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
         }
     }
 
-    public void changePassword(User user) {
+    public void changePassword(String username, String password) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
         db.collection("users")
-                .document(user.getName())
-                .update("password", user.getPassword());
+                .document(username)
+                .update("password", password);
 
     }
 }

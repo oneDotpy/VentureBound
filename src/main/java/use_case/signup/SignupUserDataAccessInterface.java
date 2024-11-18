@@ -13,5 +13,10 @@ public interface SignupUserDataAccessInterface {
      */
     void save(User user);
 
+    /**
+     * Get the user with specified username
+     * @param username
+     * @return
+     */
     User get(String username);
 }

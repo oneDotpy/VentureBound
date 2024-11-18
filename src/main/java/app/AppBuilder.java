@@ -21,7 +21,7 @@ import interface_adapter.welcome.WelcomeViewModel;
 import use_case.chat.*;
 import use_case.group.*;
 import use_case.login.*;
-import use_case.logout.*;
+//import use_case.logout.*;
 import use_case.signup.*;
 import use_case.change_password.*;
 import use_case.vacation_bot.*;
@@ -198,15 +198,11 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
-
-        final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
-
-        final ChangePasswordController changePasswordController =
-                new ChangePasswordController(changePasswordInteractor);
-        //loggedInView.setChangePasswordController(changePasswordController);
+        ChangePasswordPresenter changePasswordPresenter = new ChangePasswordPresenter(viewManagerModel, signupViewModel, loginViewModel);
+        ChangePasswordInteractor changePasswordInteractor = new ChangePasswordInteractor(userDataAccessObject, ChangePasswordPresenter, userFactory);
+        ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
+        // TODO: Add Change Password View
+        // changePasswordView.setChangePasswordController(changePasswordController);
         return this;
     }
 
