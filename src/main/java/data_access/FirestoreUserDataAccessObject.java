@@ -10,7 +10,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import entity.User;
 import entity.UserFactory;
 import entity.Group;
-import use_case.change_password.ChangePasswordUserDataAccessInterface;
+//import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 //import use_case.logout.LogoutUserDataAccessInterface;
 //import use_case.signup.SignupUserDataAccessInterface;
@@ -20,8 +20,7 @@ import java.util.Map;
 
 public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
         implements //SignupUserDataAccessInterface,
-        LoginUserDataAccessInterface,
-        ChangePasswordUserDataAccessInterface {
+        LoginUserDataAccessInterface {
         //LogoutUserDataAccessInterface {
 
     private UserFactory userFactory;
@@ -75,7 +74,6 @@ public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
         }
     }
 
-    @Override
     public void changePassword(User user) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
         db.collection("users")

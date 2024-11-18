@@ -31,7 +31,6 @@ public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
 
-    private final UserFactory userFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
 
     // Initialize Object Factories
