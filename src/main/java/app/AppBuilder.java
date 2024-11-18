@@ -101,7 +101,7 @@ public class AppBuilder {
 
     public AppBuilder addChatView() {
         chatViewModel = new ChatViewModel();
-        chatView = new ChatView(chatViewModel, "Test Group", new ArrayList<>(), cardLayout, cardPanel);
+        chatView = new ChatView(chatViewModel, new String(), new ArrayList<>(), cardLayout, cardPanel);
         cardPanel.add(chatView, "chat");
         return this;
     }
@@ -177,7 +177,7 @@ public class AppBuilder {
         JFrame application = new JFrame("Application");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setSize(1280, 720);
-        application.setMinimumSize(new Dimension(900, 600));
+        application.setMinimumSize(new Dimension(1280, 720));
         application.setResizable(false);
         application.setLocationRelativeTo(null);
         application.add(cardPanel);
@@ -202,7 +202,6 @@ public class AppBuilder {
 
         // Pre-populate chat members
         ArrayList<String> testMembers = new ArrayList<>();
-        testMembers.add("Alice");
         testMembers.add("Charlie");
 
         if (chatInteractor != null) {

@@ -8,6 +8,7 @@ public class ChatState {
     private final List<String> messages = new ArrayList<>();
     private List<String> members = new ArrayList<>();
     private String currentUser;
+    private String groupName;
 
     // Private constructor to prevent instantiation
     private ChatState() {}
@@ -43,6 +44,11 @@ public class ChatState {
     public void setMembers(List<String> newMembers) {
         this.members = new ArrayList<>(newMembers);
         System.out.println("[ChatState] Members set: " + this.members + " (Instance: " + this + ")");
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+        System.out.println("[ChatState] Setting group name: " + groupName + " (Instance: " + this + ")");
     }
 
     public List<String> getMembers() {

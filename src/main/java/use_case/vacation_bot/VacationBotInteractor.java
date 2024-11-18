@@ -9,15 +9,18 @@ import org.json.JSONObject;
 import use_case.chat.ChatInputBoundary;
 
 public class VacationBotInteractor implements VacationBotInputBoundary {
-    private enum BotState { INACTIVE, AWAITING_LOCATION, AWAITING_HOBBIES, GENERATING_RECOMMENDATIONS }
+    private enum BotState { INACTIVE, AWAITING_LOCATION, AWAITING_HOBBIES, AWAITING_TEMP, GENERATING_RECOMMENDATIONS }
     private BotState botState = BotState.INACTIVE;
 
     private final VacationBotOutputBoundary presenter;
     private final ChatInputBoundary chatState;
     private final OpenAIChatGPT chatGPT;
 
+    private final StringBuilder InputActivities = new StringBuilder();
+
     private final Map<String, String> locationResponses = new HashMap<>();
     private final Map<String, String> hobbyResponses = new HashMap<>();
+    private final Map<String, String> tempResponses = new HashMap<>();
 
     public VacationBotInteractor(VacationBotOutputBoundary presenter, ChatInputBoundary chatState) {
         this.presenter = presenter;
@@ -28,7 +31,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     @Override
     public void startBot() {
         botState = BotState.AWAITING_LOCATION;
-        presenter.sendBotMessage("Bot", "🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
+        presenter.sendBotMessage("Bot", "🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\nQuestion 1: Where would you like to go for a vacation?");
     }
 
     @Override
@@ -47,23 +50,32 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         presenter.sendBotMessage("Bot", "\n📍 The chosen vacation location is: **" + chosenLocation + "**");
 
         botState = BotState.AWAITING_HOBBIES;
-        presenter.sendBotMessage("Bot", "\n**Question 2:** What is your favorite hobbies? (Please choose one)");
+        presenter.sendBotMessage("Bot", "\nQuestion 2: What is your favorite hobbies? (Please choose one)");
     }
 
     private void processHobbyResponses() {
-        StringBuilder activities = new StringBuilder();
         for (String hobby : hobbyResponses.values()) {
-            activities.append(hobby).append(", ");
+            InputActivities.append(hobby).append(", ");
+        }
+
+        botState = BotState.AWAITING_TEMP;
+        presenter.sendBotMessage("Bot", "\nQuestion 2: What kind of climate do you like? [Warm/Tropical, Cold/Snowy, Mild/Temperate] (Please choose one)");
+    }
+
+    private void processTempResponses() {
+        StringBuilder temperatures = new StringBuilder();
+        for (String hobby : tempResponses.values()) {
+            temperatures.append(hobby).append(", ");
         }
 
         String chosenLocation = determineMostCommon(locationResponses.values());
-        generateRecommendations(chosenLocation, activities.toString());
+        generateRecommendations(chosenLocation, InputActivities.toString(), temperatures.toString());
     }
 
-    private void generateRecommendations(String location, String activities) {
+    private void generateRecommendations(String location, String activities, String temperatures) {
         botState = BotState.GENERATING_RECOMMENDATIONS;
         try {
-            String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
+            String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, temperatures, location);
             displayRecommendations(recommendationsJson);
         } catch (Exception e) {
             presenter.sendBotMessage("Bot", "❌ Error generating recommendations: " + e.getMessage());
@@ -90,26 +102,15 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             if (hobbyResponses.size() == chatState.getMembers().size()) {
                 processHobbyResponses();
             }
+        } else if (botState == BotState.AWAITING_TEMP) {
+            tempResponses.put(username, message);
+            presenter.sendBotMessage("Bot", username + " likes: " + message + "climate");
+
+            // Check if all members have responded
+            if (tempResponses.size() == chatState.getMembers().size()) {
+                processTempResponses();
+            }
         }
-    }
-
-    private void generateRecommendations() {
-        String location = locationResponses.values().iterator().next();
-        String hobbies = String.join(", ", hobbyResponses.values());
-
-        try {
-            // Call the OpenAI API to get recommendations
-            String recommendations = chatGPT.getVacationRecommendations(hobbies, location);
-//            presenter.presentBotResponse();
-            presenter.sendBotMessage("Bot", "Here are the recommendations:\n" + recommendations);
-        } catch (IOException e) {
-            // Handle the IOException by sending an error message to the chat
-            presenter.sendBotMessage("Bot", "❌ Error generating recommendations: " + e.getMessage());
-            System.err.println("[VacationBotInteractor] Error while fetching recommendations: " + e.getMessage());
-        }
-
-        // Set bot state to inactive after handling the request
-        botState = BotState.INACTIVE;
     }
 
     private void displayRecommendations(String recommendationsJson) {
@@ -127,7 +128,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
             if (vacationSpots != null) {
                 StringBuilder formattedRecommendations = new StringBuilder();
-                formattedRecommendations.append("🌟 **Here are the top vacation spots for your group** 🌟\n");
+                formattedRecommendations.append("🌟 Here are the top vacation spots for your group 🌟\n");
 
                 for (int i = 0; i < vacationSpots.length(); i++) {
                     JSONObject spot = vacationSpots.getJSONObject(i);

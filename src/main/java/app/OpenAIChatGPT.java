@@ -25,11 +25,11 @@ public class OpenAIChatGPT {
         }
         return apiKey;
     }
-    public static String getVacationRecommendations(String activities, String locations) throws IOException {
+    public static String getVacationRecommendations(String activities, String temperature, String locations) throws IOException {
         String prompt = String.format(
-                "Me and my friends like %s. Sticking with %s locations, provide a JSON object with 5 recommended vacation spots based of our interests. " +
+                "Me and my friends like %s. And We Like %s climate Sticking with %s locations, provide a JSON object with 5 recommended vacation spots based of our interests. " +
                         "Include name, latitude, longitude, and a Google Maps link for each spot. ",
-                activities, locations
+                activities, temperature, locations
         );
 
         JSONObject jsonBody = new JSONObject();
