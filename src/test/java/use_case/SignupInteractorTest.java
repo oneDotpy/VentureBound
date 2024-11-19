@@ -14,7 +14,7 @@ class SignupInteractorTest {
 
     @Test
     void successTest() {
-        SignupInputData inputData = new SignupInputData("Ken2", "ken@mail.com", "1234");
+        SignupInputData inputData = new SignupInputData("Ken2", "ken@mail.com", "1234", "1234");
         UserFactory userFactory = new CommonUserFactory();
         GroupFactory groupFactory = new CommonGroupFactory();
         ResponseFactory resposeFactory = new CommonResponseFactory();

@@ -6,10 +6,13 @@ package interface_adapter.signup;
 public class SignupState {
     private String username = "";
     private String usernameError;
+    private String email = "";
+    private String emailError;
     private String password = "";
     private String passwordError;
-    private String repeatPassword = "";
-    private String repeatPasswordError;
+    private String passwordRepeat = "";
+    private String passwordRepeatError;
+
 
     public String getUsername() {
         return username;
@@ -17,6 +20,14 @@ public class SignupState {
 
     public String getUsernameError() {
         return usernameError;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getEmailError() {
+        return emailError;
     }
 
     public String getPassword() {
@@ -28,12 +39,14 @@ public class SignupState {
     }
 
     public String getRepeatPassword() {
-        return repeatPassword;
+        return passwordRepeat;
     }
 
     public String getRepeatPasswordError() {
-        return repeatPasswordError;
+        return passwordRepeatError;
     }
+
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -41,6 +54,12 @@ public class SignupState {
 
     public void setUsernameError(String usernameError) {
         this.usernameError = usernameError;
+    }
+
+    public void setEmail(String email) {this.email = email;}
+
+    public void setEmailError(String emailError) {
+        this.emailError = emailError;
     }
 
     public void setPassword(String password) {
@@ -52,19 +71,20 @@ public class SignupState {
     }
 
     public void setRepeatPassword(String repeatPassword) {
-        this.repeatPassword = repeatPassword;
+        this.passwordRepeat = repeatPassword;
     }
 
     public void setRepeatPasswordError(String repeatPasswordError) {
-        this.repeatPasswordError = repeatPasswordError;
+        this.passwordRepeatError = repeatPasswordError;
     }
 
     @Override
     public String toString() {
-        return "SignupState{"
-                + "username='" + username + '\''
-                + ", password='" + password + '\''
-                + ", repeatPassword='" + repeatPassword + '\''
-                + '}';
+        return "SignupState{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", repeatPassword='" + passwordRepeat + '\'' +
+                '}';
     }
 }

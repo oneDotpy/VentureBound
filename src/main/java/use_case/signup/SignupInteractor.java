@@ -39,7 +39,7 @@ public class SignupInteractor implements SignupInputBoundary {
             signupPresenter.prepareSuccessView(signupOutputData);
 
         } else {
-            signupPresenter.prepareFailView("Username" + username + " is already taken");
+            signupPresenter.prepareFailView("Username " + username + " is already taken");
         }
     }
 
