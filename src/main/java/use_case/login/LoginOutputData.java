@@ -1,6 +1,8 @@
 package use_case.login;
 
+import entity.CommonUser;
 import entity.Group;
+import entity.User;
 
 import java.util.List;
 
@@ -9,28 +11,16 @@ import java.util.List;
  */
 public class LoginOutputData {
 
-    private final String username;
-    private final String email;
-    private final Group group;
+    private final User user;
     private final boolean useCaseFailed;
 
     public LoginOutputData(String username, String email, Group group, boolean useCaseFailed) {
-        this.username = username;
-        this.email = email;
-        this.group = group;
+        this.user = new CommonUser(username, "", email, group);
         this.useCaseFailed = useCaseFailed;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Group getGroup() {
-        return group;
+    public User getUser() {
+        return user;
     }
 
     public boolean isUseCaseFailed() {

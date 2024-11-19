@@ -27,7 +27,6 @@ public class LoginInteractor implements LoginInputBoundary {
         }
         else {
             PasswordEncryption passwordEncryption = new PasswordEncryption();
-
             if (!passwordEncryption.verify(password, userDb.getPassword())) {
                 loginPresenter.prepareFailView("Incorrect password for \"" + username + "\".");
             }

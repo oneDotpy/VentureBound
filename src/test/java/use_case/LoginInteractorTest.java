@@ -29,9 +29,9 @@ class LoginInteractorTest {
 
         LoginOutputBoundary successPresenter = new LoginOutputBoundary() {
             @Override
-            public void prepareSuccessView(LoginOutputData user) {
-                assertEquals("Ken2", user.getUsername());
-                System.out.println(user);
+            public void prepareSuccessView(LoginOutputData outputData) {
+                assertEquals("ken@mail.com", outputData.getUser().getEmail());
+                System.out.println(outputData.getUser().toString());
             }
 
             @Override

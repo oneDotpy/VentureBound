@@ -7,6 +7,8 @@ import javax.swing.*;
 
 import interface_adapter.change_password.LoggedInState;
 // import interface_adapter.logout.LogoutController;
+import interface_adapter.signup.SignupState;
+import interface_adapter.welcome.WelcomeState;
 import interface_adapter.welcome.WelcomeViewModel;
 
 /**
@@ -123,8 +125,8 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            greeting.setText("Welcome, " + state.getUsername());
+            final WelcomeState state = (WelcomeState) evt.getNewValue();
+            greeting.setText("Welcome, " + state.getUser().getName());
         }
     }
 

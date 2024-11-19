@@ -157,7 +157,7 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addLoginUseCase() {
-        LoginPresenter loginPresenter = new LoginPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
+        LoginPresenter loginPresenter = new LoginPresenter(viewManagerModel, welcomeViewModel, loginViewModel, chatViewModel);
         LoginInteractor loginInteractor = new LoginInteractor(userDataAccessObject, loginPresenter);
         LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
