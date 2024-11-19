@@ -52,9 +52,9 @@ public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
             String password = document.get("password").toString();
             String email = document.get("email").toString();
             Group group = null;
-            if (document.get("group") != null) {
-                String groupName = document.get("group").toString();
-                group = firestoreGroupDataAccessObject.get("groupName");
+            if (document.get("group") != "") {
+                String groupId = document.get("group").toString();
+                group = firestoreGroupDataAccessObject.get(groupId);
             }
             return userFactory.create(username, password, email, group);
         } catch (Exception e) {
@@ -69,8 +69,11 @@ public class FirestoreUserDataAccessObject extends FirestoreDataAccessObject
         data.put("username", user.getName());
         data.put("password", user.getPassword());
         data.put("email", user.getEmail());
-        data.put("group", user.getGroup());
-
+        if (user.getGroup() != null) {
+            data.put("group", user.getGroup().getGroupID());
+        } else {
+            data.put("group", "");
+        }
         ApiFuture<WriteResult> future = db.collection("users").document(user.getName()).set(data);
         try {
             System.out.println(future.get());

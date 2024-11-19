@@ -2,6 +2,7 @@ package use_case.signup;
 
 import entity.User;
 import entity.UserFactory;
+import use_case.encryption.PasswordEncryption;
 
 /**
  * The Signup Interactor
@@ -21,11 +22,12 @@ public class SignupInteractor implements SignupInputBoundary {
     public void execute(SignupInputData signupInputData) {
         final String username = signupInputData.getUsername();
         final String email = signupInputData.getEmail();
-        final String password = signupInputData.getPassword();
+        PasswordEncryption passwordEncryption = new PasswordEncryption();
+        final String password = passwordEncryption.execute(signupInputData.getPassword());
 
         final User userDb = userDataAccessObject.get(username);
 
-        if (userDb != null) {
+        if (userDb == null) {
             // Create a new user object
             User user = userFactory.create(username, password, email);
             userDataAccessObject.save(user);
