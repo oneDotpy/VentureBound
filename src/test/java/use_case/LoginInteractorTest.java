@@ -12,7 +12,7 @@ class LoginInteractorTest {
 
     @Test
     void successTest() {
-        LoginInputData inputData = new LoginInputData("Bob", "1234");
+        LoginInputData inputData = new LoginInputData("Ken2", "1234");
         UserFactory userFactory = new CommonUserFactory();
         GroupFactory groupFactory = new CommonGroupFactory();
         ResponseFactory resposeFactory = new CommonResponseFactory();
@@ -30,7 +30,7 @@ class LoginInteractorTest {
         LoginOutputBoundary successPresenter = new LoginOutputBoundary() {
             @Override
             public void prepareSuccessView(LoginOutputData user) {
-                assertEquals("Bob", user.getUsername());
+                assertEquals("Ken2", user.getUsername());
                 System.out.println(user);
             }
 
