@@ -123,11 +123,14 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                         currentState.getUsername(),
                         currentState.getEmail(),
                         currentState.getPassword(),
-                        currentState.getRepeatPassword()
+                        currentState.getPasswordRepeat()
                 );
 
-                cardLayout.show(cardPanel, "login");
-                System.out.println("Signup successful. Redirecting to Login view...");
+                if (currentState.getSignupError() == null) {
+                    cardLayout.show(cardPanel, "login");
+                    System.out.println("Signup successful. Redirecting to Login view...");
+                }
+                currentState.setSignupError(null);
             }
         });
 
@@ -209,7 +212,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         passwordRepeatInputField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
                 final SignupState currentState = signupViewModel.getState();
-                currentState.setRepeatPassword(new String(passwordRepeatInputField.getPassword()));
+                currentState.setPasswordRepeat(new String(passwordRepeatInputField.getPassword()));
                 signupViewModel.setState(currentState);
             }
 
@@ -230,8 +233,8 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final SignupState state = (SignupState) evt.getNewValue();
-        if (state.getUsernameError() != null) {
-            JOptionPane.showMessageDialog(this, state.getUsernameError());
+        if (state.getSignupError() != null) {
+            JOptionPane.showMessageDialog(this, state.getSignupError());
         }
     }
 
