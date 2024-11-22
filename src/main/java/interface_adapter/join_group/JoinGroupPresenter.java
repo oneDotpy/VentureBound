@@ -29,6 +29,10 @@ public class JoinGroupPresenter implements JoinGroupOutputBoundary {
         chatState.setUser(joinGroupOutputData.getUser());
         chatState.setCurrentUser(joinGroupOutputData.getUser().getName());
         chatState.setMembers(joinGroupOutputData.getGroup().getUsernames());
+        for (Message message: joinGroupOutputData.getGroup().getMessages()) {
+            System.out.println(message.getContent());
+            chatState.addMessage(message.getSender(), message.getContent());
+        }
         chatViewModel.setState(chatState);
 
         // Fire to switch into ChatViewModel
@@ -37,20 +41,14 @@ public class JoinGroupPresenter implements JoinGroupOutputBoundary {
 
         // Fire to notify chatViewModel to update the members
         chatViewModel.firePropertyChanged("members");
-
-        // Update the messages
-        for (Message message: joinGroupOutputData.getGroup().getMessages()) {
-            chatState.addMessage(message.getSender(), message.getContent());
-        }
-        chatViewModel.setState(chatState);
         chatViewModel.firePropertyChanged("messages");
     }
 
     public void presentFailView(String message) {
         JoinGroupState joinGroupState = joinGroupViewModel.getState();
         joinGroupState.setGroupError(message);
-
         joinGroupViewModel.setState(joinGroupState);
+
         joinGroupViewModel.firePropertyChanged("error");
     }
 
