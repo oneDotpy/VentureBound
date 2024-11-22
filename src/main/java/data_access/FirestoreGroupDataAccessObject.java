@@ -7,23 +7,24 @@ import entity.*;
 import use_case.create_group.CreateGroupDataAccessInterface;
 
 import com.google.firebase.cloud.FirestoreClient;
+import use_case.join_group.JoinGroupGroupDataAccessInterface;
 import use_case.send_message.SendMessageDataAccessInterface;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInterface, SendMessageDataAccessInterface {
+public class FirestoreGroupGroupDataAccessObject implements CreateGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface {
 
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
     private final MessageFactory messageFactory;
     private final RecommendationFactory recommendationFactory;
 
-    public FirestoreGroupDataAccessObject(GroupFactory groupFactory,
-                                          ResponseFactory responseFactory,
-                                          MessageFactory messageFactory,
-                                          RecommendationFactory recommendationFactory) {
+    public FirestoreGroupGroupDataAccessObject(GroupFactory groupFactory,
+                                               ResponseFactory responseFactory,
+                                               MessageFactory messageFactory,
+                                               RecommendationFactory recommendationFactory) {
         this.groupFactory = groupFactory;
         this.responseFactory = responseFactory;
         this.messageFactory = messageFactory;
@@ -79,7 +80,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         List<Message> messages = new ArrayList<>();
         for (int i = index; i < messageDocs.size(); i++) {
             DocumentSnapshot doc = messageDocs.get(i);
-            String user = (String)doc.get("user");
+            String user = (String)doc.get("sender");
             Timestamp timestamp = (Timestamp)doc.get("timestamp");
             String content = (String)doc.get("content");
             messages.add(messageFactory.createMessage(user, content, timestamp));
@@ -87,7 +88,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         return messages;
     }
 
-    @Override
     public Group get(String groupID) {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupID);
@@ -108,6 +108,10 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
             List<Recommendation> recommendations = getRecommendations(groupID);
             List<Response> responses = getResponses(groupID);
             List<Message> messages = getMessages(groupID, 0);
+
+            for (Message message : messages) {
+                System.out.println(message.getSender() + ": " + message.getContent());
+            }
 
             return groupFactory.create(groupName, usernames, responses, recommendations, chosen, messages, groupID);
         } catch (Exception e) {
@@ -242,11 +246,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<WriteResult> arrayUnion =
                 docRef.update("usernames", FieldValue.arrayUnion(username));
-        try {
-            System.out.println("Update time : " + arrayUnion.get());
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void setListener(String groupID, GroupListener groupListener) {
@@ -272,7 +271,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         ResponseFactory responseFactory = new CommonResponseFactory();
         MessageFactory messageFactory = new CommonMessageFactory();
         RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
-        FirestoreGroupDataAccessObject groupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
+        FirestoreGroupGroupDataAccessObject groupDataAccessObject = new FirestoreGroupGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
 
         String groupName = "testGroup";
 
