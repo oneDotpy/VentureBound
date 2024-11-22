@@ -6,13 +6,15 @@ import entity.UserFactory;
 
 public class JoinGroupInteractor implements JoinGroupInputBoundary {
     private final UserFactory userFactory;
-    private final JoinGroupDataAccessInterface firestoreGroupDataAccessObject;
+    private final JoinGroupGroupDataAccessInterface firestoreGroupDataAccessObject;
+    private final JoinGroupUserDataAccessInterface firestoreUserDataAccessObject;
     private final JoinGroupOutputBoundary joinGroupPresenter;
 
 
-    public JoinGroupInteractor(UserFactory userFactory, JoinGroupDataAccessInterface firestoreGroupDataAccessObject, JoinGroupOutputBoundary joinGroupPresenter) {
+    public JoinGroupInteractor(UserFactory userFactory, JoinGroupGroupDataAccessInterface firestoreGroupDataAccessObject, JoinGroupUserDataAccessInterface firestoreUserDataAccessObject, JoinGroupOutputBoundary joinGroupPresenter) {
         this.userFactory = userFactory;
         this.firestoreGroupDataAccessObject = firestoreGroupDataAccessObject;
+        this.firestoreUserDataAccessObject = firestoreUserDataAccessObject;
         this.joinGroupPresenter = joinGroupPresenter;
     }
 
@@ -31,6 +33,7 @@ public class JoinGroupInteractor implements JoinGroupInputBoundary {
             String email = joinGroupInputData.getUser().getEmail();
             firestoreGroupDataAccessObject.join(username, groupID);
             Group group = firestoreGroupDataAccessObject.get(groupID);
+            firestoreUserDataAccessObject.setGroupID(groupID, username);
 
             User new_user = userFactory.create(username, password, email, group, groupID);
             JoinGroupOutputData joinGroupOutputData = new JoinGroupOutputData(group, new_user);

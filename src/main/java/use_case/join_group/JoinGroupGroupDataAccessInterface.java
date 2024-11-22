@@ -2,7 +2,7 @@ package use_case.join_group;
 
 import entity.Group;
 
-public interface JoinGroupDataAccessInterface {
+public interface JoinGroupGroupDataAccessInterface {
     /**
      * Check whether the ID exist in the database
      * @param groupID GroupID input from user
