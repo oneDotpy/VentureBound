@@ -1,8 +1,6 @@
 package interface_adapter.join_group;
 
-import entity.GroupFactory;
 import entity.Message;
-import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.chat.ChatState;
 import interface_adapter.chat.ChatViewModel;

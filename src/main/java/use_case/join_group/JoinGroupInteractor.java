@@ -1,18 +1,16 @@
 package use_case.join_group;
 
-import data_access.FirestoreGroupDataAccessObject;
 import entity.Group;
 import entity.User;
 import entity.UserFactory;
-import interface_adapter.join_group.JoinGroupPresenter;
 
-public class JoinGroupInteractor {
+public class JoinGroupInteractor implements JoinGroupInputBoundary {
     private final UserFactory userFactory;
-    private final FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;
-    private final JoinGroupPresenter joinGroupPresenter;
+    private final JoinGroupDataAccessInterface firestoreGroupDataAccessObject;
+    private final JoinGroupOutputBoundary joinGroupPresenter;
 
 
-    public JoinGroupInteractor(UserFactory userFactory, FirestoreGroupDataAccessObject firestoreGroupDataAccessObject, JoinGroupPresenter joinGroupPresenter) {
+    public JoinGroupInteractor(UserFactory userFactory, JoinGroupDataAccessInterface firestoreGroupDataAccessObject, JoinGroupOutputBoundary joinGroupPresenter) {
         this.userFactory = userFactory;
         this.firestoreGroupDataAccessObject = firestoreGroupDataAccessObject;
         this.joinGroupPresenter = joinGroupPresenter;
