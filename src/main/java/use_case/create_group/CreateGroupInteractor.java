@@ -10,14 +10,14 @@ import interface_adapter.create_group.CreateGroupPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateGroupInteractor {
-    private final FirestoreGroupDataAccessObject groupDataAccessObject;
+public class CreateGroupInteractor implements CreateGroupInputBoundary{
+    private final CreateGroupDataAccessInterface groupDataAccessObject;
     private final GroupFactory groupFactory;
     private final UserFactory userFactory;
-    private final CreateGroupPresenter createGroupPresenter;
+    private final CreateGroupOutputBoundary createGroupPresenter;
 
 
-    public CreateGroupInteractor(FirestoreGroupDataAccessObject groupDataAccessObject, GroupFactory groupFactory, UserFactory userFactory, CreateGroupPresenter createGroupPresenter) {
+    public CreateGroupInteractor(CreateGroupDataAccessInterface groupDataAccessObject, GroupFactory groupFactory, UserFactory userFactory, CreateGroupOutputBoundary createGroupPresenter) {
         this.groupDataAccessObject = groupDataAccessObject;
         this.groupFactory = groupFactory;
         this.userFactory = userFactory;

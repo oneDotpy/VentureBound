@@ -13,6 +13,4 @@ public interface CreateGroupDataAccessInterface {
      * @return return the groupID of the that group
      */
     String save(Group group);
-
-    Group get(String groupName);
 }
