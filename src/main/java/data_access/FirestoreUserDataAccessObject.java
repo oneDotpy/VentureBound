@@ -10,13 +10,14 @@ import com.google.firebase.cloud.FirestoreClient;
 import entity.User;
 import entity.UserFactory;
 import entity.Group;
+import use_case.join_group.JoinGroupUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface {
+public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface, JoinGroupUserDataAccessInterface {
 
     private UserFactory userFactory;
     private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;
@@ -43,13 +44,19 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
 
             String password = document.get("password").toString();
             String email = document.get("email").toString();
-            String groupName = document.get("group").toString();
-            Group group = firestoreGroupDataAccessObject.get("groupName");
+            String groupID = document.get("group").toString();
+            Group group = firestoreGroupDataAccessObject.get(groupID);
             return userFactory.create(email, password, email, group);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void setGroupID(String groupID, String username) {
+        Firestore db = FirestoreClient.getFirestore();
+        DocumentReference docRef = db.collection("users").document(username);
+        docRef.update("group", groupID);
     }
 
     public void save(User user) {

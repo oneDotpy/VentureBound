@@ -14,17 +14,17 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-public class FirestoreGroupGroupDataAccessObject implements CreateGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface {
+public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface {
 
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
     private final MessageFactory messageFactory;
     private final RecommendationFactory recommendationFactory;
 
-    public FirestoreGroupGroupDataAccessObject(GroupFactory groupFactory,
-                                               ResponseFactory responseFactory,
-                                               MessageFactory messageFactory,
-                                               RecommendationFactory recommendationFactory) {
+    public FirestoreGroupDataAccessObject(GroupFactory groupFactory,
+                                          ResponseFactory responseFactory,
+                                          MessageFactory messageFactory,
+                                          RecommendationFactory recommendationFactory) {
         this.groupFactory = groupFactory;
         this.responseFactory = responseFactory;
         this.messageFactory = messageFactory;
@@ -271,7 +271,7 @@ public class FirestoreGroupGroupDataAccessObject implements CreateGroupDataAcces
         ResponseFactory responseFactory = new CommonResponseFactory();
         MessageFactory messageFactory = new CommonMessageFactory();
         RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
-        FirestoreGroupGroupDataAccessObject groupDataAccessObject = new FirestoreGroupGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
+        FirestoreGroupDataAccessObject groupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
 
         String groupName = "testGroup";
 
