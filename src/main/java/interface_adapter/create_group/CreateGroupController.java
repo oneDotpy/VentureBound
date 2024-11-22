@@ -3,13 +3,15 @@ package interface_adapter.create_group;
 import entity.User;
 import use_case.create_group.CreateGroupInputBoundary;
 import use_case.create_group.CreateGroupInputData;
-import use_case.create_group.CreateGroupInteractor;
 
-public class CreateGroupController implements CreateGroupInputBoundary {
-    private final CreateGroupInteractor createGroupInteractor;
+/**
+ * Controller that control interaction between view and interactor
+ */
+public class CreateGroupController {
+    private final CreateGroupInputBoundary createGroupInteractor;
 
 
-    public CreateGroupController(CreateGroupInteractor createGroupInteractor) {
+    public CreateGroupController(CreateGroupInputBoundary createGroupInteractor) {
         this.createGroupInteractor = createGroupInteractor;
     }
 

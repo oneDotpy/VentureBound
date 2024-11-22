@@ -7,8 +7,10 @@ import interface_adapter.welcome.WelcomeState;
 import interface_adapter.welcome.WelcomeViewModel;
 import use_case.create_group.CreateGroupOutputBoundary;
 import use_case.create_group.CreateGroupOutputData;
-import view.CreateGroupView;
 
+/**
+ * Presenter that prepare data from interactor into chatView
+ */
 public class CreateGroupPresenter implements CreateGroupOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final ChatViewModel chatViewModel;
@@ -25,11 +27,10 @@ public class CreateGroupPresenter implements CreateGroupOutputBoundary {
     @Override
     public void prepareChatView(CreateGroupOutputData createGroupOutputData) {
         ChatState chatState = chatViewModel.getState();
-        System.out.println("Sampai Sini Kok");
-        // TODO: Make a update implementation of chatState;
         chatState.setUser(createGroupOutputData.getUser());
         chatState.setCurrentUser(createGroupOutputData.getUser().getName());
         chatState.setMembers(createGroupOutputData.getGroup().getUsernames());
+        chatState.setGroupName(createGroupOutputData.getGroup().getGroupName());
         chatViewModel.setState(chatState);
 
         viewManagerModel.setState(chatViewModel.getViewName());
