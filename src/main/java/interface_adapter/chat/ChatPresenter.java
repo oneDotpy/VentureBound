@@ -35,5 +35,6 @@ public class ChatPresenter implements ChatOutputBoundary {
         chatViewModel.setState(chatState);
         chatViewModel.firePropertyChanged("members");
     }
+
 }
 

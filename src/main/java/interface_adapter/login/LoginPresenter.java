@@ -47,8 +47,9 @@ public class LoginPresenter implements LoginOutputBoundary {
 
         WelcomeState welcomeState = welcomeViewModel.getState();
         welcomeState.setUser(response.getUser());
+        System.out.println("Username: " + response.getUser().getName());
         welcomeViewModel.setState(welcomeState);
-        welcomeViewModel.firePropertyChanged();
+        welcomeViewModel.firePropertyChanged("username");
 
         viewManagerModel.setState(welcomeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
@@ -56,7 +57,7 @@ public class LoginPresenter implements LoginOutputBoundary {
         // TODO: Implement the chat functionality here
 
         ChatState chatState = chatViewModel.getState();
-        chatState.setCurrentUser(response.getUser().getName());
+        chatState.setCurrentUser(response.getUser());
 
         chatViewModel.setState(chatState);
         chatViewModel.firePropertyChanged();

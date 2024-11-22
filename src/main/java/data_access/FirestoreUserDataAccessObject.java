@@ -45,8 +45,12 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
             String password = document.get("password").toString();
             String email = document.get("email").toString();
             String groupID = document.get("group").toString();
-            Group group = firestoreGroupDataAccessObject.get(groupID);
-            return userFactory.create(email, password, email, group);
+            Group group = null;
+            if (firestoreGroupDataAccessObject.existByID(groupID)) {
+                group = firestoreGroupDataAccessObject.get(groupID);
+            }
+
+            return userFactory.create(username, password, email, group);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

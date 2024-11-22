@@ -134,5 +134,8 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if ("username".equals(evt.getPropertyName())) {
+            greeting.setText("Welcome, " + welcomeViewModel.getState().getUser().getName()); // Update the greeting text
+        }
     }
 }

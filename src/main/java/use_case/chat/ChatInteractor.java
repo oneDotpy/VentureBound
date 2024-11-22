@@ -1,5 +1,6 @@
 package use_case.chat;
 
+import entity.User;
 import interface_adapter.chat.ChatState;
 import java.util.List;
 
@@ -29,13 +30,13 @@ public class ChatInteractor implements ChatInputBoundary {
         return chatState.getMembers();
     }
 
-    public void setCurrentUser(String username) {
-        System.out.println("[ChatInteractor] Setting current user to: " + username);
-        chatState.setCurrentUser(username);
+    public void setCurrentUser(User user) {
+        System.out.println("[ChatInteractor] Setting current user to: " + user);
+        chatState.setCurrentUser(user);
     }
 
-    public String getCurrentUser() {
-        String user = chatState.getCurrentUser();
+    public User getCurrentUser() {
+        User user = chatState.getCurrentUser();
         System.out.println("[ChatInteractor] Getting current user: " + user);
         return user;
     }

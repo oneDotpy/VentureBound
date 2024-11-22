@@ -1,5 +1,6 @@
 package interface_adapter.chat;
 
+import entity.User;
 import use_case.chat.ChatInputBoundary;
 import use_case.chat.ChatInputData;
 import use_case.chat.ChatInteractor;
@@ -41,7 +42,7 @@ public class ChatController {
         chatInteractor.sendMessage(inputData);
     }
 
-    public String getCurrentUser() {
+    public User getCurrentUser() {
         return ((ChatInteractor) chatInteractor).getCurrentUser();
     }
 

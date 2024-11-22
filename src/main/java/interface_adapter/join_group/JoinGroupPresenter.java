@@ -1,6 +1,8 @@
 package interface_adapter.join_group;
 
+import entity.GroupFactory;
 import entity.Message;
+import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.chat.ChatState;
 import interface_adapter.chat.ChatViewModel;
@@ -27,12 +29,14 @@ public class JoinGroupPresenter implements JoinGroupOutputBoundary {
         // Set Members, Current Users
         ChatState chatState = chatViewModel.getState();
         chatState.setUser(joinGroupOutputData.getUser());
-        chatState.setCurrentUser(joinGroupOutputData.getUser().getName());
+        chatState.setCurrentUser(joinGroupOutputData.getUser());
         chatState.setMembers(joinGroupOutputData.getGroup().getUsernames());
         for (Message message: joinGroupOutputData.getGroup().getMessages()) {
             System.out.println(message.getContent());
             chatState.addMessage(message.getSender(), message.getContent());
         }
+        chatState.setGroupName(joinGroupOutputData.getGroup().getGroupName());
+
         chatViewModel.setState(chatState);
 
         // Fire to switch into ChatViewModel
@@ -40,6 +44,7 @@ public class JoinGroupPresenter implements JoinGroupOutputBoundary {
         viewManagerModel.firePropertyChanged();
 
         // Fire to notify chatViewModel to update the members
+        chatViewModel.startListeningForUpdates(joinGroupOutputData.getGroup().getGroupID());
         chatViewModel.firePropertyChanged("members");
         chatViewModel.firePropertyChanged("messages");
     }
@@ -47,6 +52,7 @@ public class JoinGroupPresenter implements JoinGroupOutputBoundary {
     public void presentFailView(String message) {
         JoinGroupState joinGroupState = joinGroupViewModel.getState();
         joinGroupState.setGroupError(message);
+
         joinGroupViewModel.setState(joinGroupState);
 
         joinGroupViewModel.firePropertyChanged("error");

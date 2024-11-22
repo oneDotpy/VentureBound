@@ -4,6 +4,7 @@ import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
 import entity.*;
+import use_case.chat.RealTimeChatUpdatesUseCase;
 import use_case.create_group.CreateGroupDataAccessInterface;
 
 import com.google.firebase.cloud.FirestoreClient;
@@ -88,6 +89,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         return messages;
     }
 
+    @Override
     public Group get(String groupID) {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupID);
@@ -294,5 +296,40 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         Group group = groupFactory.create(groupName, usernames, responses, recommendations, chosenLocations, messages, "10090fdas");
         groupDataAccessObject.save(group);
     }
+    public void setGroupMemberListener(String groupID, RealTimeChatUpdatesUseCase.GroupMemberUpdateListener listener) {
+        Firestore db = FirestoreClient.getFirestore();
+        db.collection("groups").document(groupID).addSnapshotListener((snapshot, error) -> {
+            if (error != null) {
+                listener.onError(error);
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
+                List<String> members = (List<String>) snapshot.get("usernames");
+                listener.onGroupMembersUpdated(members);
+            }
+        });
+    }
+
+    public void setMessageListener(String groupID, RealTimeChatUpdatesUseCase.MessageUpdateListener listener) {
+        Firestore db = FirestoreClient.getFirestore();
+        db.collection("groups").document(groupID).collection("messages")
+                .addSnapshotListener((snapshots, error) -> {
+                    if (error != null) {
+                        listener.onError(error);
+                        return;
+                    }
+                    if (snapshots != null) {
+                        Map<String, String> messages = new HashMap<>();
+                        for (DocumentSnapshot doc : snapshots.getDocuments()) {
+                            String user = (String) doc.get("user");
+                            String content = (String) doc.get("content");
+                            Timestamp timestamp = (Timestamp) doc.get("timestamp");
+                            messages.put(user, content); // Assuming Message has such a constructor
+                        }
+                        listener.onMessagesUpdated(messages);
+                    }
+                });
+    }
+
 }
 
