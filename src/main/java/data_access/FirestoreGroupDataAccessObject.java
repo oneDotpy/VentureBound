@@ -148,6 +148,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
 
     public void updateResponses(String groupID, List<Response> responses) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
+        System.out.println(groupID);
         DocumentReference ref = db.collection("groups").document(groupID);
         for (Response response : responses) {
             ApiFuture<WriteResult> future = ref.collection("responses").document(response.getUser()).set(response);
@@ -206,6 +207,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
             try {
                 DocumentReference docRef = db.collection("groups").add(data).get();
                 String documentID = docRef.getId();
+                groupID = documentID;
                 db.collection("groups").document(documentID).update("groupID", documentID).get();
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
@@ -229,10 +231,10 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         // } catch(Exception e) {
             // e.printStackTrace();
         // }
-        updateResponses(group.getGroupID(), group.getResponses());
-        updateRecommendations(group.getGroupID(), group.getRecommendedLocations());
-        updateMessages(group.getGroupID(), group.getMessages());
-        return group.getGroupID();
+        updateResponses(groupID, group.getResponses());
+        updateRecommendations(groupID, group.getRecommendedLocations());
+        updateMessages(groupID, group.getMessages());
+        return groupID;
     }
 
     public void join(String groupID, String username) {
@@ -245,6 +247,23 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setListener(String groupID, GroupListener groupListener) {
+        Firestore db = FirestoreClient.getFirestore();
+        db.collection("groups").document(groupID).addSnapshotListener((snapshot, e) -> {
+            if (e != null) {
+                e.printStackTrace();
+            }
+            if (snapshot != null) {
+                List<String> usernames = (ArrayList)snapshot.get("usernames");
+                groupListener.onDatabaseChanged(usernames);
+            }
+        });
+    }
+
+    public interface GroupListener{
+        public void onDatabaseChanged(List<String> usernames);
     }
 
     public static void main(String[] args) {

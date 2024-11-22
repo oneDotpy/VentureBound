@@ -1,5 +1,7 @@
 package interface_adapter.chat;
 
+import entity.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class ChatState {
     private final List<String> messages = new ArrayList<>();
     private List<String> members = new ArrayList<>();
     private String currentUser;
+    private User user;
 
     // Private constructor to prevent instantiation
     private ChatState() {}
@@ -55,5 +58,9 @@ public class ChatState {
         System.out.println("[ChatState] Retrieving current user: " + currentUser);
         return currentUser;
     }
+
+    public void setUser(User user) {this.user = user;}
+
+    public User getUser() {return user;}
 
 }

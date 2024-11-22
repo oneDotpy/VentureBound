@@ -4,38 +4,61 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
-import data_access.InMemoryUserDataAccessObject;
-import entity.CommonUserFactory;
-import entity.UserFactory;
+import data_access.FirestoreDataAccessObject;
+import data_access.FirestoreGroupDataAccessObject;
+import data_access.FirestoreUserDataAccessObject;
+import entity.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.*;
 import interface_adapter.chat.*;
+import interface_adapter.create_group.CreateGroupController;
+import interface_adapter.create_group.CreateGroupPresenter;
+import interface_adapter.create_group.CreateGroupViewModel;
 import interface_adapter.group.*;
+import interface_adapter.join_group.JoinGroupController;
+import interface_adapter.join_group.JoinGroupPresenter;
+import interface_adapter.join_group.JoinGroupViewModel;
 import interface_adapter.login.*;
-import interface_adapter.logout.*;
 import interface_adapter.signup.*;
+import interface_adapter.welcome.WelcomeController;
+import interface_adapter.welcome.WelcomePresenter;
 import interface_adapter.welcome.WelcomeViewModel;
 import use_case.chat.*;
+import use_case.create_group.CreateGroupInteractor;
 import use_case.group.*;
+import use_case.join_group.JoinGroupInteractor;
 import use_case.login.*;
-import use_case.logout.*;
 import use_case.signup.*;
 import use_case.change_password.*;
 import use_case.vacation_bot.*;
+import use_case.welcome.WelcomeInteractor;
 import view.*;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
+
     private final UserFactory userFactory = new CommonUserFactory();
+    private final GroupFactory groupFactory = new CommonGroupFactory();
+    private final MessageFactory messageFactory = new CommonMessageFactory();
+    private final ResponseFactory responseFactory = new CommonResponseFactory();
+    private final RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
+
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
+    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
+
+    private final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
+    private final FirestoreGroupDataAccessObject firestoreGroupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
+    private final FirestoreUserDataAccessObject firestoreUserDataAccessObject = new FirestoreUserDataAccessObject(userFactory, firestoreGroupDataAccessObject);
+
 
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
-    private LoggedInViewModel loggedInViewModel;
+    private WelcomeViewModel welcomeViewModel;
+    private CreateGroupViewModel createGroupViewModel;
+    private JoinGroupViewModel joinGroupViewModel;
     private ChatViewModel chatViewModel;
     private GroupViewModel groupViewModel;
-    private WelcomeViewModel welcomeViewModel;
 
     private ChatState chatState;
     private ChatPresenter chatPresenter;
@@ -79,22 +102,20 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addLoggedInView() {
-        loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
-        cardPanel.add(loggedInView, loggedInView.getViewName());
+    public AppBuilder addCreateGroupView() {
+        createGroupViewModel = new CreateGroupViewModel();
+        createGroupView = new CreateGroupView(createGroupViewModel, cardLayout, cardPanel);
+        cardPanel.add(createGroupView, "create-group");
         return this;
     }
 
-    public AppBuilder addGroupViews() {
-        groupViewModel = new GroupViewModel();
-        createGroupView = new CreateGroupView(groupViewModel, cardLayout, cardPanel);
-        joinGroupView = new JoinGroupView(groupViewModel, cardLayout, cardPanel);
-
-        cardPanel.add(createGroupView, "create_group");
-        cardPanel.add(joinGroupView, "join_group");
+    public AppBuilder addJoinGroupView() {
+        joinGroupViewModel = new JoinGroupViewModel();
+        joinGroupView = new JoinGroupView(joinGroupViewModel, cardLayout, cardPanel);
+        cardPanel.add(joinGroupView, "join-group");
         return this;
     }
+
 
     public AppBuilder addChatView() {
         chatViewModel = new ChatViewModel();
@@ -105,15 +126,15 @@ public class AppBuilder {
 
     public AppBuilder addSignupUseCase() {
         SignupPresenter signupPresenter = new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
-        SignupInteractor signupInteractor = new SignupInteractor(userDataAccessObject, signupPresenter, userFactory);
+        SignupInteractor signupInteractor = new SignupInteractor(firestoreUserDataAccessObject, signupPresenter, userFactory);
         SignupController signupController = new SignupController(signupInteractor);
         signupView.setSignupController(signupController);
         return this;
     }
 
     public AppBuilder addLoginUseCase() {
-        LoginPresenter loginPresenter = new LoginPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
-        LoginInteractor loginInteractor = new LoginInteractor(userDataAccessObject, loginPresenter);
+        LoginPresenter loginPresenter = new LoginPresenter(viewManagerModel, welcomeViewModel, loginViewModel, chatViewModel);
+        LoginInteractor loginInteractor = new LoginInteractor(firestoreUserDataAccessObject, loginPresenter);
         LoginController loginController = new LoginController(loginInteractor);
 
         loginView.setLoginController(loginController);
@@ -144,6 +165,14 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addWelcomeUseCase() {
+        WelcomePresenter welcomePresenter = new WelcomePresenter(viewManagerModel, createGroupViewModel, joinGroupViewModel,welcomeViewModel);
+        WelcomeInteractor welcomeInteractor = new WelcomeInteractor(welcomePresenter);
+
+        WelcomeController welcomeController = new WelcomeController(welcomeInteractor);
+        welcomeView.setWelcomeController(welcomeController);
+        return this;
+    }
 
     public AppBuilder addVacationBotUseCase() {
         vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
@@ -152,20 +181,23 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addGroupUseCase() {
-        GroupPresenter groupPresenter = new GroupPresenter(groupViewModel, chatViewModel, viewManagerModel);
-        GroupInteractor groupInteractor = new GroupInteractor(groupPresenter, new GroupState());
-        groupController = new GroupController(groupInteractor);
-        joinGroupView.setGroupController(groupController);
-        createGroupView.setGroupController(groupController);
+    public AppBuilder addJoinGroupUseCase() {
+        JoinGroupPresenter joinGroupPresenter = new JoinGroupPresenter(viewManagerModel,joinGroupViewModel, chatViewModel, welcomeViewModel);
+        JoinGroupInteractor joinGroupInteractor = new JoinGroupInteractor(userFactory, firestoreGroupDataAccessObject, joinGroupPresenter);
+        JoinGroupController joinGroupController = new JoinGroupController(joinGroupInteractor);
 
-        // Set current user if already logged in
-        if (chatInteractor != null && chatInteractor.getCurrentUser() != null) {
-            groupController.setCurrentUser(chatInteractor.getCurrentUser());
-        }
+        joinGroupView.setJoinGroupController(joinGroupController);
         return this;
     }
 
+    public AppBuilder addCreateGroupUseCase() {
+        CreateGroupPresenter createGroupPresenter = new CreateGroupPresenter(viewManagerModel, chatViewModel, createGroupViewModel, welcomeViewModel);
+        CreateGroupInteractor createGroupInteractor = new CreateGroupInteractor(firestoreGroupDataAccessObject, groupFactory, userFactory, createGroupPresenter);
+        CreateGroupController createGroupController = new CreateGroupController(createGroupInteractor);
+
+        createGroupView.setCreateGroupController(createGroupController);
+        return this;
+    }
 
     public JFrame build() {
         // Pre-populate test data before adding views

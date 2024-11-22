@@ -16,14 +16,16 @@ public class Main {
                 .addLoginView()
                 .addSignupView()
                 .addWelcomeView()
-                .addLoggedInView()
-                .addGroupViews()
+                .addCreateGroupView()
+                .addJoinGroupView()
                 .addChatView()
+                .addWelcomeUseCase()
                 .addSignupUseCase()
                 .addLoginUseCase()
+                .addCreateGroupUseCase()
+                .addJoinGroupUseCase()
                 .addChatUseCase()
                 .addVacationBotUseCase()
-                .addGroupUseCase()
                 .build();
 
         application.pack();

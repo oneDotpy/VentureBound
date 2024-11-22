@@ -29,10 +29,6 @@ public class CreateGroupInteractor {
             createGroupPresenter.presentFailView("Empty group name");
         }
 
-        else if (groupDataAccessObject.existByID(createGroupInputData.getGroupname())){
-            createGroupPresenter.presentFailView("this name is already exist");
-        }
-
         else {
             List<String> users = new ArrayList<>();
             User user = createGroupInputData.getUser();

@@ -10,11 +10,13 @@ import com.google.firebase.cloud.FirestoreClient;
 import entity.User;
 import entity.UserFactory;
 import entity.Group;
+import use_case.login.LoginUserDataAccessInterface;
+import use_case.signup.SignupUserDataAccessInterface;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirestoreUserDataAccessObject{
+public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface {
 
     private UserFactory userFactory;
     private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;
@@ -56,8 +58,11 @@ public class FirestoreUserDataAccessObject{
         data.put("username", user.getName());
         data.put("password", user.getPassword());
         data.put("email", user.getEmail());
-        data.put("group", user.getGroup());
-
+        if (user.getGroup() != null) {
+            data.put("group", user.getGroup().getGroupID());
+        } else {
+            data.put("group", "");
+        }
         ApiFuture<WriteResult> future = db.collection("users").document(user.getName()).set(data);
         try {
             System.out.println(future.get());
@@ -65,5 +70,13 @@ public class FirestoreUserDataAccessObject{
             e.printStackTrace();
             return;
         }
+    }
+
+    public void changePassword(String username, String password) {
+        Firestore db = FirestoreDataAccessObject.getFirestore();
+        db.collection("users")
+                .document(username)
+                .update("password", password);
+
     }
 }
