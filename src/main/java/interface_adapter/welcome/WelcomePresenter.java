@@ -6,6 +6,7 @@ import interface_adapter.create_group.CreateGroupViewModel;
 import interface_adapter.join_group.JoinGroupState;
 import interface_adapter.join_group.JoinGroupViewModel;
 import use_case.welcome.WelcomeOutputBoundary;
+import use_case.welcome.WelcomeOutputData;
 
 public class WelcomePresenter implements WelcomeOutputBoundary {
     private final ViewManagerModel viewManagerModel;
@@ -21,17 +22,19 @@ public class WelcomePresenter implements WelcomeOutputBoundary {
     }
 
     @Override
-    public void switchToCreateGroupView() {
+    public void switchToCreateGroupView(WelcomeOutputData welcomeOutputData) {
         CreateGroupState createGroupState = createGroupViewModel.getState();
-        createGroupState.setUser(welcomeViewModel.getState().getUser());
+        createGroupState.setUser(welcomeOutputData.getUser());
+
         viewManagerModel.setState(createGroupViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 
     @Override
-    public void switchToJoinGroupView() {
+    public void switchToJoinGroupView(WelcomeOutputData welcomeOutputData) {
         JoinGroupState joinGroupState = joinGroupViewModel.getState();
-        joinGroupState.setUser(welcomeViewModel.getState().getUser());
+        joinGroupState.setUser(welcomeOutputData.getUser());
+
         viewManagerModel.setState(joinGroupViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }

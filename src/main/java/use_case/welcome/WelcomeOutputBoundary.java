@@ -1,7 +1,15 @@
 package use_case.welcome;
 
 public interface WelcomeOutputBoundary {
-    public void switchToCreateGroupView();
+    /**
+     * Switch to CreateGroup View
+     * @param welcomeOutputData Output data from interactor
+     */
+    public void switchToCreateGroupView(WelcomeOutputData welcomeOutputData);
 
-    public void switchToJoinGroupView();
+    /**
+     * Switch to Create JoinGroup View
+     * @param welcomeOutputData Output data from interactor
+     */
+    public void switchToJoinGroupView(WelcomeOutputData welcomeOutputData);
 }

@@ -8,12 +8,14 @@ public class WelcomeInteractor implements WelcomeInputBoundary {
     }
 
     @Override
-    public void switchToCreateGroupView() {
-        welcomePresenter.switchToCreateGroupView();
+    public void switchToCreateGroupView(WelcomeInputData welcomeInputData) {
+        WelcomeOutputData welcomeOutputData = new WelcomeOutputData(welcomeInputData.getUser());
+        welcomePresenter.switchToCreateGroupView(welcomeOutputData);
     }
 
     @Override
-    public void switchToJoinGroupView() {
-        welcomePresenter.switchToJoinGroupView();
+    public void switchToJoinGroupView(WelcomeInputData welcomeInputData) {
+        WelcomeOutputData welcomeOutputData = new WelcomeOutputData(welcomeInputData.getUser());
+        welcomePresenter.switchToJoinGroupView(welcomeOutputData);
     }
 }

@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 
 import interface_adapter.welcome.WelcomeController;
+import interface_adapter.welcome.WelcomeState;
 import interface_adapter.welcome.WelcomeViewModel;
 
 /**
@@ -77,7 +78,8 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
 
         createGroup.addActionListener(e -> {
             // Switch to the "create group" view
-            welcomeController.switchToCreateGroupView();
+            WelcomeState curState = welcomeViewModel.getState();
+            welcomeController.switchToCreateGroupView(curState.getUser());
 //            cardLayout.show(cardPanel, "create_group");
 //            System.out.println("Redirecting to create group view...");
         });
@@ -96,7 +98,8 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
 
         joinGroup.addActionListener(e -> {
             // Switch to the "join group" view
-            welcomeController.switchToJoinGroupView();
+            WelcomeState curState = welcomeViewModel.getState();
+            welcomeController.switchToJoinGroupView(curState.getUser());
 //            cardLayout.show(cardPanel, "join_group");
 //            System.out.println("Redirecting to join group view...");
         });
