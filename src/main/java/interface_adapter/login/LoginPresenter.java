@@ -41,6 +41,16 @@ public class LoginPresenter implements LoginOutputBoundary {
             onLoginSuccessListener.accept(response.getUser().getName()); // Use the Consumer here
         }
 
+        if (response.isUseCaseFailed()) {
+            ChatState chatState = chatViewModel.getState();
+            chatState.setCurrentUser(response.getUser());
+            chatViewModel.setState(chatState);
+            chatViewModel.firePropertyChanged();
+
+            viewManagerModel.setState(chatViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
+        }
+
         // Set the login state whether the user has a group
         LoginState loginState = loginViewModel.getState();
         loginState.setUserHasGroup(response.getUser().getGroup() != null);
@@ -59,11 +69,8 @@ public class LoginPresenter implements LoginOutputBoundary {
         ChatState chatState = chatViewModel.getState();
         chatState.setCurrentUser(response.getUser());
 
-        chatViewModel.setState(chatState);
-        chatViewModel.firePropertyChanged();
 
-        viewManagerModel.setState(chatViewModel.getViewName());
-        viewManagerModel.firePropertyChanged();
+
 
     }
 

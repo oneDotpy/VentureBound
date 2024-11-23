@@ -20,6 +20,8 @@ import interface_adapter.join_group.JoinGroupViewModel;
 import interface_adapter.login.*;
 import interface_adapter.signup.*;
 import interface_adapter.welcome.WelcomeController;
+import interface_adapter.welcome.WelcomePresenter;
+import interface_adapter.welcome.WelcomeState;
 import interface_adapter.welcome.WelcomeViewModel;
 import use_case.chat.*;
 import use_case.create_group.CreateGroupInteractor;
@@ -27,15 +29,16 @@ import use_case.group.*;
 import use_case.join_group.JoinGroupInteractor;
 import use_case.login.*;
 import use_case.send_message.SendMessageInteractor;
-import use_case.signup.SignupInteractor;
+import use_case.signup.*;
+import use_case.change_password.*;
 import use_case.vacation_bot.*;
 import use_case.welcome.WelcomeInteractor;
 import view.*;
-import interface_adapter.welcome.*;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
+
     private final UserFactory userFactory = new CommonUserFactory();
     private final GroupFactory groupFactory = new CommonGroupFactory();
     private final MessageFactory messageFactory = new CommonMessageFactory();
@@ -136,7 +139,7 @@ public class AppBuilder {
 
     public AppBuilder addLoginUseCase() {
         LoginPresenter loginPresenter = new LoginPresenter(viewManagerModel, welcomeViewModel, loginViewModel, chatViewModel);
-        LoginInteractor loginInteractor = new LoginInteractor(firestoreUserDataAccessObject, loginPresenter);
+        LoginInteractor loginInteractor = new LoginInteractor(firestoreUserDataAccessObject, firestoreGroupDataAccessObject, loginPresenter);
         LoginController loginController = new LoginController(loginInteractor);
 
         loginView.setLoginController(loginController);
@@ -234,7 +237,6 @@ public class AppBuilder {
     private void prePopulateTestData() {
         // Set the current user for testing
         if (chatInteractor != null) {
-//            chatInteractor.setCurrentUser("Charlie");
             System.out.println("[Debug] Current User set to: Charlie");
         }
         if (groupController != null) {
