@@ -16,6 +16,7 @@ import use_case.send_message.SendMessageInputData;
 
 public class VacationBotInteractor implements VacationBotInputBoundary {
     private enum BotState { INACTIVE, AWAITING_LOCATION, AWAITING_HOBBIES, GENERATING_RECOMMENDATIONS }
+    private boolean botCalled = false;
     private BotState botState = BotState.INACTIVE;
 
     private final VacationBotOutputBoundary presenter;
@@ -55,6 +56,10 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     @Override
     public boolean isBotActive() {
         return botState != BotState.INACTIVE;
+    }
+
+    public boolean isBotCalled() {
+        return botCalled;
     }
 
     private void sendBotMessage(String botMessage) {
@@ -133,8 +138,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
             // Check if all members have responded
             if (hobbyResponses.size() == chatViewModel.getState().getMembers().size()) {
+                botCalled = true;
                 sendBotMessage("Generating the your perfect holiday destination....");
-                processHobbyResponses();
+                if (botCalled) {processHobbyResponses();}
             }
         }
     }
