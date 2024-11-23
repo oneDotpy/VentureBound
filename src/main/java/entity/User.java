@@ -35,10 +35,4 @@ public interface User {
      */
     String getGroupID();
 
-    /**
-     * Set the groupID of the user
-     * @param groupID groupID of the user
-     */
-    void setGroupID(String groupID);
-
 }
