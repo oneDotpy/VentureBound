@@ -19,6 +19,14 @@ public class CommonUser implements User {
         this.groupID = "";
     }
 
+    public CommonUser(String name, String password, String email, Group group, String groupID) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.group = group;
+        this.groupID = groupID;
+    }
+
     @Override
     public String getName() {
         return name;
@@ -36,6 +44,4 @@ public class CommonUser implements User {
     public Group getGroup() { return group; }
 
     public String getGroupID() {return groupID;}
-
-    public void setGroupID(String groupID) {this.groupID = groupID;}
 }
