@@ -36,6 +36,7 @@ public class ChatViewModel extends ViewModel<ChatState> {
             @Override
             public void onGroupMembersUpdated(List<String> members) {
                 state.setMembers(members); // Update state directly
+                System.out.println("[CVM]" + members);
                 firePropertyChanged("members");
             }
 
@@ -49,7 +50,11 @@ public class ChatViewModel extends ViewModel<ChatState> {
         chatUpdatesUseCase.listenForMessages(groupID, new RealTimeChatUpdatesUseCase.MessageUpdateListener() {
             @Override
             public void onMessagesUpdated(Map<String, String> messages) {
+                System.out.println("[CVM1]" + messages);
                 messages.forEach((key, value) -> state.addMessage(key, value));
+                messages.clear();
+                System.out.println("[CVM2]" + messages);
+                setState(state);
                 firePropertyChanged("messages");
             }
 
@@ -64,7 +69,6 @@ public class ChatViewModel extends ViewModel<ChatState> {
         ChatState state = getState();
 
         // Add message to local state for immediate feedback
-        state.addMessage(user.getName(), content);
         firePropertyChanged("messages"); // Notify listeners about the updated messages
 
         // Create input data and call the use case
