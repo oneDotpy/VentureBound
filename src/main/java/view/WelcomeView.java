@@ -100,8 +100,6 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
             // Switch to the "join group" view
             WelcomeState curState = welcomeViewModel.getState();
             welcomeController.switchToJoinGroupView(curState.getUser());
-//            cardLayout.show(cardPanel, "join_group");
-//            System.out.println("Redirecting to join group view...");
         });
 
         // Add buttons to button panel with spacing
@@ -135,6 +133,7 @@ public class WelcomeView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("username".equals(evt.getPropertyName())) {
+            System.out.println(welcomeViewModel.getState().getUser().getName());
             greeting.setText("Welcome, " + welcomeViewModel.getState().getUser().getName()); // Update the greeting text
         }
     }

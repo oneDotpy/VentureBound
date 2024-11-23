@@ -15,4 +15,16 @@ public interface LoginOutputBoundary {
      * @param errorMessage the explanation of the failure
      */
     void prepareFailView(String errorMessage);
+
+    /**
+     * Switch to Chat View
+     * @param loginOutputData Output data from interactor
+     */
+    void switchToChatView(LoginOutputData loginOutputData);
+
+    /**
+     * Switch to Welcome View
+     * @param loginOutputData Output data from interactor
+     */
+    void switchToWelcomeView(LoginOutputData loginOutputData);
 }

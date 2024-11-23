@@ -39,4 +39,5 @@ public class LoginState {
     public void setUserHasGroup(boolean userHasGroup) {
         this.userHasGroup = userHasGroup;
     }
+
 }

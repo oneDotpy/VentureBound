@@ -44,4 +44,16 @@ public class LoginInteractor implements LoginInputBoundary {
             }
         }
     }
+
+    public void switchToChatView(LoginOutputData loginOutputData) {
+
+        loginPresenter.switchToChatView(loginOutputData);
+    }
+
+    public void switchToLoginView(LoginOutputData loginOutputData) {
+
+        loginPresenter.switchToWelcomeView(loginOutputData);
+
+    }
+
 }

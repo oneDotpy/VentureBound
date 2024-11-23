@@ -16,8 +16,6 @@ import interface_adapter.signup.SignupState;
 
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    private boolean loginSuccess;
-
     private final JTextField usernameInputField = new JTextField(15);
     private final JPasswordField passwordInputField = new JPasswordField(15);
 
@@ -101,17 +99,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                         currentState.getUsername(),
                         currentState.getPassword()
                 );
-                // If there is no error go to the next view
-                if (currentState.getLoginError() == null) {
-                    System.out.println("User has a group? " + currentState.isUserHasGroup());
-                    if (currentState.isUserHasGroup()) {
-                        cardLayout.show(cardPanel, "chat");
-                        System.out.println("Redirecting to chat view...");
-                    } else {
-                        cardLayout.show(cardPanel, "welcome");
-                        System.out.println("Redirecting to welcome view...");
-                    }
-                }
+
                 currentState.setLoginError(null);
             }
         });

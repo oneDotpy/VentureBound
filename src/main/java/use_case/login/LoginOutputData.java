@@ -26,4 +26,8 @@ public class LoginOutputData {
     public boolean isUseCaseFailed() {
         return useCaseFailed;
     }
+
+    public Group getGroup() {
+        return user.getGroup();
+    }
 }

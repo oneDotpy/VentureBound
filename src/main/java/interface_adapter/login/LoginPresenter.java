@@ -1,13 +1,13 @@
 package interface_adapter.login;
 
+import entity.Message;
+import entity.User;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.chat.ChatState;
 import interface_adapter.chat.ChatViewModel;
-import interface_adapter.signup.SignupState;
 import interface_adapter.welcome.WelcomeState;
 import interface_adapter.welcome.WelcomeViewModel;
+import use_case.join_group.JoinGroupOutputData;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
@@ -40,38 +40,11 @@ public class LoginPresenter implements LoginOutputBoundary {
         if (onLoginSuccessListener != null) {
             onLoginSuccessListener.accept(response.getUser().getName()); // Use the Consumer here
         }
-
-        if (response.isUseCaseFailed()) {
-            ChatState chatState = chatViewModel.getState();
-            chatState.setCurrentUser(response.getUser());
-            chatViewModel.setState(chatState);
-            chatViewModel.firePropertyChanged();
-
-            viewManagerModel.setState(chatViewModel.getViewName());
-            viewManagerModel.firePropertyChanged();
+        if (response.getGroup() != null) {
+            switchToChatView(response);
+        } else {
+            switchToWelcomeView(response);
         }
-
-        // Set the login state whether the user has a group
-        LoginState loginState = loginViewModel.getState();
-        loginState.setUserHasGroup(response.getUser().getGroup() != null);
-
-        WelcomeState welcomeState = welcomeViewModel.getState();
-        welcomeState.setUser(response.getUser());
-        System.out.println("Username: " + response.getUser().getName());
-        welcomeViewModel.setState(welcomeState);
-        welcomeViewModel.firePropertyChanged("username");
-
-        viewManagerModel.setState(welcomeViewModel.getViewName());
-        viewManagerModel.firePropertyChanged();
-
-        // TODO: Implement the chat functionality here
-
-        ChatState chatState = chatViewModel.getState();
-        chatState.setCurrentUser(response.getUser());
-
-
-
-
     }
 
     @Override
@@ -80,5 +53,45 @@ public class LoginPresenter implements LoginOutputBoundary {
         loginState.setLoginError(error);
         loginViewModel.setState(loginState);
         loginViewModel.firePropertyChanged();
+    }
+
+    public void switchToChatView(LoginOutputData loginOutputData) {
+        // Set Members, Current Users
+        ChatState chatState = chatViewModel.getState();
+        User user = loginOutputData.getUser();
+        chatState.setUser(user);
+        chatState.setCurrentUser(user);
+        chatState.setMembers(loginOutputData.getGroup().getUsernames());
+        for (Message message: loginOutputData.getGroup().getMessages()) {
+            System.out.println(message.getContent());
+            chatState.addMessage(message.getSender(), message.getContent());
+        }
+        chatState.setGroupName(loginOutputData.getGroup().getGroupName());
+
+        chatViewModel.setState(chatState);
+
+        // Fire to switch into ChatViewModel
+        viewManagerModel.setState(chatViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+
+        // Fire to notify chatViewModel to update the members
+        chatViewModel.startListeningForUpdates(loginOutputData.getGroup().getGroupID());
+        chatViewModel.firePropertyChanged("members");
+        chatViewModel.firePropertyChanged("messages");
+
+    }
+
+    @Override
+    public void switchToWelcomeView(LoginOutputData loginOutputData) {
+        WelcomeState welcomeState = welcomeViewModel.getState();
+        welcomeState.setUser(loginOutputData.getUser());
+        welcomeViewModel.setState(welcomeState);
+
+        viewManagerModel.setState(welcomeViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+
+        welcomeViewModel.firePropertyChanged("username");
+
+
     }
 }
