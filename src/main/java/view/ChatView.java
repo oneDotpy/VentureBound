@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.chat.ChatController;
+import interface_adapter.chat.ChatState;
 import interface_adapter.chat.ChatViewModel;
 
 import javax.swing.*;
@@ -50,7 +51,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         leaveGroupButton.setForeground(Color.WHITE);
         leaveGroupButton.setFocusPainted(false);
         leaveGroupButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        leaveGroupButton.addActionListener(new SimulButtonListener());
+        leaveGroupButton.addActionListener(new LeaveGroupListener());
 
         // Members Label
         JLabel membersLabel = new JLabel("Members:");
@@ -114,6 +115,16 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.add(rightPanel, BorderLayout.CENTER);
     }
 
+
+    private class LeaveGroupListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Tahap 0");
+            ChatState currState = chatViewModel.getState();
+            chatController.leaveGroup(currState.getUser());
+        }
+    }
 
     private class SendButtonListener implements ActionListener {
         @Override

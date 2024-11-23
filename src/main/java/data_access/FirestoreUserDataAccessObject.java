@@ -12,13 +12,14 @@ import entity.UserFactory;
 import entity.Group;
 import use_case.create_group.CreateGroupUserDataAccessInterface;
 import use_case.join_group.JoinGroupUserDataAccessInterface;
+import use_case.leave_group.LeaveGroupUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface, JoinGroupUserDataAccessInterface, CreateGroupUserDataAccessInterface {
+public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface, JoinGroupUserDataAccessInterface, CreateGroupUserDataAccessInterface, LeaveGroupUserDataAccessInterface {
 
     private UserFactory userFactory;
     private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;

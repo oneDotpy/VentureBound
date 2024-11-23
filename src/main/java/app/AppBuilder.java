@@ -27,6 +27,7 @@ import use_case.chat.*;
 import use_case.create_group.CreateGroupInteractor;
 import use_case.group.*;
 import use_case.join_group.JoinGroupInteractor;
+import use_case.leave_group.LeaveGroupInteractor;
 import use_case.login.*;
 import use_case.send_message.SendMessageInteractor;
 import use_case.signup.*;
@@ -166,17 +167,19 @@ public class AppBuilder {
 
     public AppBuilder addChatUseCase() {
         chatState = ChatState.getInstance(); // Use the singleton instance
-        chatPresenter = new ChatPresenter(viewManagerModel, chatViewModel);
+        chatPresenter = new ChatPresenter(viewManagerModel, chatViewModel, welcomeViewModel);
         chatInteractor = new ChatInteractor(chatPresenter, chatState);
         vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
         vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatViewModel, firestoreGroupDataAccessObject, messageFactory);
         vacationBotController = new VacationBotController(vacationBotInteractor);
 
+        LeaveGroupInteractor leaveGroupInteractor = new LeaveGroupInteractor(firestoreGroupDataAccessObject, firestoreUserDataAccessObject, userFactory, chatPresenter);
+
         chatViewModel.setChatUpdatesUseCase(new RealTimeChatUpdatesUseCase(firestoreGroupDataAccessObject));
         chatViewModel.setSendMessageInteractor(new SendMessageInteractor(firestoreGroupDataAccessObject, messageFactory));
         chatViewModel.setBotInteractor(vacationBotInteractor);
 
-        chatController = new ChatController(chatInteractor, vacationBotInteractor);
+        chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor);
         chatView.setChatController(chatController);
         return this;
     }

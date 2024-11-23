@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ChatState {
     private static ChatState instance;
-    private final List<String> messages = new ArrayList<>();
+    private List<String> messages = new ArrayList<>();
     private List<String> members = new ArrayList<>();
     private User currentUser;
     private User user;
@@ -25,6 +25,10 @@ public class ChatState {
 
     public List<String> getMessages() {
         return new ArrayList<>(messages);
+    }
+
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
     }
 
     public void setCurrentUser(User user) {

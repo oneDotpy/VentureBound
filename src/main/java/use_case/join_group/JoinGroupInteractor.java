@@ -26,6 +26,7 @@ public class JoinGroupInteractor implements JoinGroupInputBoundary {
         }
 
         else if (firestoreGroupDataAccessObject.existByID(groupID)) {
+            System.out.println("Sampaiii Sinii");
             firestoreGroupDataAccessObject.join(groupID, joinGroupInputData.getUser().getName());
 
             String username = joinGroupInputData.getUser().getName();

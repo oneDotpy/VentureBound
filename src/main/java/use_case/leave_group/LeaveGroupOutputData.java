@@ -2,10 +2,10 @@ package use_case.leave_group;
 
 import entity.User;
 
-public class LeaveGroupInputData {
+public class LeaveGroupOutputData {
     private final User user;
 
-    public LeaveGroupInputData(User user) {
+    public LeaveGroupOutputData(User user) {
         this.user = user;
     }
 

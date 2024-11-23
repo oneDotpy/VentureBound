@@ -4,21 +4,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="integrated chat system">
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="New feature to set groupID to user when create a new group">
+      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupOutputData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonMessageFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonMessageFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/send_message/SendMessageInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/send_message/SendMessageInteractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/FirestoreUserDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/FirestoreUserDataAccessObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/join_group/JoinGroupPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/join_group/JoinGroupPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/join_group/JoinGroupInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/join_group/JoinGroupInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupGroupDataAccessInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupGroupDataAccessInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInputBoundary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInputData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupOutputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupOutputBoundary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupUserDataAccessInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupUserDataAccessInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/ChatView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ChatView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/JoinGroupView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/JoinGroupView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonMessageFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonMessageFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject$GroupListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonUserFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonUserFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatState.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInteractor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor$BotState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor$BotState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/create_group/CreateGroupDataAccessInterface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/create_group/CreateGroupInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/create_group/CreateGroupInteractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/join_group/JoinGroupInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/join_group/JoinGroupInteractor.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView$SendButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView$SendButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView$SimulButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView$SimulButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,8 +52,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -175,7 +199,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732319333335</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="New feature to set groupID to user when create a new group">
+      <option name="closed" value="true" />
+      <created>1732396970171</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1732396970171</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,6 +215,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="integrated chat system" />
-    <option name="LAST_COMMIT_MESSAGE" value="integrated chat system" />
+    <MESSAGE value="Final 11/22 7:21" />
+    <MESSAGE value="New feature to set groupID to user when create a new group" />
+    <option name="LAST_COMMIT_MESSAGE" value="New feature to set groupID to user when create a new group" />
   </component>
 </project>

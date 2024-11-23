@@ -1,19 +1,26 @@
 package interface_adapter.chat;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.welcome.WelcomeState;
+import interface_adapter.welcome.WelcomeViewModel;
 import use_case.chat.ChatOutputBoundary;
 import use_case.chat.ChatOutputData;
+import use_case.leave_group.LeaveGroupOutputBoundary;
+import use_case.leave_group.LeaveGroupOutputData;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ChatPresenter implements ChatOutputBoundary {
+public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBoundary {
     private final ChatViewModel chatViewModel;
-    private final ChatState chatState = ChatState.getInstance(); // Use singleton
+    private final ChatState chatState = ChatState.getInstance();// Use singleton
+    private final WelcomeViewModel welcomeViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    public ChatPresenter(ViewManagerModel viewManagerModel, ChatViewModel chatViewModel) {
+    public ChatPresenter(ViewManagerModel viewManagerModel, ChatViewModel chatViewModel, WelcomeViewModel welcomeViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.chatViewModel = chatViewModel;
+        this.welcomeViewModel = welcomeViewModel;
     }
 
     @Override
@@ -36,5 +43,26 @@ public class ChatPresenter implements ChatOutputBoundary {
         chatViewModel.firePropertyChanged("members");
     }
 
+    @Override
+    public void switchToWelcomeView(LeaveGroupOutputData response) {
+        ChatState chatState = chatViewModel.getState();
+        chatState.setUser(null);
+        chatState.setMembers(new ArrayList<String>());
+        chatState.setGroupName("");
+        chatState.setCurrentUser(null);
+
+        System.out.println("Tahap 2");
+        chatViewModel.setState(chatState);
+        chatViewModel.firePropertyChanged("members");
+
+        WelcomeState welcomeState = welcomeViewModel.getState();
+        welcomeState.setUser(response.getUser());
+        welcomeViewModel.setState(welcomeState);
+
+        System.out.println("Tahap 3");
+        viewManagerModel.setState(welcomeViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+        System.out.println("Tahap 4");
+    }
 }
 

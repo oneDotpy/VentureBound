@@ -9,13 +9,14 @@ import use_case.create_group.CreateGroupGroupDataAccessInterface;
 
 import com.google.firebase.cloud.FirestoreClient;
 import use_case.join_group.JoinGroupGroupDataAccessInterface;
+import use_case.leave_group.LeaveGroupGroupDataAccessInterface;
 import use_case.send_message.SendMessageDataAccessInterface;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface {
+public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface, LeaveGroupGroupDataAccessInterface {
 
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
@@ -34,9 +35,20 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
 
     public boolean existByID(final String ID) {
         Firestore db = FirestoreClient.getFirestore();
+        if ("".equals(ID)){
+            return false;
+        }
+        DocumentReference docRef = db.collection("groups").document(ID);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+
         try {
-            DocumentReference docRef = db.collection("groups").document(ID);
-            return true;
+            DocumentSnapshot document = future.get();
+            if (document.exists()) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         catch (Exception e) {
             return false;
@@ -250,21 +262,11 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
                 docRef.update("usernames", FieldValue.arrayUnion(username));
     }
 
-    public void setListener(String groupID, GroupListener groupListener) {
+    public void removeMember(String groupID, String username) {
         Firestore db = FirestoreClient.getFirestore();
-        db.collection("groups").document(groupID).addSnapshotListener((snapshot, e) -> {
-            if (e != null) {
-                e.printStackTrace();
-            }
-            if (snapshot != null) {
-                List<String> usernames = (ArrayList)snapshot.get("usernames");
-                groupListener.onDatabaseChanged(usernames);
-            }
-        });
-    }
-
-    public interface GroupListener{
-        public void onDatabaseChanged(List<String> usernames);
+        DocumentReference docRef = db.collection("groups").document(groupID);
+        ApiFuture<WriteResult> arrayUnion =
+                docRef.update("usernames", FieldValue.arrayRemove(username));
     }
 
     public static void main(String[] args) {

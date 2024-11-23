@@ -76,8 +76,6 @@ public class JoinGroupView extends JPanel implements PropertyChangeListener {
             String groupCode = groupCodeInputField.getText().trim();
             JoinGroupState current_state = joinGroupViewModel.getState();
             joinGroupController.joinGroup(groupCode, current_state.getUser());
-            cardLayout.show(cardPanel, "chat");
-            System.out.println("Redirecting to Chat view...");
         });
 
         // Add components to the panel
