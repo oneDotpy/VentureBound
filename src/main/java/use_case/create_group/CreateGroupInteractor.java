@@ -1,24 +1,24 @@
 package use_case.create_group;
 
-import data_access.FirestoreGroupDataAccessObject;
 import entity.Group;
 import entity.GroupFactory;
 import entity.User;
 import entity.UserFactory;
-import interface_adapter.create_group.CreateGroupPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateGroupInteractor implements CreateGroupInputBoundary{
-    private final CreateGroupDataAccessInterface groupDataAccessObject;
+    private final CreateGroupGroupDataAccessInterface groupDataAccessObject;
+    private final CreateGroupUserDataAccessInterface userDataAccessObject;
     private final GroupFactory groupFactory;
     private final UserFactory userFactory;
     private final CreateGroupOutputBoundary createGroupPresenter;
 
 
-    public CreateGroupInteractor(CreateGroupDataAccessInterface groupDataAccessObject, GroupFactory groupFactory, UserFactory userFactory, CreateGroupOutputBoundary createGroupPresenter) {
+    public CreateGroupInteractor(CreateGroupGroupDataAccessInterface groupDataAccessObject, CreateGroupUserDataAccessInterface userDataAccessObject, GroupFactory groupFactory, UserFactory userFactory, CreateGroupOutputBoundary createGroupPresenter) {
         this.groupDataAccessObject = groupDataAccessObject;
+        this.userDataAccessObject = userDataAccessObject;
         this.groupFactory = groupFactory;
         this.userFactory = userFactory;
         this.createGroupPresenter = createGroupPresenter;
@@ -36,6 +36,7 @@ public class CreateGroupInteractor implements CreateGroupInputBoundary{
             Group group = groupFactory.create(createGroupInputData.getGroupname(), users);
             String groupID = groupDataAccessObject.save(group);
             Group new_group = groupFactory.create(createGroupInputData.getGroupname(), users, groupID);
+            userDataAccessObject.setGroupID(groupID, user.getName());
 
             String username = user.getName();
             String password = user.getPassword();

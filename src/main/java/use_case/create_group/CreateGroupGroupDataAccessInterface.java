@@ -5,7 +5,7 @@ import entity.Group;
 /**
  * DAO for the Signup Use Case.
  */
-public interface CreateGroupDataAccessInterface {
+public interface CreateGroupGroupDataAccessInterface {
 
     /**
      * Saves the user.

@@ -117,7 +117,6 @@ public class ChatViewModel extends ViewModel<ChatState> {
         System.out.println("[CVM3] Receive: " + content + "from" + user.getName());
 
         // Add message to local state for immediate feedback
-        state.addMessage(user.getName(), content);
         firePropertyChanged("messages"); // Notify listeners about the updated messages
 
         // Create input data and call the use case

@@ -5,7 +5,7 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
 import entity.*;
 import use_case.chat.RealTimeChatUpdatesUseCase;
-import use_case.create_group.CreateGroupDataAccessInterface;
+import use_case.create_group.CreateGroupGroupDataAccessInterface;
 
 import com.google.firebase.cloud.FirestoreClient;
 import use_case.join_group.JoinGroupGroupDataAccessInterface;
@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface {
+public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface {
 
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;

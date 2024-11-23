@@ -208,7 +208,7 @@ public class AppBuilder {
 
     public AppBuilder addCreateGroupUseCase() {
         CreateGroupPresenter createGroupPresenter = new CreateGroupPresenter(viewManagerModel, chatViewModel, createGroupViewModel, welcomeViewModel);
-        CreateGroupInteractor createGroupInteractor = new CreateGroupInteractor(firestoreGroupDataAccessObject, groupFactory, userFactory, createGroupPresenter);
+        CreateGroupInteractor createGroupInteractor = new CreateGroupInteractor(firestoreGroupDataAccessObject, firestoreUserDataAccessObject, groupFactory, userFactory, createGroupPresenter);
         CreateGroupController createGroupController = new CreateGroupController(createGroupInteractor);
 
         createGroupView.setCreateGroupController(createGroupController);
