@@ -1,5 +1,6 @@
 package use_case.login;
 
+import data_access.FirestoreGroupDataAccessObject;
 import entity.User;
 import use_case.encryption.PasswordEncryption;
 
@@ -8,11 +9,13 @@ import use_case.encryption.PasswordEncryption;
  */
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
+    private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
 
-    public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface,
+    public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface, FirestoreGroupDataAccessObject groupDataAccessObject,
                            LoginOutputBoundary loginOutputBoundary) {
         this.userDataAccessObject = userDataAccessInterface;
+        this.groupDataAccessObject = groupDataAccessObject;
         this.loginPresenter = loginOutputBoundary;
     }
 
@@ -31,13 +34,12 @@ public class LoginInteractor implements LoginInputBoundary {
                 loginPresenter.prepareFailView("Incorrect password for \"" + username + "\".");
             }
             else {
-                System.out.println("Name :" + userDb.getName());
-                System.out.println("Email :" + userDb.getEmail());
+
                 final LoginOutputData loginOutputData = new LoginOutputData(
                         userDb.getName(),
                         userDb.getEmail(),
                         userDb.getGroup(),
-                        false);
+                        groupDataAccessObject.existByID(userDb.getGroupID()));
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }

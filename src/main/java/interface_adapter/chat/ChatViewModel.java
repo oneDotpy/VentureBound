@@ -50,6 +50,8 @@ public class ChatViewModel extends ViewModel<ChatState> {
             @Override
             public void onMessagesUpdated(Map<String, String> messages) {
                 messages.forEach((key, value) -> state.addMessage(key, value));
+                System.out.println(state.getMessages());
+                setState(state);
                 firePropertyChanged("messages");
             }
 

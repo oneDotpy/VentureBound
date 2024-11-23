@@ -321,7 +321,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupDataAccessInte
                     if (snapshots != null) {
                         Map<String, String> messages = new HashMap<>();
                         for (DocumentSnapshot doc : snapshots.getDocuments()) {
-                            String user = (String) doc.get("user");
+                            String user = (String) doc.get("sender");
                             String content = (String) doc.get("content");
                             Timestamp timestamp = (Timestamp) doc.get("timestamp");
                             messages.put(user, content); // Assuming Message has such a constructor
