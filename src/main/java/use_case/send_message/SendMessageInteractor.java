@@ -16,10 +16,12 @@ public class SendMessageInteractor {
     }
 
     public void sendMessage(SendMessageInputData sendMessageInputData) {
+
         String sender = sendMessageInputData.getUser().getName();
         String content = sendMessageInputData.getContent();
         Message message = messageFactory.createMessage(sender, content, Timestamp.now());
         String groupID = sendMessageInputData.getUser().getGroup().getGroupID();
+        System.out.println("[SMI] Recieve Message : " + message + " from : " + sender + " in " + groupID);
         groupDataAccessObject.updateMessage(groupID, message);
     }
 }

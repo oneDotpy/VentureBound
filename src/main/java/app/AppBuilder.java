@@ -169,11 +169,12 @@ public class AppBuilder {
         chatPresenter = new ChatPresenter(viewManagerModel, chatViewModel);
         chatInteractor = new ChatInteractor(chatPresenter, chatState);
         vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
-        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
+        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatViewModel, firestoreGroupDataAccessObject, messageFactory);
         vacationBotController = new VacationBotController(vacationBotInteractor);
 
         chatViewModel.setChatUpdatesUseCase(new RealTimeChatUpdatesUseCase(firestoreGroupDataAccessObject));
         chatViewModel.setSendMessageInteractor(new SendMessageInteractor(firestoreGroupDataAccessObject, messageFactory));
+        chatViewModel.setBotInteractor(vacationBotInteractor);
 
         chatController = new ChatController(chatInteractor, vacationBotInteractor);
         chatView.setChatController(chatController);
@@ -191,7 +192,7 @@ public class AppBuilder {
 
     public AppBuilder addVacationBotUseCase() {
         vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
-        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatInteractor);
+        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatViewModel, firestoreGroupDataAccessObject, messageFactory);
         vacationBotController = new VacationBotController(vacationBotInteractor);
         return this;
     }
