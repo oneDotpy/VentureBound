@@ -4,6 +4,7 @@ import com.google.cloud.Timestamp;
 import data_access.FirestoreGroupDataAccessObject;
 import entity.Message;
 import entity.MessageFactory;
+import java.time.Instant;
 
 public class SendMessageInteractor {
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
@@ -19,7 +20,14 @@ public class SendMessageInteractor {
 
         String sender = sendMessageInputData.getUser().getName();
         String content = sendMessageInputData.getContent();
-        Message message = messageFactory.createMessage(sender, content, Timestamp.now());
+
+        Instant instant = Instant.now();
+        Timestamp cloudTimestamp = Timestamp.ofTimeSecondsAndNanos(
+                instant.getEpochSecond(),
+                instant.getNano()
+        );
+
+        Message message = messageFactory.createMessage(sender, content, cloudTimestamp);
         String groupID = sendMessageInputData.getUser().getGroup().getGroupID();
         System.out.println("[SMI] Recieve Message : " + message + " from : " + sender + " in " + groupID);
         groupDataAccessObject.updateMessage(groupID, message);

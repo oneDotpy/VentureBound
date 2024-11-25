@@ -68,13 +68,13 @@ public class ChatViewModel extends ViewModel<ChatState> {
                                 System.out.println("Reached here [to start bot] 2");
                                 firePropertyChanged("messages");
                             }
-                            try {
-                                // Delay for 200 milliseconds to resolve timing issues
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt(); // Restore interrupted status
-                                System.err.println("Delay interrupted: " + e.getMessage());
-                            }
+//                            try {
+//                                // Delay for 200 milliseconds to resolve timing issues
+//                                Thread.sleep(500);
+//                            } catch (InterruptedException e) {
+//                                Thread.currentThread().interrupt(); // Restore interrupted status
+//                                System.err.println("Delay interrupted: " + e.getMessage());
+//                            }
 
                             botInteractor.startBot();
                             System.out.println("[CVM] Bot started by: " + key);

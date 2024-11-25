@@ -3,7 +3,10 @@ package data_access;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
+import com.google.cloud.firestore.EventListener;
+import com.google.firestore.v1.Write;
 import entity.*;
+import org.jetbrains.annotations.Nullable;
 import use_case.chat.RealTimeChatUpdatesUseCase;
 import use_case.create_group.CreateGroupGroupDataAccessInterface;
 
@@ -14,6 +17,7 @@ import use_case.send_message.SendMessageDataAccessInterface;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+
 
 
 public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface, LeaveGroupGroupDataAccessInterface {
@@ -89,9 +93,10 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
-        List<QueryDocumentSnapshot> messageDocs = docRef.collection("messages").get().get().getDocuments();
+        List<QueryDocumentSnapshot> messageDocs = docRef.collection("messages").orderBy("timestamp").get().get().getDocuments();
         List<Message> messages = new ArrayList<>();
         for (int i = index; i < messageDocs.size(); i++) {
+            System.out.println();
             DocumentSnapshot doc = messageDocs.get(i);
             String user = (String)doc.get("sender");
             Timestamp timestamp = (Timestamp)doc.get("timestamp");
@@ -204,11 +209,33 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
         }
     }
 
+
     @Override
     public void updateMessage(String groupID, Message message) {
         ArrayList<Message> messages = new ArrayList<>();
         messages.add(message);
-        updateMessages(groupID, messages);
+
+        Firestore db = FirestoreDataAccessObject.getFirestore();
+        DocumentReference ref = db.collection("groups").document(groupID);
+        ApiFuture<WriteResult> future = ref.collection("messages").document(message.getTimestamp().toString()).set(message);
+
+        try {
+            Timestamp new_timestamp = future.get().getUpdateTime();
+            ref.collection("messages").document(message.getTimestamp().toString()).update("timestamp", new_timestamp);
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+
+//        Firestore db = FirestoreDataAccessObject.getFirestore();
+//        DocumentReference ref = db.collection("groups").document(groupID);
+//        ApiFuture<WriteResult> future = ref.collection("messages").document(FieldValue.serverTimestamp().toString()).set(message);
+//
+//        try {
+//            System.out.println("Successfully updated at: " + future.get().getUpdateTime());
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -313,21 +340,55 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
     }
 
     public void setMessageListener(String groupID, RealTimeChatUpdatesUseCase.MessageUpdateListener listener) {
+//        Firestore db = FirestoreClient.getFirestore();
+//        db.collection("groups").document(groupID).collection("messages")
+//                .addSnapshotListener((snapshots, error) -> {
+//                    if (error != null) {
+//                        listener.onError(error);
+//                        return;
+//                    }
+//                    if (snapshots != null) {
+//                        System.out.println("[GROUPDAO] 1");
+//                        Map<String, String> messages = new HashMap<>();
+//                        DocumentSnapshot doc = snapshots.getDocuments().get(snapshots.getDocuments().size() - 1);
+//                        String user = (String) doc.get("sender");
+//                        String content = (String) doc.get("content");
+//                        Timestamp timestamp = (Timestamp) doc.get("timestamp");
+//                        messages.put(user, content); // Assuming Message has such a constructor
+////                        for (DocumentSnapshot doc : snapshots.getDocuments()) {
+////                            System.out.println("for loop" + doc.get("sender"));
+////                            String user = (String) doc.get("sender");
+////                            String content = (String) doc.get("content");
+////                            Timestamp timestamp = (Timestamp) doc.get("timestamp");
+////                            messages.put(user, content); // Assuming Message has such a constructor
+////                        }
+//                        System.out.println("[GROUPDAO] 3");
+//                        listener.onMessagesUpdated(messages);
+//
+//
+//                    }
+//                });
+
         Firestore db = FirestoreClient.getFirestore();
         db.collection("groups").document(groupID).collection("messages")
-                .addSnapshotListener((snapshots, error) -> {
-                    if (error != null) {
-                        listener.onError(error);
-                        return;
-                    }
-                    if (snapshots != null) {
-                        System.out.println("[GROUPDAO] 1");
-                        Map<String, String> messages = new HashMap<>();
-                        DocumentSnapshot doc = snapshots.getDocuments().get(snapshots.getDocuments().size() - 1);
-                        String user = (String) doc.get("sender");
-                        String content = (String) doc.get("content");
-                        Timestamp timestamp = (Timestamp) doc.get("timestamp");
-                        messages.put(user, content); // Assuming Message has such a constructor
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot querySnapshot, @Nullable FirestoreException e) {
+                        if (e != null) {
+                            return;
+                        }
+
+                        if (querySnapshot != null) {
+                            for (DocumentChange documentChange : querySnapshot.getDocumentChanges()) {
+                                switch (documentChange.getType()) {
+                                    case ADDED:
+                                        Map<String, String> messages = new HashMap<>();
+                                        DocumentSnapshot doc = documentChange.getDocument();
+                                        String user = (String) doc.get("sender");
+                                        String content = (String) doc.get("content");
+                                        Timestamp timestamp = (Timestamp) doc.get("timestamp");
+                                        messages.put(user, content); // Assuming Message has such a constructor
 //                        for (DocumentSnapshot doc : snapshots.getDocuments()) {
 //                            System.out.println("for loop" + doc.get("sender"));
 //                            String user = (String) doc.get("sender");
@@ -335,10 +396,12 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
 //                            Timestamp timestamp = (Timestamp) doc.get("timestamp");
 //                            messages.put(user, content); // Assuming Message has such a constructor
 //                        }
-                        System.out.println("[GROUPDAO] 3");
-                        listener.onMessagesUpdated(messages);
+                                        System.out.println("[GROUPDAO] 3");
+                                        listener.onMessagesUpdated(messages);
+                                }
 
-
+                            }
+                        }
                     }
                 });
     }
