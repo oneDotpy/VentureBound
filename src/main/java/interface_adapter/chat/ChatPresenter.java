@@ -3,10 +3,6 @@ package interface_adapter.chat;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.welcome.WelcomeState;
 import interface_adapter.welcome.WelcomeViewModel;
-import use_case.chat.ChatOutputBoundary;
-import use_case.chat.ChatOutputData;
-import use_case.leave_group.LeaveGroupOutputBoundary;
-import use_case.leave_group.LeaveGroupOutputData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +14,7 @@ public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBounda
     private final ViewManagerModel viewManagerModel;
 
     public ChatPresenter(ViewManagerModel viewManagerModel, ChatViewModel chatViewModel, WelcomeViewModel welcomeViewModel) {
+
         this.viewManagerModel = viewManagerModel;
         this.chatViewModel = chatViewModel;
         this.welcomeViewModel = welcomeViewModel;

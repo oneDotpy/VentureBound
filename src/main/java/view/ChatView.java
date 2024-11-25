@@ -172,5 +172,5 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     }
 
     public void setChatController(ChatController chatController){ this.chatController = chatController;}
-
 }
+

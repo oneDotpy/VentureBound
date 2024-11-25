@@ -25,7 +25,6 @@ public class JoinGroupView extends JPanel implements PropertyChangeListener {
         this.joinGroupViewModel = joinGroupViewModel;
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
-
         // Add this view as a listener for ViewModel updates
         joinGroupViewModel.addPropertyChangeListener(this);
 
@@ -87,7 +86,6 @@ public class JoinGroupView extends JPanel implements PropertyChangeListener {
         this.add(Box.createVerticalStrut(20));
         this.add(joinButton);
     }
-
     public void setJoinGroupController(JoinGroupController joinGroupController) {
         this.joinGroupController = joinGroupController;
     }

@@ -83,10 +83,8 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
         this.add(Box.createVerticalStrut(20));
         this.add(createButton);
     }
-
     public void setCreateGroupController(CreateGroupController createGroupController) {
         this.createGroupController = createGroupController;
-    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -94,5 +92,9 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
             String message = createGroupViewModel.getState().getGroupError();
             JOptionPane.showMessageDialog(this, message);
         }
+    }
+
+    public String getViewName() {
+        return groupViewModel.getState().getGroupName();
     }
 }

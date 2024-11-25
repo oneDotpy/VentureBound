@@ -47,11 +47,13 @@ public class AppBuilder {
     private final RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
 
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
+
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
     private final FirestoreGroupDataAccessObject firestoreGroupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject = new FirestoreUserDataAccessObject(userFactory, firestoreGroupDataAccessObject);
+
 
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
@@ -79,6 +81,14 @@ public class AppBuilder {
     private SignupView signupView;
     private LoginView loginView;
     private WelcomeView welcomeView;
+    private CreateGroupView createGroupView;
+    private JoinGroupView joinGroupView;
+    private ChatView chatView;
+
+    private SignupView signupView;
+    private LoginView loginView;
+    private WelcomeView welcomeView;
+    private LoggedInView loggedInView;
     private CreateGroupView createGroupView;
     private JoinGroupView joinGroupView;
     private ChatView chatView;
@@ -119,8 +129,7 @@ public class AppBuilder {
         joinGroupViewModel = new JoinGroupViewModel();
         joinGroupView = new JoinGroupView(joinGroupViewModel, cardLayout, cardPanel);
         cardPanel.add(joinGroupView, "join-group");
-        return this;
-    }
+
 
 
     public AppBuilder addChatView() {
@@ -167,6 +176,7 @@ public class AppBuilder {
 
     public AppBuilder addChatUseCase() {
         chatState = ChatState.getInstance(); // Use the singleton instance
+
         chatPresenter = new ChatPresenter(viewManagerModel, chatViewModel, welcomeViewModel);
         chatInteractor = new ChatInteractor(chatPresenter, chatState);
         vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
@@ -180,6 +190,7 @@ public class AppBuilder {
         chatViewModel.setBotInteractor(vacationBotInteractor);
 
         chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor);
+
         chatView.setChatController(chatController);
         return this;
     }
@@ -196,6 +207,7 @@ public class AppBuilder {
     public AppBuilder addVacationBotUseCase() {
         vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
         vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatViewModel, firestoreGroupDataAccessObject, messageFactory);
+
         vacationBotController = new VacationBotController(vacationBotInteractor);
         return this;
     }
@@ -204,6 +216,7 @@ public class AppBuilder {
         JoinGroupPresenter joinGroupPresenter = new JoinGroupPresenter(viewManagerModel,joinGroupViewModel, chatViewModel, welcomeViewModel);
         JoinGroupInteractor joinGroupInteractor = new JoinGroupInteractor(userFactory, firestoreGroupDataAccessObject, firestoreUserDataAccessObject, joinGroupPresenter);
         JoinGroupController joinGroupController = new JoinGroupController(joinGroupInteractor);
+
 
         joinGroupView.setJoinGroupController(joinGroupController);
         return this;
@@ -231,8 +244,6 @@ public class AppBuilder {
         application.add(cardPanel);
 
         viewManagerModel.setState(loginView.getViewName());
-        viewManagerModel.firePropertyChanged();
-
 
         return application;
     }
