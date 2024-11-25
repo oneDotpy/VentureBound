@@ -46,10 +46,10 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
     @Override
     public void startBot() {
-        System.out.println("[VBI2] start");
+        System.out.println("[VBI1] start");
         this.user = createBotUser();
         botState = BotState.AWAITING_LOCATION;
-
+        System.out.println("[VBI2.5] succesfully created bot and updated botstate");
         sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
     }
 
@@ -73,11 +73,12 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         System.out.println(inputData.getContent() + inputData.getUser().getName());
         String sender = inputData.getUser().getName();
         String content = inputData.getContent();
+        System.out.println("[VBI] " + sender + ": " + content);
         Timestamp timestamp = firestoreUserDataAccessObject.getTimestamp(sender);
 
         System.out.println("[VBI3] sender: " + sender + " content: " + content);
 
-        Message message = messageFactory.createMessage(sender, content, Timestamp.now());
+        Message message = messageFactory.createMessage(sender, content, timestamp);
         System.out.println("[VBI4] Message created: " + message);
         String groupID = chatViewModel.getState().getCurrentUser().getGroup().getGroupID();
         System.out.println("[VBI4] GroupID: " + groupID);
@@ -93,7 +94,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     private User createBotUser() {
-        System.out.println("[VBI1] Create bot at " + chatViewModel.getState().getCurrentUser().getGroupID());
+        System.out.println("[VBI2] Create bot at " + chatViewModel.getState().getCurrentUser().getGroupID());
         UserFactory userFactory = new CommonUserFactory();
         return userFactory.create("Bot", null, chatViewModel.getState().getUser().getGroupID());
     }

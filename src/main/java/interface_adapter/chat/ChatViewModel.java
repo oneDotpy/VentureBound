@@ -125,12 +125,12 @@ public class ChatViewModel extends ViewModel<ChatState> {
         // Create input data and call the use case
         SendMessageInputData inputData = new SendMessageInputData(user, content);
         System.out.println(inputData.getContent() + inputData.getUser().getName());
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // Restore interrupted status
-            System.err.println("Delay interrupted: " + e.getMessage());
-        }
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt(); // Restore interrupted status
+//            System.err.println("Delay interrupted: " + e.getMessage());
+//        }
         sendMessageInteractor.sendMessage(inputData); // Send the message to the database
     }
 }
