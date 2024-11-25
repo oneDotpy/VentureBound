@@ -50,19 +50,18 @@ public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBounda
         chatState.setMembers(new ArrayList<String>());
         chatState.setGroupName("");
         chatState.setCurrentUser(null);
+        chatState.setMessages(new ArrayList<>());
 
-        System.out.println("Tahap 2");
         chatViewModel.setState(chatState);
+        chatViewModel.firePropertyChanged("messages");
         chatViewModel.firePropertyChanged("members");
 
         WelcomeState welcomeState = welcomeViewModel.getState();
-        welcomeState.setUser(response.getUser());
         welcomeViewModel.setState(welcomeState);
+        welcomeViewModel.firePropertyChanged("username");
 
-        System.out.println("Tahap 3");
         viewManagerModel.setState(welcomeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
-        System.out.println("Tahap 4");
     }
 }
 

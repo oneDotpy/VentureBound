@@ -26,7 +26,7 @@ public class JoinGroupPresenter implements JoinGroupOutputBoundary {
     }
 
     public void presentChatView(JoinGroupOutputData joinGroupOutputData) {
-        // Set Members, Current UsersPatuan
+        // Set Members, Current Users
         ChatState chatState = chatViewModel.getState();
         chatState.setUser(joinGroupOutputData.getUser());
         chatState.setCurrentUser(joinGroupOutputData.getUser());

@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Implements leave group use_case">
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Fixing bug in login use_case when want to leave group.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/FirestoreUserDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/FirestoreUserDataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/login/LoginPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/login/LoginPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/join_group/JoinGroupPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/join_group/JoinGroupPresenter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/use_case/login/LoginOutputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/login/LoginOutputData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/ChatView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/ChatView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/login/LoginPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/login/LoginPresenter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/login/LoginInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/login/LoginInteractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/login/LoginOutputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/login/LoginOutputData.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView$SendButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView$SendButtonListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView$SimulButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView$SimulButtonListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView.class" afterDir="false" />
@@ -189,7 +186,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732401899323</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Fixing bug in login use_case when want to leave group.">
+      <option name="closed" value="true" />
+      <created>1732507582710</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1732507582710</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,6 +205,7 @@
     <MESSAGE value="Final 11/22 7:21" />
     <MESSAGE value="New feature to set groupID to user when create a new group" />
     <MESSAGE value="Implements leave group use_case" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implements leave group use_case" />
+    <MESSAGE value="Fixing bug in login use_case when want to leave group." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixing bug in login use_case when want to leave group." />
   </component>
 </project>
