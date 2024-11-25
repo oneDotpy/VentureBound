@@ -23,7 +23,7 @@ public class SendMessageInteractor {
 
         String sender = sendMessageInputData.getUser().getName();
         String content = sendMessageInputData.getContent();
-        Timestamp timestamp = userDataAccessObject.getTimestamp(sendMessageInputData.getUser().getName());
+        Timestamp timestamp = userDataAccessObject.getTimestamp(sender);
 
         Message message = messageFactory.createMessage(sender, content, timestamp);
         String groupID = sendMessageInputData.getUser().getGroup().getGroupID();

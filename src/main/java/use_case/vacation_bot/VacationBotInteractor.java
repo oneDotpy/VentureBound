@@ -6,6 +6,7 @@ import java.util.*;
 import app.OpenAIChatGPT;
 import com.google.cloud.Timestamp;
 import data_access.FirestoreGroupDataAccessObject;
+import data_access.FirestoreUserDataAccessObject;
 import entity.*;
 import interface_adapter.chat.ChatState;
 import interface_adapter.chat.ChatViewModel;
@@ -22,6 +23,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private final VacationBotOutputBoundary presenter;
     private final ChatViewModel chatViewModel;
     private final OpenAIChatGPT chatGPT;
+    private final FirestoreUserDataAccessObject firestoreUserDataAccessObject;
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final MessageFactory messageFactory;
     private User user;
@@ -29,12 +31,16 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private final Map<String, String> locationResponses = new HashMap<>();
     private final Map<String, String> hobbyResponses = new HashMap<>();
 
-    public VacationBotInteractor(VacationBotOutputBoundary presenter, ChatViewModel chatViewModel, FirestoreGroupDataAccessObject groupDataAccessObject
-            , MessageFactory messageFactory) {
+    public VacationBotInteractor(VacationBotOutputBoundary presenter,
+                                 ChatViewModel chatViewModel,
+                                 FirestoreUserDataAccessObject firestoreUserDataAccessObject,
+                                 FirestoreGroupDataAccessObject groupDataAccessObject,
+                                 MessageFactory messageFactory) {
         this.presenter = presenter;
         this.chatViewModel = chatViewModel;
         this.chatGPT = new OpenAIChatGPT();
         this.messageFactory = messageFactory;
+        this.firestoreUserDataAccessObject = firestoreUserDataAccessObject;
         this.groupDataAccessObject = groupDataAccessObject;
     }
 
@@ -67,6 +73,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         System.out.println(inputData.getContent() + inputData.getUser().getName());
         String sender = inputData.getUser().getName();
         String content = inputData.getContent();
+        Timestamp timestamp = firestoreUserDataAccessObject.getTimestamp(sender);
 
         System.out.println("[VBI3] sender: " + sender + " content: " + content);
 
