@@ -78,7 +78,6 @@ public class LoginPresenter implements LoginOutputBoundary {
         chatViewModel.startListeningForUpdates(loginOutputData.getGroup().getGroupID());
         chatViewModel.firePropertyChanged("members");
         chatViewModel.firePropertyChanged("messages");
-
     }
 
     @Override
@@ -91,7 +90,5 @@ public class LoginPresenter implements LoginOutputBoundary {
         viewManagerModel.firePropertyChanged();
 
         welcomeViewModel.firePropertyChanged("username");
-
-
     }
 }

@@ -15,7 +15,7 @@ public class LoginOutputData {
     private final boolean useCaseFailed;
 
     public LoginOutputData(String username, String email, Group group, boolean useCaseFailed) {
-        this.user = new CommonUser(username, "", email, group);
+        this.user = new CommonUser(username, "", email, group, group.getGroupID());
         this.useCaseFailed = useCaseFailed;
     }
 

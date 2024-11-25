@@ -51,8 +51,7 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
             if (firestoreGroupDataAccessObject.existByID(groupID)) {
                 group = firestoreGroupDataAccessObject.get(groupID);
             }
-
-            return userFactory.create(username, password, email, group);
+            return userFactory.create(username, password, email, group, groupID);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
