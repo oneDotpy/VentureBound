@@ -85,14 +85,6 @@ public class AppBuilder {
     private JoinGroupView joinGroupView;
     private ChatView chatView;
 
-    private SignupView signupView;
-    private LoginView loginView;
-    private WelcomeView welcomeView;
-    private LoggedInView loggedInView;
-    private CreateGroupView createGroupView;
-    private JoinGroupView joinGroupView;
-    private ChatView chatView;
-
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
@@ -129,7 +121,8 @@ public class AppBuilder {
         joinGroupViewModel = new JoinGroupViewModel();
         joinGroupView = new JoinGroupView(joinGroupViewModel, cardLayout, cardPanel);
         cardPanel.add(joinGroupView, "join-group");
-
+        return this;
+    }
 
 
     public AppBuilder addChatView() {

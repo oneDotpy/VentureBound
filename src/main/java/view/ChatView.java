@@ -45,7 +45,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         groupNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Leave Group Button
-        leaveGroupButton = new JButton("Simulate");
+        leaveGroupButton = new JButton("Leave");
         leaveGroupButton.setFont(new Font("SansSerif", Font.BOLD, 14));
         leaveGroupButton.setBackground(Color.decode("#8b0000"));
         leaveGroupButton.setForeground(Color.WHITE);
@@ -133,21 +133,9 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             if (!message.isEmpty()) {
                 String currentUser = chatViewModel.getState().getCurrentUser().getName();
                 System.out.println("[ChatView] Sending message as current user: " + currentUser);
-//                chatController.sendMessage(message, currentUser);
                 chatViewModel.sendMessage(message, chatViewModel.getState().getCurrentUser());
                 messageInputField.setText("");
             }
-        }
-    }
-
-    // Simulates a message from "Alice" saying "Japan"
-    private class SimulButtonListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String simulatedUser = "Alice";
-            String simulatedMessage = "Japan";
-            chatController.sendMessage(simulatedMessage, simulatedUser);
-            System.out.println("[SimulButtonListener] Simulated message from " + simulatedUser + ": " + simulatedMessage);
         }
     }
 

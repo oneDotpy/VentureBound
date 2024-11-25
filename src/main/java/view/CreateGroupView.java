@@ -86,15 +86,12 @@ public class CreateGroupView extends JPanel implements PropertyChangeListener {
     public void setCreateGroupController(CreateGroupController createGroupController) {
         this.createGroupController = createGroupController;
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if("error".equals(evt.getPropertyName())){
-            String message = createGroupViewModel.getState().getGroupError();
-            JOptionPane.showMessageDialog(this, message);
+    }
+        @Override
+        public void propertyChange (PropertyChangeEvent evt){
+            if ("error".equals(evt.getPropertyName())) {
+                String message = createGroupViewModel.getState().getGroupError();
+                JOptionPane.showMessageDialog(this, message);
+            }
         }
-    }
-
-    public String getViewName() {
-        return groupViewModel.getState().getGroupName();
-    }
 }
