@@ -77,7 +77,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
         System.out.println("[VBI3] sender: " + sender + " content: " + content);
 
-        Message message = messageFactory.createMessage(sender, content, Timestamp.now());
+        Message message = messageFactory.createMessage(sender, content, timestamp);
         System.out.println("[VBI4] Message created: " + message);
         String groupID = chatViewModel.getState().getCurrentUser().getGroup().getGroupID();
         System.out.println("[VBI4] GroupID: " + groupID);
