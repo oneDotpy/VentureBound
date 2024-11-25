@@ -179,7 +179,7 @@ public class AppBuilder {
         LeaveGroupInteractor leaveGroupInteractor = new LeaveGroupInteractor(firestoreGroupDataAccessObject, firestoreUserDataAccessObject, userFactory, chatPresenter);
 
         chatViewModel.setChatUpdatesUseCase(new RealTimeChatUpdatesUseCase(firestoreGroupDataAccessObject));
-        chatViewModel.setSendMessageInteractor(new SendMessageInteractor(firestoreGroupDataAccessObject, messageFactory));
+        chatViewModel.setSendMessageInteractor(new SendMessageInteractor(firestoreUserDataAccessObject ,firestoreGroupDataAccessObject, messageFactory));
         chatViewModel.setBotInteractor(vacationBotInteractor);
 
         chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor);

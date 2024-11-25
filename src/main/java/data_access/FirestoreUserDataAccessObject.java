@@ -1,10 +1,8 @@
 package data_access;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.Timestamp;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 
 import entity.User;
@@ -18,6 +16,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface, JoinGroupUserDataAccessInterface, CreateGroupUserDataAccessInterface, LeaveGroupUserDataAccessInterface {
 
@@ -90,5 +89,40 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
                 .document(username)
                 .update("password", password);
 
+    }
+
+    public Timestamp getTimestamp(String username) {
+        Firestore db = FirestoreDataAccessObject.getFirestore();
+        DocumentReference docRef = db.collection("users").document(username);
+        // Update the timestamp field with the value from the server
+        ApiFuture<WriteResult> writeResult = docRef.update("timestamp", FieldValue.serverTimestamp());
+        try {
+            System.out.println("Update time : " + writeResult.get());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+
+        try {
+            DocumentSnapshot document = future.get();
+            if (document.exists()) {
+                System.out.println("Document data: " + document.getData());
+            } else {
+                System.out.println("No such document!");
+            }
+            return (Timestamp)document.get("timestamp");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
