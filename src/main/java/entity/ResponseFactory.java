@@ -6,10 +6,9 @@ package entity;
 public interface ResponseFactory {
     /**
      * Creates a group from database.
-     * @param user the sender of the message
-     * @param promptQuestion the content of the message
-     * @param answer the timestamp of the message
+     * @param user the user that send the message
+     * @param response the response
      * @return the message
      */
-    public Response create(User user, String promptQuestion, String answer);
+    public Response create(String user, String response);
 }

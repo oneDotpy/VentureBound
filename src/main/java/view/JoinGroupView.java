@@ -2,6 +2,9 @@ package view;
 
 import interface_adapter.group.GroupController;
 import interface_adapter.group.GroupViewModel;
+import interface_adapter.join_group.JoinGroupController;
+import interface_adapter.join_group.JoinGroupState;
+import interface_adapter.join_group.JoinGroupViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,18 +16,17 @@ public class JoinGroupView extends JPanel implements PropertyChangeListener {
     private final JButton backButton;
     private final JTextField groupCodeInputField;
     private final JButton joinButton;
-    private GroupController groupController;
-    private final GroupViewModel groupViewModel;
+    private JoinGroupController joinGroupController;
+    private final JoinGroupViewModel joinGroupViewModel;
     private final CardLayout cardLayout;
     private final JPanel cardPanel;
 
-    public JoinGroupView(GroupViewModel groupViewModel, CardLayout cardLayout, JPanel cardPanel) {
+    public JoinGroupView(JoinGroupViewModel joinGroupViewModel, CardLayout cardLayout, JPanel cardPanel) {
+        this.joinGroupViewModel = joinGroupViewModel;
         this.cardLayout = cardLayout;
         this.cardPanel = cardPanel;
-        this.groupViewModel = groupViewModel;
-
         // Add this view as a listener for ViewModel updates
-        groupViewModel.addPropertyChangeListener(this);
+        joinGroupViewModel.addPropertyChangeListener(this);
 
         // Set up the panel layout
         this.setBackground(Color.decode("#2c2c2e"));
@@ -42,8 +44,8 @@ public class JoinGroupView extends JPanel implements PropertyChangeListener {
         backButton.setFocusPainted(false);
         backButton.setContentAreaFilled(false);
         backButton.addActionListener(e -> {
-            cardLayout.show(cardPanel, "welcome");
-            System.out.println("Redirecting to Welcome view...");
+            JoinGroupState joinGroupState = joinGroupViewModel.getState();
+            joinGroupController.switchToWelcomeView(joinGroupState.getUser());
         });
         topPanel.add(backButton);
 
@@ -71,9 +73,8 @@ public class JoinGroupView extends JPanel implements PropertyChangeListener {
         // Action listener to bypass group joining and redirect to chat
         joinButton.addActionListener(e -> {
             String groupCode = groupCodeInputField.getText().trim();
-            groupController.joinGroup(groupCode);
-            cardLayout.show(cardPanel, "chat");
-            System.out.println("Redirecting to Chat view...");
+            JoinGroupState current_state = joinGroupViewModel.getState();
+            joinGroupController.joinGroup(groupCode, current_state.getUser());
         });
 
         // Add components to the panel
@@ -85,16 +86,17 @@ public class JoinGroupView extends JPanel implements PropertyChangeListener {
         this.add(Box.createVerticalStrut(20));
         this.add(joinButton);
     }
-
-    public void setGroupController(GroupController groupController) {
-        this.groupController = groupController;
+    public void setJoinGroupController(JoinGroupController joinGroupController) {
+        this.joinGroupController = joinGroupController;
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("joinMessage".equals(evt.getPropertyName())) {
-            String message = groupViewModel.getState().getJoinMessage();
-            JOptionPane.showMessageDialog(this, message, "Group Join", JOptionPane.INFORMATION_MESSAGE);
+        if ("error".equals(evt.getPropertyName())) {
+            String message = joinGroupViewModel.getState().getGroupError();
+            JOptionPane.showMessageDialog(this, message , "Error", JOptionPane.ERROR_MESSAGE);
+            JoinGroupState joinGroupState = joinGroupViewModel.getState();
+            joinGroupState.setGroupError("");
         }
     }
 }

@@ -1,8 +1,13 @@
 package interface_adapter.login;
 
+import entity.Message;
+import entity.User;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.chat.ChatState;
+import interface_adapter.chat.ChatViewModel;
+import interface_adapter.welcome.WelcomeState;
+import interface_adapter.welcome.WelcomeViewModel;
+import use_case.join_group.JoinGroupOutputData;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
@@ -10,16 +15,19 @@ import java.util.function.Consumer;
 
 public class LoginPresenter implements LoginOutputBoundary {
     private final LoginViewModel loginViewModel;
-    private final LoggedInViewModel loggedInViewModel;
+    private final WelcomeViewModel welcomeViewModel;
+    private final ChatViewModel chatViewModel;
     private final ViewManagerModel viewManagerModel;
     private Consumer<String> onLoginSuccessListener;
 
     public LoginPresenter(ViewManagerModel viewManagerModel,
-                          LoggedInViewModel loggedInViewModel,
-                          LoginViewModel loginViewModel) {
+                          WelcomeViewModel welcomeViewModel,
+                          LoginViewModel loginViewModel,
+                          ChatViewModel chatViewModel) {
         this.viewManagerModel = viewManagerModel;
-        this.loggedInViewModel = loggedInViewModel;
+        this.welcomeViewModel = welcomeViewModel;
         this.loginViewModel = loginViewModel;
+        this.chatViewModel = chatViewModel;
     }
 
     // Method to set the success listener
@@ -30,16 +38,13 @@ public class LoginPresenter implements LoginOutputBoundary {
     @Override
     public void prepareSuccessView(LoginOutputData response) {
         if (onLoginSuccessListener != null) {
-            onLoginSuccessListener.accept(response.getUsername()); // Use the Consumer here
+            onLoginSuccessListener.accept(response.getUser().getName()); // Use the Consumer here
         }
-
-        LoggedInState loggedInState = loggedInViewModel.getState();
-        loggedInState.setUsername(response.getUsername());
-        loggedInViewModel.setState(loggedInState);
-        loggedInViewModel.firePropertyChanged();
-
-        viewManagerModel.setState(loggedInViewModel.getViewName());
-        viewManagerModel.firePropertyChanged();
+        if (response.getGroup() != null) {
+            switchToChatView(response);
+        } else {
+            switchToWelcomeView(response);
+        }
     }
 
     @Override
@@ -48,5 +53,42 @@ public class LoginPresenter implements LoginOutputBoundary {
         loginState.setLoginError(error);
         loginViewModel.setState(loginState);
         loginViewModel.firePropertyChanged();
+    }
+
+    public void switchToChatView(LoginOutputData loginOutputData) {
+        // Set Members, Current Users
+        ChatState chatState = chatViewModel.getState();
+        User user = loginOutputData.getUser();
+        chatState.setUser(user);
+        chatState.setCurrentUser(user);
+        chatState.setMembers(loginOutputData.getGroup().getUsernames());
+        for (Message message: loginOutputData.getGroup().getMessages()) {
+            System.out.println(message.getContent());
+            chatState.addMessage(message.getSender(), message.getContent());
+        }
+        chatState.setGroupName(loginOutputData.getGroup().getGroupName());
+
+        chatViewModel.setState(chatState);
+
+        // Fire to switch into ChatViewModel
+        viewManagerModel.setState(chatViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+
+        // Fire to notify chatViewModel to update the members
+        chatViewModel.startListeningForUpdates(loginOutputData.getGroup().getGroupID());
+        chatViewModel.firePropertyChanged("members");
+        chatViewModel.firePropertyChanged("messages");
+    }
+
+    @Override
+    public void switchToWelcomeView(LoginOutputData loginOutputData) {
+        WelcomeState welcomeState = welcomeViewModel.getState();
+        welcomeState.setUser(loginOutputData.getUser());
+        welcomeViewModel.setState(welcomeState);
+
+        viewManagerModel.setState(welcomeViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+
+        welcomeViewModel.firePropertyChanged("username");
     }
 }

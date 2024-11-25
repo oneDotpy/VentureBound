@@ -2,11 +2,11 @@ package entity;
 import com.google.cloud.Timestamp;
 
 public class CommonMessage implements Message{
-    private final User user;
+    private final String user;
     private final String content;
     private final Timestamp timestamp;
 
-    public CommonMessage(User user, String content, Timestamp timestamp) {
+    public CommonMessage(String user, String content, Timestamp timestamp) {
         this.user = user;
         this.content = content;
         this.timestamp = timestamp;
@@ -14,7 +14,7 @@ public class CommonMessage implements Message{
 
 
     @Override
-    public User getSender() {
+    public String getSender() {
         return user;
     }
 

@@ -1,9 +1,12 @@
 package interface_adapter.login;
 
+import entity.Group;
+
 public class LoginState {
     private String username;
     private String password;
     private String loginError;
+    private boolean userHasGroup;
 
     public String getUsername() {
         return username;
@@ -28,4 +31,13 @@ public class LoginState {
     public void setLoginError(String loginError) {
         this.loginError = loginError;
     }
+
+    public boolean isUserHasGroup() {
+        return userHasGroup;
+    }
+
+    public void setUserHasGroup(boolean userHasGroup) {
+        this.userHasGroup = userHasGroup;
+    }
+
 }

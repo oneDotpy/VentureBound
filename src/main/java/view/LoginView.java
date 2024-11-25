@@ -1,6 +1,8 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,16 +12,14 @@ import java.beans.PropertyChangeListener;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.signup.SignupState;
 
 public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final JTextField usernameInputField = new JTextField(15);
-    private final JLabel usernameErrorField = new JLabel();
-
     private final JPasswordField passwordInputField = new JPasswordField(15);
-    private final JLabel passwordErrorField = new JLabel();
 
-    private final JButton logIn;
+    private final JButton logInButton;
     private LoginController loginController;
 
     public LoginView(LoginViewModel loginViewModel, CardLayout cardLayout, JPanel cardPanel) {
@@ -75,33 +75,82 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.add(passwordInputField, gbc);
 
         // Login Button
-        logIn = new JButton("Login");
-        logIn.setFont(new Font("SansSerif", Font.BOLD, 16));
-        logIn.setBackground(Color.decode("#8ca5e5"));
-        logIn.setForeground(Color.WHITE);
-        logIn.setFocusPainted(false);
-        logIn.setBorderPainted(false);
-        logIn.setPreferredSize(new Dimension(200, 40));
-        logIn.setMaximumSize(new Dimension(200, 40));
+        logInButton = new JButton("Login");
+        logInButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        logInButton.setBackground(Color.decode("#8ca5e5"));
+        logInButton.setForeground(Color.WHITE);
+        logInButton.setFocusPainted(false);
+        logInButton.setBorderPainted(false);
+        logInButton.setPreferredSize(new Dimension(200, 40));
+        logInButton.setMaximumSize(new Dimension(200, 40));
 
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
-        this.add(logIn, gbc);
+        this.add(logInButton, gbc);
 
         // Action listener for Login button
-        logIn.addActionListener(e -> {
-            String username = usernameInputField.getText();
-            String password = new String(passwordInputField.getPassword());
-//
-//            if (loginController != null) {
-//                loginController.execute(username, password);
-//            }
+        logInButton.addActionListener(evt -> {
+            if (evt.getSource().equals(logInButton)) {
+                final LoginState currentState = loginViewModel.getState();
+                loginController.execute(
+                        currentState.getUsername(),
+                        currentState.getPassword()
+                );
 
-            cardLayout.show(cardPanel, "welcome");
-            System.out.println("Redirecting to welcome view...");
+                currentState.setLoginError(null);
+            }
+        });
+
+        usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final LoginState currentState = loginViewModel.getState();
+                currentState.setUsername(usernameInputField.getText());
+                loginViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+
+
+        passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final LoginState currentState = loginViewModel.getState();
+                currentState.setPassword(new String(passwordInputField.getPassword()));
+                loginViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
         });
 
         // Sign Up Button
@@ -131,8 +180,10 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final LoginState state = (LoginState) evt.getNewValue();
+        if (state.getLoginError() != null) {
+            JOptionPane.showMessageDialog(this, state.getLoginError());
+        }
         setFields(state);
-        usernameErrorField.setText(state.getLoginError());
     }
 
     private void setFields(LoginState state) {

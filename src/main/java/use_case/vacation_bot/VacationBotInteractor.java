@@ -4,31 +4,47 @@ import java.io.IOException;
 import java.util.*;
 
 import app.OpenAIChatGPT;
+import com.google.cloud.Timestamp;
+import data_access.FirestoreGroupDataAccessObject;
+import entity.*;
+import interface_adapter.chat.ChatState;
+import interface_adapter.chat.ChatViewModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.chat.ChatInputBoundary;
+import use_case.send_message.SendMessageInputData;
 
 public class VacationBotInteractor implements VacationBotInputBoundary {
     private enum BotState { INACTIVE, AWAITING_LOCATION, AWAITING_HOBBIES, GENERATING_RECOMMENDATIONS }
+    private boolean botCalled = false;
     private BotState botState = BotState.INACTIVE;
 
     private final VacationBotOutputBoundary presenter;
-    private final ChatInputBoundary chatState;
+    private final ChatViewModel chatViewModel;
     private final OpenAIChatGPT chatGPT;
+    private final FirestoreGroupDataAccessObject groupDataAccessObject;
+    private final MessageFactory messageFactory;
+    private User user;
 
     private final Map<String, String> locationResponses = new HashMap<>();
     private final Map<String, String> hobbyResponses = new HashMap<>();
 
-    public VacationBotInteractor(VacationBotOutputBoundary presenter, ChatInputBoundary chatState) {
+    public VacationBotInteractor(VacationBotOutputBoundary presenter, ChatViewModel chatViewModel, FirestoreGroupDataAccessObject groupDataAccessObject
+            , MessageFactory messageFactory) {
         this.presenter = presenter;
-        this.chatState = chatState;
+        this.chatViewModel = chatViewModel;
         this.chatGPT = new OpenAIChatGPT();
+        this.messageFactory = messageFactory;
+        this.groupDataAccessObject = groupDataAccessObject;
     }
 
     @Override
     public void startBot() {
+        System.out.println("[VBI2] start");
+        this.user = createBotUser();
         botState = BotState.AWAITING_LOCATION;
-        presenter.sendBotMessage("Bot", "🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
+
+        sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
     }
 
     @Override
@@ -42,12 +58,46 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         return botState != BotState.INACTIVE;
     }
 
+    public boolean isBotCalled() {
+        return botCalled;
+    }
+
+    private void sendBotMessage(String botMessage) {
+        SendMessageInputData inputData = new SendMessageInputData(user, botMessage);
+        System.out.println(inputData.getContent() + inputData.getUser().getName());
+        String sender = inputData.getUser().getName();
+        String content = inputData.getContent();
+
+        System.out.println("[VBI3] sender: " + sender + " content: " + content);
+
+        Message message = messageFactory.createMessage(sender, content, Timestamp.now());
+        System.out.println("[VBI4] Message created: " + message);
+        String groupID = chatViewModel.getState().getCurrentUser().getGroup().getGroupID();
+        System.out.println("[VBI4] GroupID: " + groupID);
+
+        try {
+            System.out.println("[VBI5] Attempting to update message in Firestore...");
+            groupDataAccessObject.updateMessage(groupID, message);
+            System.out.println("[VBI5] Successfully updated message in Firestore.");
+        } catch (Exception e) {
+            System.err.println("[VBI5] Error while updating Firestore: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private User createBotUser() {
+        System.out.println("[VBI1] Create bot at " + chatViewModel.getState().getCurrentUser().getGroupID());
+        UserFactory userFactory = new CommonUserFactory();
+        return userFactory.create("Bot", null, chatViewModel.getState().getUser().getGroupID());
+    }
+
     private void processLocationResponses() {
         String chosenLocation = determineMostCommon(locationResponses.values());
-        presenter.sendBotMessage("Bot", "\n📍 The chosen vacation location is: **" + chosenLocation + "**");
+        sendBotMessage("\n📍 The chosen vacation location is: **" + chosenLocation + "**");
 
         botState = BotState.AWAITING_HOBBIES;
-        presenter.sendBotMessage("Bot", "\n**Question 2:** What is your favorite hobbies? (Please choose one)");
+        sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
+
     }
 
     private void processHobbyResponses() {
@@ -66,7 +116,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
             displayRecommendations(recommendationsJson);
         } catch (Exception e) {
-            presenter.sendBotMessage("Bot", "❌ Error generating recommendations: " + e.getMessage());
+            sendBotMessage("❌ Error generating recommendations: " + e.getMessage());
         } finally {
             botState = BotState.INACTIVE;
         }
@@ -78,7 +128,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             locationResponses.put(username, message);
             presenter.sendBotMessage("Bot", username + " chose location: " + message);
             // Check if all members have responded
-            if (locationResponses.size() == chatState.getMembers().size()) {
+            if (locationResponses.size() == chatViewModel.getState().getMembers().size()) {
                 processLocationResponses();
             }
 
@@ -87,29 +137,12 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             presenter.sendBotMessage("Bot", username + " enjoys: " + message);
 
             // Check if all members have responded
-            if (hobbyResponses.size() == chatState.getMembers().size()) {
-                processHobbyResponses();
+            if (hobbyResponses.size() == chatViewModel.getState().getMembers().size()) {
+                botCalled = true;
+                sendBotMessage("Generating the your perfect holiday destination....");
+                if (botCalled) {processHobbyResponses();}
             }
         }
-    }
-
-    private void generateRecommendations() {
-        String location = locationResponses.values().iterator().next();
-        String hobbies = String.join(", ", hobbyResponses.values());
-
-        try {
-            // Call the OpenAI API to get recommendations
-            String recommendations = chatGPT.getVacationRecommendations(hobbies, location);
-//            presenter.presentBotResponse();
-            presenter.sendBotMessage("Bot", "Here are the recommendations:\n" + recommendations);
-        } catch (IOException e) {
-            // Handle the IOException by sending an error message to the chat
-            presenter.sendBotMessage("Bot", "❌ Error generating recommendations: " + e.getMessage());
-            System.err.println("[VacationBotInteractor] Error while fetching recommendations: " + e.getMessage());
-        }
-
-        // Set bot state to inactive after handling the request
-        botState = BotState.INACTIVE;
     }
 
     private void displayRecommendations(String recommendationsJson) {
@@ -142,12 +175,12 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
                             .append("\n\n");
                 }
 
-                presenter.sendBotMessage("Bot", formattedRecommendations.toString());
+                sendBotMessage(formattedRecommendations.toString());
             } else {
-                presenter.sendBotMessage("Bot", "No recommendations found.");
+                sendBotMessage("No recommendations found.");
             }
         } catch (Exception e) {
-            presenter.sendBotMessage("Bot", "❌ Error displaying recommendations: " + e.getMessage());
+            sendBotMessage("❌ Error displaying recommendations: " + e.getMessage());
         }
     }
 

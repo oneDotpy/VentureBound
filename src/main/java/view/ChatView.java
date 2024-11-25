@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.chat.ChatController;
+import interface_adapter.chat.ChatState;
 import interface_adapter.chat.ChatViewModel;
 
 import javax.swing.*;
@@ -50,7 +51,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         leaveGroupButton.setForeground(Color.WHITE);
         leaveGroupButton.setFocusPainted(false);
         leaveGroupButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        leaveGroupButton.addActionListener(new SimulButtonListener());
+        leaveGroupButton.addActionListener(new LeaveGroupListener());
 
         // Members Label
         JLabel membersLabel = new JLabel("Members:");
@@ -114,14 +115,26 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         this.add(rightPanel, BorderLayout.CENTER);
     }
 
+
+    private class LeaveGroupListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("Tahap 0");
+            ChatState currState = chatViewModel.getState();
+            chatController.leaveGroup(currState.getCurrentUser());
+        }
+    }
+
     private class SendButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String message = messageInputField.getText().trim();
             if (!message.isEmpty()) {
-                String currentUser = chatController.getCurrentUser();
+                String currentUser = chatViewModel.getState().getCurrentUser().getName();
                 System.out.println("[ChatView] Sending message as current user: " + currentUser);
-                chatController.sendMessage(message, currentUser);
+//                chatController.sendMessage(message, currentUser);
+                chatViewModel.sendMessage(message, chatViewModel.getState().getCurrentUser());
                 messageInputField.setText("");
             }
         }
@@ -152,9 +165,12 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             List<String> members = chatViewModel.getState().getMembers();
             updateMembers(members);
             System.out.println("[ChatView] Members list updated: " + members);
+            String updatedGroupName = chatViewModel.getState().getGroupName();
+            groupNameLabel.setText(updatedGroupName);
+            System.out.println("[ChatView] Group name updated: " + updatedGroupName);
         }
     }
 
     public void setChatController(ChatController chatController){ this.chatController = chatController;}
-
 }
+

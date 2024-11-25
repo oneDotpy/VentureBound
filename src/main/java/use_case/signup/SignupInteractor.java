@@ -2,42 +2,58 @@ package use_case.signup;
 
 import entity.User;
 import entity.UserFactory;
+import use_case.encryption.PasswordEncryption;
 
 /**
- * The Signup Interactor.
+ * The Signup Interactor
  */
 public class SignupInteractor implements SignupInputBoundary {
     private final SignupUserDataAccessInterface userDataAccessObject;
-    private final SignupOutputBoundary userPresenter;
+    private final SignupOutputBoundary signupPresenter;
     private final UserFactory userFactory;
 
-    public SignupInteractor(SignupUserDataAccessInterface signupDataAccessInterface,
-                            SignupOutputBoundary signupOutputBoundary,
-                            UserFactory userFactory) {
-        this.userDataAccessObject = signupDataAccessInterface;
-        this.userPresenter = signupOutputBoundary;
+    public SignupInteractor(SignupUserDataAccessInterface userDataAccessObject, SignupOutputBoundary signupOutputBoundary, UserFactory userFactory) {
+        this.userDataAccessObject = userDataAccessObject;
+        this.signupPresenter = signupOutputBoundary;
         this.userFactory = userFactory;
     }
 
     @Override
     public void execute(SignupInputData signupInputData) {
-        if (userDataAccessObject.existsByName(signupInputData.getUsername())) {
-            userPresenter.prepareFailView("User already exists.");
-        }
-        else if (!signupInputData.getPassword().equals(signupInputData.getRepeatPassword())) {
-            userPresenter.prepareFailView("Passwords don't match.");
-        }
-        else {
-            final User user = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword());
-            userDataAccessObject.save(user);
+        final String username = signupInputData.getUsername();
+        final String email = signupInputData.getEmail();
 
-            final SignupOutputData signupOutputData = new SignupOutputData(user.getName(), false);
-            userPresenter.prepareSuccessView(signupOutputData);
+        if (!signupInputData.getPassword().equals(signupInputData.getPasswordRepeat())) {
+            signupPresenter.prepareFailView("Password does not match");
+
+        } else {
+            PasswordEncryption passwordEncryption = new PasswordEncryption();
+            final String password = passwordEncryption.execute(signupInputData.getPassword());
+            final User userDb = userDataAccessObject.get(username);
+
+            if (userDb != null) {
+
+                signupPresenter.prepareFailView("Username " + username + " is already taken");
+
+            } else {
+                // Create a new user object
+                User user = userFactory.create(username, password, email);
+                userDataAccessObject.save(user);
+
+                final SignupOutputData signupOutputData = new SignupOutputData(
+                        user.getName(),
+                        user.getEmail(),
+                        false);
+                signupPresenter.prepareSuccessView(signupOutputData);
+
+            }
         }
     }
 
     @Override
     public void switchToLoginView() {
-        userPresenter.switchToLoginView();
+        signupPresenter.switchToLoginView();
     }
+
+
 }

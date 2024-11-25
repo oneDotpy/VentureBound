@@ -1,18 +1,28 @@
 package interface_adapter.chat;
 
+import entity.User;
 import use_case.chat.ChatInputBoundary;
 import use_case.chat.ChatInputData;
 import use_case.chat.ChatInteractor;
+import use_case.leave_group.LeaveGroupInputBoundary;
+import use_case.leave_group.LeaveGroupInputData;
 import use_case.vacation_bot.VacationBotInputBoundary;
 import java.util.List;
 
 public class ChatController {
     private final ChatInputBoundary chatInteractor;
+    private final LeaveGroupInputBoundary leaveGroupInteractor;
     private final VacationBotInputBoundary botInteractor;
 
-    public ChatController(ChatInputBoundary chatInteractor, VacationBotInputBoundary botInteractor) {
+    public ChatController(ChatInputBoundary chatInteractor, LeaveGroupInputBoundary leaveGroupInteractor, VacationBotInputBoundary botInteractor) {
         this.chatInteractor = chatInteractor;
+        this.leaveGroupInteractor = leaveGroupInteractor;
         this.botInteractor = botInteractor;
+    }
+
+    public void leaveGroup(User user) {
+        LeaveGroupInputData leaveGroupInputData = new LeaveGroupInputData(user);
+        leaveGroupInteractor.leaveGroup(leaveGroupInputData);
     }
 
     public void sendMessage(String message, String username) {
@@ -41,7 +51,7 @@ public class ChatController {
         chatInteractor.sendMessage(inputData);
     }
 
-    public String getCurrentUser() {
+    public User getCurrentUser() {
         return ((ChatInteractor) chatInteractor).getCurrentUser();
     }
 

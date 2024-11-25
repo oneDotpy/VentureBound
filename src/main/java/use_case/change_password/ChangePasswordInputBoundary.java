@@ -1,14 +1,13 @@
 package use_case.change_password;
 
 /**
- * The Change Password Use Case.
+ * The input boundary for actions which are related to changing password
  */
 public interface ChangePasswordInputBoundary {
 
     /**
-     * Execute the Change Password Use Case.
-     * @param changePasswordInputData the input data for this use case
+     * Executes the change password use case
+     * @param changePasswordInputData the input data
      */
     void execute(ChangePasswordInputData changePasswordInputData);
-
 }
