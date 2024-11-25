@@ -61,9 +61,13 @@ public class ChatViewModel extends ViewModel<ChatState> {
 
                 messages.forEach((key, value) -> {
                     if (value.trim().equalsIgnoreCase("/start")) {
+                        System.out.println("Reached here [to start bot]");
                         // Start the bot if not already active
-                        if (botInteractor != null && !botInteractor.isBotActive()  && !Objects.equals(key, "Bot") && !Objects.equals(key, state.getCurrentUser().getName())) {
-                            firePropertyChanged("messages");
+                        if (botInteractor != null && !botInteractor.isBotActive()  && !Objects.equals(key, "Bot")) {
+                            if ((state.getMembers().size() == 1 )|| (!Objects.equals(key, state.getCurrentUser().getName()) && state.getMembers().size() > 1)) {
+                                System.out.println("Reached here [to start bot] 2");
+                                firePropertyChanged("messages");
+                            }
                             try {
                                 // Delay for 200 milliseconds to resolve timing issues
                                 Thread.sleep(500);
