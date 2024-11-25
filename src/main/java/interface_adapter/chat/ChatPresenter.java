@@ -57,6 +57,7 @@ public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBounda
         chatViewModel.firePropertyChanged("members");
 
         WelcomeState welcomeState = welcomeViewModel.getState();
+        welcomeState.setUser(response.getUser());
         welcomeViewModel.setState(welcomeState);
         welcomeViewModel.firePropertyChanged("username");
 

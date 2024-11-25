@@ -122,7 +122,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         public void actionPerformed(ActionEvent e) {
             System.out.println("Tahap 0");
             ChatState currState = chatViewModel.getState();
-            chatController.leaveGroup(currState.getUser());
+            chatController.leaveGroup(currState.getCurrentUser());
         }
     }
 
