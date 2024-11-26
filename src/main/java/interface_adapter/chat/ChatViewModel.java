@@ -118,6 +118,11 @@ public class ChatViewModel extends ViewModel<ChatState> {
         });
     }
 
+    public void stopBot() {
+        botInteractor.stopBot();
+    }
+
+
     public void sendMessage(String content, User user) {
         ChatState state = getState();
         System.out.println("[CVM3] Receive: " + content + "from" + user.getName());

@@ -52,7 +52,7 @@ public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBounda
         chatState.setGroupName("");
         chatState.setCurrentUser(null);
         chatState.setMessages(new ArrayList<>());
-
+        chatViewModel.stopBot();
         chatViewModel.setState(chatState);
         chatViewModel.firePropertyChanged("messages");
         chatViewModel.firePropertyChanged("members");
