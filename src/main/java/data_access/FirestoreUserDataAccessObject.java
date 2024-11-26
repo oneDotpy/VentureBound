@@ -98,47 +98,34 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
         DocumentReference docRef = db.collection("users").document(username);
         // Update the timestamp field with the value from the server
         ApiFuture<WriteResult> writeResult = docRef.update("timestamp", FieldValue.serverTimestamp());
-//        try {
-//            System.out.println("Update time : " + writeResult.get());
-//        } catch (InterruptedException e) {
-//            System.out.println("InterruptedException [GetTimestamp GroupDAO]");
-//            throw new RuntimeException(e);
-//        } catch (ExecutionException e) {
-//            System.out.println("ExecutionException [GetTimestamp GroupDAO]");
-//            throw new RuntimeException(e);
-//        }
-
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-
+        try {
+            System.out.println("Update time : " + writeResult.get());
+        } catch (InterruptedException e) {
+            System.out.println("InterruptedException [GetTimestamp GroupDAO]");
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
+            System.out.println("ExecutionException [GetTimestamp GroupDAO]");
+            throw new RuntimeException(e);
+        }
+        // waiting for the server to update
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        // getting the timestamp from the server
         ApiFuture<DocumentSnapshot> future = docRef.get();
-
         try {
             DocumentSnapshot document = future.get();
-//            if (document.exists()) {
-//                System.out.println("Document data: " + document.getData());
-//            } else {
-//                System.out.println("No such document!");
-//            }
+            if (document.exists()) {
+                System.out.println("Document data: " + document.getData());
+            } else {
+                System.out.println("No such document!");
+            }
             return (Timestamp)document.get("timestamp");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-//        Firestore db = FirestoreDataAccessObject.getFirestore();
-//        DocumentReference docRef = db.collection("trash").document(username);
-//        ApiFuture<WriteResult> future = docRef.set(new HashMap<>());
-//        try {
-//            Timestamp timestamp = future.get().getUpdateTime();
-//            return timestamp;
-//
-//        } catch (InterruptedException | ExecutionException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-
     }
 }
