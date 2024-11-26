@@ -46,13 +46,13 @@ public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBounda
 
     @Override
     public void switchToWelcomeView(LeaveGroupOutputData response) {
+        chatViewModel.stopBot();
         ChatState chatState = chatViewModel.getState();
         chatState.setUser(null);
         chatState.setMembers(new ArrayList<String>());
         chatState.setGroupName("");
         chatState.setCurrentUser(null);
         chatState.setMessages(new ArrayList<>());
-        chatViewModel.stopBot();
         chatViewModel.setState(chatState);
         chatViewModel.firePropertyChanged("messages");
         chatViewModel.firePropertyChanged("members");
