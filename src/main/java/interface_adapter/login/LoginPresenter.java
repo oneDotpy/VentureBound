@@ -11,6 +11,7 @@ import use_case.join_group.JoinGroupOutputData;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class LoginPresenter implements LoginOutputBoundary {
@@ -62,7 +63,9 @@ public class LoginPresenter implements LoginOutputBoundary {
         chatState.setUser(user);
         chatState.setCurrentUser(user);
         chatState.setMembers(loginOutputData.getGroup().getUsernames());
-        for (Message message: loginOutputData.getGroup().getMessages()) {
+        List<Message> messages = loginOutputData.getGroup().getMessages();
+        for (int i = 0; i < messages.size() - 1; i++) {
+            Message message = messages.get(i);
             System.out.println(message.getContent());
             chatState.addMessage(message.getSender(), message.getContent());
         }

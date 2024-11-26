@@ -337,8 +337,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
 //                        }
                         System.out.println("[GROUPDAO] 3");
                         listener.onMessagesUpdated(messages);
-
-
                     }
                 });
     }
