@@ -24,20 +24,23 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject;
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final MessageFactory messageFactory;
+    private final ResponseFactory responseFactory;
     private User user;
 
-    private final Map<String, String> locationResponses = new HashMap<>();
-    private final Map<String, String> hobbyResponses = new HashMap<>();
+    private final List<Response> locationResponses = new ArrayList<>();
+    private final List<Response> hobbyResponses = new ArrayList<>();
 
     public VacationBotInteractor(VacationBotOutputBoundary presenter,
                                  ChatViewModel chatViewModel,
                                  FirestoreUserDataAccessObject firestoreUserDataAccessObject,
                                  FirestoreGroupDataAccessObject groupDataAccessObject,
-                                 MessageFactory messageFactory) {
+                                 MessageFactory messageFactory,
+                                 ResponseFactory responseFactory) {
         this.presenter = presenter;
         this.chatViewModel = chatViewModel;
         this.chatGPT = new OpenAIChatGPT();
         this.messageFactory = messageFactory;
+        this.responseFactory = responseFactory;
         this.firestoreUserDataAccessObject = firestoreUserDataAccessObject;
         this.groupDataAccessObject = groupDataAccessObject;
     }
@@ -98,22 +101,34 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     private void processLocationResponses() {
-        String chosenLocation = determineMostCommon(locationResponses.values());
+        Collection<String> values = new ArrayList<>();
+        for(Response response : locationResponses) {
+            values.add(response.getResponse());
+        }
+        String chosenLocation = determineMostCommon(values);
         sendBotMessage("\n📍 The chosen vacation location is: **" + chosenLocation + "**");
 
         botState = BotState.AWAITING_HOBBIES;
-        sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
+        String lastUser = locationResponses.get(locationResponses.size() - 1).getUser();
+        if (chatViewModel.getState().getCurrentUser().getName().equals(lastUser)) {
+            sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
+        }
 
     }
 
     private void processHobbyResponses() {
         StringBuilder activities = new StringBuilder();
-        for (String hobby : hobbyResponses.values()) {
+        for (Response response : hobbyResponses) {
+            String hobby = response.getResponse();
             activities.append(hobby).append(", ");
         }
 
         System.out.println("[VBI] Reached processHobbyResponse");
-        String chosenHobby = determineMostCommon(hobbyResponses.values());
+        List<String> values = new ArrayList<>();
+        for (Response response : hobbyResponses) {
+            values.add(response.getResponse());
+        }
+        String chosenHobby = determineMostCommon(values);
         System.out.println("Chosen location: " + chosenHobby);
         System.out.println("[VBI] before call generate");
         generateRecommendations(chosenHobby, activities.toString());
@@ -124,9 +139,12 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         botState = BotState.GENERATING_RECOMMENDATIONS;
         System.out.println("[VBI] Genereate recommendation after botstate");
         try {
-            System.out.println("[VBI] Trying to generate recommendation");
-            String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
-            displayRecommendations(recommendationsJson);
+            String lastUser = hobbyResponses.get(hobbyResponses.size() - 1).getUser();
+            if (chatViewModel.getState().getCurrentUser().getName().equals(lastUser)) {
+                System.out.println("[VBI] Trying to generate recommendation");
+                String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
+                displayRecommendations(recommendationsJson);
+            }
         } catch (Exception e) {
             sendBotMessage("❌ Error generating recommendations: " + e.getMessage());
         } finally {
@@ -137,7 +155,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     @Override
     public void handleMessage(String username, String message) {
         if (botState == BotState.AWAITING_LOCATION) {
-            locationResponses.put(username, message);
+            locationResponses.add(responseFactory.create(username, message));
             sendBotMessage(username + " chose: " + message);
             // Check if all members have responded
             if (locationResponses.size() == chatViewModel.getState().getCurrentUser().getGroup().getUsernames().size()) {
@@ -146,7 +164,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             }
 
         } else if (botState == BotState.AWAITING_HOBBIES) {
-            hobbyResponses.put(username, message);
+            hobbyResponses.add(responseFactory.create(username, message));
             sendBotMessage(username + " enjoys: " + message);
 
             // Check if all members have responded
