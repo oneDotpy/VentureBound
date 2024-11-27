@@ -1,6 +1,5 @@
 package use_case.vacation_bot;
 
-import java.io.IOException;
 import java.util.*;
 
 import app.OpenAIChatGPT;
@@ -46,12 +45,14 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     @Override
-    public void startBot() {
+    public void startBot(String username) {
         System.out.println("[VBI1] start");
         this.user = createBotUser();
         botState = BotState.AWAITING_LOCATION;
         System.out.println("[VBI2.5] succesfully created bot and updated botstate");
-        sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
+        if (chatViewModel.getState().getCurrentUser().getName().equals(username)) {
+            sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
+        }
     }
 
     @Override

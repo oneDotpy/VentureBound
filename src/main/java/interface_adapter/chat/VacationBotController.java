@@ -9,8 +9,8 @@ public class VacationBotController {
         this.botInteractor = botInteractor;
     }
 
-    public void startBot() {
-        botInteractor.startBot();
+    public void startBot(String username) {
+        botInteractor.startBot(username);
     }
 
     public void stopBot() {

@@ -33,7 +33,7 @@ public class ChatController {
         System.out.println("[ChatController] Sending message from " + username + ": " + message);
 
         if ("/start".equalsIgnoreCase(message.trim())) {
-            botInteractor.startBot();
+            botInteractor.startBot(username);
         } else if ("/stop".equalsIgnoreCase(message.trim())) {
             botInteractor.stopBot();
         } else if (botInteractor.isBotActive()) {

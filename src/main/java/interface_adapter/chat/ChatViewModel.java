@@ -78,7 +78,7 @@ public class ChatViewModel extends ViewModel<ChatState> {
                                 System.err.println("Delay interrupted: " + e.getMessage());
                             }
 
-                            botInteractor.startBot();
+                            botInteractor.startBot(key);
                             System.out.println("[CVM] Bot started by: " + key);
                         }
                     } else if (value.trim().equalsIgnoreCase("/stop")) {
