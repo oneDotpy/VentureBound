@@ -5,7 +5,6 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 
-import com.google.firestore.v1.Write;
 import entity.User;
 import entity.UserFactory;
 import entity.Group;
