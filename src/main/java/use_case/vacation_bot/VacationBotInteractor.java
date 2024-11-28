@@ -26,8 +26,8 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private final ResponseFactory responseFactory;
     private User user;
 
-    private final List<Response> locationResponses = new ArrayList<>();
-    private final List<Response> hobbyResponses = new ArrayList<>();
+    private final Map<String, String> locationResponses = new HashMap<>();
+    private final Map<String, String> hobbyResponses = new HashMap<>();
 
     public VacationBotInteractor(VacationBotOutputBoundary presenter,
                                  ChatViewModel chatViewModel,
@@ -101,47 +101,40 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         return userFactory.create("Bot", null, chatViewModel.getState().getUser().getGroupID());
     }
 
-    private void processLocationResponses() {
-        Collection<String> values = new ArrayList<>();
-        for(Response response : locationResponses) {
-            values.add(response.getResponse());
+    private void processLocationResponses(String username) {
+        String chosenLocation = determineMostCommon(locationResponses.values());
+        String user = chatViewModel.getState().getCurrentUser().getName();
+        if (username.equals(user)) {
+            sendBotMessage("\n📍 The chosen vacation location is: **" + chosenLocation + "**");
         }
-        String chosenLocation = determineMostCommon(values);
-        sendBotMessage("\n📍 The chosen vacation location is: **" + chosenLocation + "**");
 
         botState = BotState.AWAITING_HOBBIES;
-        String lastUser = locationResponses.get(locationResponses.size() - 1).getUser();
-        if (chatViewModel.getState().getCurrentUser().getName().equals(lastUser)) {
+
+        if (username.equals(user)) {
             sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
         }
-
     }
 
-    private void processHobbyResponses() {
+    private void processHobbyResponses(String username) {
         StringBuilder activities = new StringBuilder();
-        for (Response response : hobbyResponses) {
-            String hobby = response.getResponse();
+        for (String hobby : hobbyResponses.values()) {
             activities.append(hobby).append(", ");
         }
 
         System.out.println("[VBI] Reached processHobbyResponse");
-        List<String> values = new ArrayList<>();
-        for (Response response : hobbyResponses) {
-            values.add(response.getResponse());
-        }
-        String chosenHobby = determineMostCommon(values);
+
+        String chosenHobby = determineMostCommon(hobbyResponses.values());
         System.out.println("Chosen location: " + chosenHobby);
         System.out.println("[VBI] before call generate");
-        generateRecommendations(chosenHobby, activities.toString());
+        generateRecommendations(username, chosenHobby, activities.toString());
     }
 
-    private void generateRecommendations(String location, String activities) {
+    private void generateRecommendations(String username, String location, String activities) {
         System.out.println("[VBI] Generate recommendation before botstate");
         botState = BotState.GENERATING_RECOMMENDATIONS;
         System.out.println("[VBI] Genereate recommendation after botstate");
         try {
-            String lastUser = hobbyResponses.get(hobbyResponses.size() - 1).getUser();
-            if (chatViewModel.getState().getCurrentUser().getName().equals(lastUser)) {
+            if (chatViewModel.getState().getCurrentUser().getName().equals(username)) {
                 System.out.println("[VBI] Trying to generate recommendation");
                 String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
                 displayRecommendations(recommendationsJson);
@@ -156,23 +149,23 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     @Override
     public void handleMessage(String username, String message) {
         if (botState == BotState.AWAITING_LOCATION) {
-            locationResponses.add(responseFactory.create(username, message));
+            locationResponses.put(username, message);
             sendBotMessage(username + " chose: " + message);
             // Check if all members have responded
-            if (locationResponses.size() == chatViewModel.getState().getCurrentUser().getGroup().getUsernames().size()) {
-                processLocationResponses();
+            if (locationResponses.size() == chatViewModel.getState().getMembers().size()) {
+                processLocationResponses(username);
                 locationResponses.clear();
             }
 
         } else if (botState == BotState.AWAITING_HOBBIES) {
-            hobbyResponses.add(responseFactory.create(username, message));
+            hobbyResponses.put(username, message);
             sendBotMessage(username + " enjoys: " + message);
 
             // Check if all members have responded
-            if (hobbyResponses.size() == chatViewModel.getState().getCurrentUser().getGroup().getUsernames().size()) {
+            if (hobbyResponses.size() == chatViewModel.getState().getMembers().size()) {
                 botCalled = true;
                 sendBotMessage("Generating your perfect holiday destination....");
-                if (botCalled) {processHobbyResponses();}
+                if (botCalled) {processHobbyResponses(username);}
             }
         }
     }
