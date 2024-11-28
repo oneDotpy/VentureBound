@@ -30,24 +30,8 @@ public class ChatInteractor implements ChatInputBoundary {
         return chatState.getMembers();
     }
 
-    public void setCurrentUser(User user) {
-        System.out.println("[ChatInteractor] Setting current user to: " + user);
-        chatState.setCurrentUser(user);
-    }
-
-    public User getCurrentUser() {
-        User user = chatState.getCurrentUser();
-        System.out.println("[ChatInteractor] Getting current user: " + user);
-        return user;
-    }
-
 
     public void setMembers(List<String> members) {
-        chatState.setMembers(members);
-    }
-
-    public void updateGroupMembers(List<String> members) {
-        chatState.setMembers(members);
         chatPresenter.updateMembers(members);
     }
 }

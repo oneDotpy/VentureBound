@@ -298,9 +298,13 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
         Group group = groupFactory.create(groupName, usernames, responses, recommendations, chosenLocations, messages, "10090fdas");
         groupDataAccessObject.save(group);
     }
-    public void setGroupMemberListener(String groupID, RealTimeChatUpdatesUseCase.GroupMemberUpdateListener listener) {
+
+
+    public ListenerRegistration setGroupMemberListener(String groupID, RealTimeChatUpdatesUseCase.GroupMemberUpdateListener listener) {
         Firestore db = FirestoreClient.getFirestore();
-        db.collection("groups").document(groupID).addSnapshotListener((snapshot, error) -> {
+        DocumentReference docRef = db.collection("groups").document(groupID);
+
+        ListenerRegistration listenerRegistration = docRef.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
                 listener.onError(error);
                 return;
@@ -310,35 +314,55 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
                 listener.onGroupMembersUpdated(members);
             }
         });
+
+        return listenerRegistration;
     }
 
-    public void setMessageListener(String groupID, RealTimeChatUpdatesUseCase.MessageUpdateListener listener) {
+    public ListenerRegistration setMessageListener(String groupID, RealTimeChatUpdatesUseCase.MessageUpdateListener listener) {
         Firestore db = FirestoreClient.getFirestore();
-        db.collection("groups").document(groupID).collection("messages")
+        Query query = db.collection("groups").document(groupID).collection("messages").orderBy("timestamp");
+        ListenerRegistration listenerRegistration = query
                 .addSnapshotListener((snapshots, error) -> {
                     if (error != null) {
                         listener.onError(error);
                         return;
                     }
                     if (snapshots != null) {
-                        System.out.println("[GROUPDAO] 1");
-                        Map<String, String> messages = new HashMap<>();
-                        DocumentSnapshot doc = snapshots.getDocuments().get(snapshots.getDocuments().size() - 1);
-                        String user = (String) doc.get("sender");
-                        String content = (String) doc.get("content");
-                        Timestamp timestamp = (Timestamp) doc.get("timestamp");
-                        messages.put(user, content); // Assuming Message has such a constructor
-//                        for (DocumentSnapshot doc : snapshots.getDocuments()) {
-//                            System.out.println("for loop" + doc.get("sender"));
-//                            String user = (String) doc.get("sender");
-//                            String content = (String) doc.get("content");
-//                            Timestamp timestamp = (Timestamp) doc.get("timestamp");
-//                            messages.put(user, content); // Assuming Message has such a constructor
-//                        }
-                        System.out.println("[GROUPDAO] 3");
-                        listener.onMessagesUpdated(messages);
+                        for (DocumentChange document : snapshots.getDocumentChanges()) {
+                            switch (document.getType()) {
+                                case ADDED:
+                                    Map<String, String> messages = new HashMap<>();
+                                    DocumentSnapshot doc = document.getDocument();
+
+                                    String user = (String) doc.get("sender");
+                                    String content = (String) doc.get("content");
+                                    Timestamp timestamp = (Timestamp) doc.get("timestamp");
+
+                                    messages.put("sender", user);
+                                    messages.put("content", content);
+
+                                    listener.onMessagesUpdated(messages, timestamp);
+                            }
+                        }
+//                        System.out.println("[GROUPDAO] 1");
+//                        Map<String, String> messages = new HashMap<>();
+//                        DocumentSnapshot doc = snapshots.getDocuments().get(snapshots.getDocuments().size() - 1);
+//                        String user = (String) doc.get("sender");
+//                        String content = (String) doc.get("content");
+//                        Timestamp timestamp = (Timestamp) doc.get("timestamp");
+//                        messages.put(user, content); // Assuming Message has such a constructor
+////                        for (DocumentSnapshot doc : snapshots.getDocuments()) {
+////                            System.out.println("for loop" + doc.get("sender"));
+////                            String user = (String) doc.get("sender");
+////                            String content = (String) doc.get("content");
+////                            Timestamp timestamp = (Timestamp) doc.get("timestamp");
+////                            messages.put(user, content); // Assuming Message has such a constructor
+////                        }
+//                        System.out.println("[GROUPDAO] 3");
+//                        listener.onMessagesUpdated(messages);
                     }
                 });
+        return listenerRegistration;
     }
 
 }

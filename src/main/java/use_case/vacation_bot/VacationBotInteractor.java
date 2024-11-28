@@ -45,20 +45,29 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     @Override
-    public void startBot(String username) {
-        System.out.println("[VBI1] start");
-        this.user = createBotUser();
-        botState = BotState.AWAITING_LOCATION;
-        System.out.println("[VBI2.5] succesfully created bot and updated botstate");
-        if (chatViewModel.getState().getCurrentUser().getName().equals(username)) {
+    public void startBot() {
+        if (botState.equals(BotState.INACTIVE)) {
+            System.out.println("[VBI1] start");
+            this.user = createBotUser();
+            botState = BotState.AWAITING_LOCATION;
+            System.out.println("[VBI2.5] succesfully created bot and updated botstate");
+
             sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
+        }
+        else {
+            sendBotMessage("The Bot Already Started");
         }
     }
 
     @Override
     public void stopBot() {
-        botState = BotState.INACTIVE;
-        sendBotMessage("Vacation Bot has been stopped.");
+        if (!botState.equals(BotState.INACTIVE)) {
+            botState = BotState.INACTIVE;
+            sendBotMessage("Vacation Bot has been stopped.");
+        }
+        else {
+            sendBotMessage("The Bot is currently inactive");
+        }
     }
 
     @Override
@@ -147,12 +156,12 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     @Override
-    public void handleMessage(String username, String message) {
+    public void handleMessage(String username, String message, int groupSize) {
         if (botState == BotState.AWAITING_LOCATION) {
             locationResponses.put(username, message);
             sendBotMessage(username + " chose: " + message);
             // Check if all members have responded
-            if (locationResponses.size() == chatViewModel.getState().getMembers().size()) {
+            if (locationResponses.size() == groupSize) {
                 processLocationResponses(username);
                 locationResponses.clear();
             }
@@ -162,7 +171,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             sendBotMessage(username + " enjoys: " + message);
 
             // Check if all members have responded
-            if (hobbyResponses.size() == chatViewModel.getState().getMembers().size()) {
+            if (hobbyResponses.size() == groupSize) {
                 botCalled = true;
                 sendBotMessage("Generating your perfect holiday destination....");
                 if (botCalled) {

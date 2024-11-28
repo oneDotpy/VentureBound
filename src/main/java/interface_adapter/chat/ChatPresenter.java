@@ -1,5 +1,8 @@
 package interface_adapter.chat;
 
+import com.google.cloud.Timestamp;
+import entity.Group;
+import entity.Message;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.welcome.WelcomeState;
 import interface_adapter.welcome.WelcomeViewModel;
@@ -7,13 +10,14 @@ import use_case.chat.ChatOutputBoundary;
 import use_case.chat.ChatOutputData;
 import use_case.leave_group.LeaveGroupOutputBoundary;
 import use_case.leave_group.LeaveGroupOutputData;
+import use_case.receive_message.ReceiveMessageOutputBoundary;
+import use_case.receive_message.ReceiveMessageOutputData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBoundary {
-    private final ChatViewModel chatViewModel;
-    private final ChatState chatState = ChatState.getInstance();// Use singleton
+public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBoundary, ReceiveMessageOutputBoundary {
+    private final ChatViewModel chatViewModel;// Use singleton
     private final WelcomeViewModel welcomeViewModel;
     private final ViewManagerModel viewManagerModel;
 
@@ -27,6 +31,7 @@ public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBounda
     @Override
     public void presentMessage(ChatOutputData response) {
         System.out.println("[ChatPresenter] Presenting message from " + response.getSender() + ": " + response.getMessage());
+        ChatState chatState = chatViewModel.getState();
         chatState.addMessage(response.getSender(), response.getMessage());
 
         // Notify the view model
@@ -37,8 +42,13 @@ public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBounda
 
     public void updateMembers(List<String> members) {
         System.out.println("[ChatPresenter] Updating members list: " + members);
+
+        ChatState chatState = chatViewModel.getState();
         chatState.setMembers(members);
 
+        chatState.getCurrentUser().getGroup().setMembers(members);
+
+        System.out.println("ChatPresenter : Presenting new State");
         // Notify the view model about the updated members
         chatViewModel.setState(chatState);
         chatViewModel.firePropertyChanged("members");
@@ -54,6 +64,8 @@ public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBounda
         chatState.setCurrentUser(null);
         chatState.setMessages(new ArrayList<>());
         chatViewModel.setState(chatState);
+        chatViewModel.stopListenMember();
+        chatViewModel.stopListenMessage();
         chatViewModel.firePropertyChanged("messages");
         chatViewModel.firePropertyChanged("members");
 
@@ -64,6 +76,19 @@ public class ChatPresenter implements ChatOutputBoundary, LeaveGroupOutputBounda
 
         viewManagerModel.setState(welcomeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void showMessage(ReceiveMessageOutputData response) {
+        Message message = response.getMessage();
+        String formattedMessage = response.getFormattedMessage();
+
+        ChatState chatState = chatViewModel.getState();
+        chatState.getCurrentUser().getGroup().addMessage(message);
+
+        chatState.addMessages(formattedMessage);
+        chatViewModel.setState(chatState);
+        chatViewModel.firePropertyChanged("messages");
     }
 }
 

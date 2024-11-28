@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CommonGroup implements Group{
     private final String groupName;
-    private final List<String> usernames;
+    private List<String> usernames;
     private final List<Response> responses;
     private final List<Recommendation> recommendations;
     private final List<String> chosen;
@@ -86,5 +86,11 @@ public class CommonGroup implements Group{
     @Override
     public String getGroupID() {
         return groupID;
+    }
+
+    public void addMessage(Message message) {this.messages.add(message);}
+
+    public void setMembers(List<String> members) {
+        usernames = new ArrayList<>(members);
     }
 }

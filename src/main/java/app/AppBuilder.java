@@ -29,6 +29,7 @@ import use_case.group.*;
 import use_case.join_group.JoinGroupInteractor;
 import use_case.leave_group.LeaveGroupInteractor;
 import use_case.login.*;
+import use_case.receive_message.ReceiveMessageInteractor;
 import use_case.send_message.SendMessageInteractor;
 import use_case.signup.*;
 import use_case.change_password.*;
@@ -176,15 +177,17 @@ public class AppBuilder {
         vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatViewModel, firestoreUserDataAccessObject,firestoreGroupDataAccessObject, messageFactory, responseFactory);
         vacationBotController = new VacationBotController(vacationBotInteractor);
 
+        ReceiveMessageInteractor receiveMessageInteractor = new ReceiveMessageInteractor(chatPresenter, messageFactory);
         LeaveGroupInteractor leaveGroupInteractor = new LeaveGroupInteractor(firestoreGroupDataAccessObject, firestoreUserDataAccessObject, userFactory, chatPresenter);
 
         chatViewModel.setChatUpdatesUseCase(new RealTimeChatUpdatesUseCase(firestoreGroupDataAccessObject));
         chatViewModel.setSendMessageInteractor(new SendMessageInteractor(firestoreUserDataAccessObject ,firestoreGroupDataAccessObject, messageFactory));
         chatViewModel.setBotInteractor(vacationBotInteractor);
 
-        chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor);
+        chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor, receiveMessageInteractor);
 
         chatView.setChatController(chatController);
+        chatViewModel.setController(chatController);
         return this;
     }
 

@@ -48,4 +48,12 @@ public interface Group {
      * @return the groupID of this group
      */
     String getGroupID();
+
+    /**
+     * add Message to the group entity
+     * @param message the new message
+     */
+    void addMessage(Message message);
+
+    void setMembers(List<String> members);
 }
