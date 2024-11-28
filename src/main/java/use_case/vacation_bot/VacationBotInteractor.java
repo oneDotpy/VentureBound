@@ -165,7 +165,10 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             if (hobbyResponses.size() == chatViewModel.getState().getMembers().size()) {
                 botCalled = true;
                 sendBotMessage("Generating your perfect holiday destination....");
-                if (botCalled) {processHobbyResponses(username);}
+                if (botCalled) {
+                    processHobbyResponses(username);
+                    hobbyResponses.clear();
+                }
             }
         }
     }
