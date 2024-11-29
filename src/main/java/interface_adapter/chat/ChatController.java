@@ -72,10 +72,10 @@ public class ChatController {
             else if (content.trim().equalsIgnoreCase("/stop")) {
                 botInteractor.stopBot();
             }
+        }
 
-            else {
-                botInteractor.handleMessage(sender, content, groupSize, groupID);
-            }
+        else if (botInteractor.isBotActive()) {
+            botInteractor.handleMessage(sender, content, groupSize, groupID);
         }
     }
 }
