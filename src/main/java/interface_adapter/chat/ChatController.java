@@ -12,7 +12,7 @@ import use_case.receive_message.ReceiveMessageInputData;
 import use_case.vacation_bot.VacationBotInputBoundary;
 import java.util.List;
 
-public class ChatController {
+public class ChatController implements ChatControllerInterface {
     private final ChatInputBoundary chatInteractor;
     private final LeaveGroupInputBoundary leaveGroupInteractor;
     private final VacationBotInputBoundary botInteractor;
@@ -27,37 +27,13 @@ public class ChatController {
 
     public void leaveGroup(User user) {
         LeaveGroupInputData leaveGroupInputData = new LeaveGroupInputData(user);
+        botInteractor.stopBot();
         leaveGroupInteractor.leaveGroup(leaveGroupInputData);
-    }
-
-//    public void sendMessage(String message, String username) {
-//        if (message == null || message.trim().isEmpty()) {
-//            System.out.println("[ChatController] Message is empty or null");
-//            return;
-//        }
-//        System.out.println("[ChatController] Sending message from " + username + ": " + message);
-//
-//        if ("/start".equalsIgnoreCase(message.trim())) {
-//            botInteractor.startBot(username);
-//        } else if ("/stop".equalsIgnoreCase(message.trim())) {
-//            botInteractor.stopBot();
-//        } else if (botInteractor.isBotActive()) {
-//            botInteractor.handleMessage(username, message);
-//        } else {
-//            // Only send the message to the interactor, do not update the state directly here
-//            ChatInputData inputData = new ChatInputData(username, message, null, null);
-//            chatInteractor.sendMessage(inputData);
-//        }
-//    }
-
-    public void sendBotMessage(String sender, String message) {
-        System.out.println("[ChatController] Bot sending message: " + message);
-        ChatInputData inputData = new ChatInputData(sender, message, null, null);
-        chatInteractor.sendMessage(inputData);
     }
 
     public void addMembers(List<String> members) {
         chatInteractor.setMembers(members);
+        botInteractor.setThreshold(members.size());
     }
 
     public void handleMessage(String sender, String content, Timestamp timestamp, String currentUser, int groupSize, String groupID) {
@@ -66,7 +42,7 @@ public class ChatController {
 
         if (sender.equals(currentUser)) {
             if (content.trim().equalsIgnoreCase("/start")) {
-                botInteractor.startBot(groupID);
+                botInteractor.startBot(groupID, groupSize);
                 return;
             }
 

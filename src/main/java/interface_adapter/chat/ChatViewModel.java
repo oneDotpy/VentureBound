@@ -22,7 +22,7 @@ public class ChatViewModel extends ViewModel<ChatState> {
     private VacationBotInputBoundary botInteractor; // Bot integration
     private ListenerRegistration messageListener;
     private ListenerRegistration memberListener;
-    private ChatController chatController;
+    private ChatControllerInterface chatController;
 
     public ChatViewModel() {
         super("chat");
@@ -41,7 +41,7 @@ public class ChatViewModel extends ViewModel<ChatState> {
         this.botInteractor = botInteractor; // Inject the bot interactor
     }
 
-    public void setController(ChatController chatController) {
+    public void setController(ChatControllerInterface chatController) {
         this.chatController = chatController;
     }
 
@@ -75,74 +75,6 @@ public class ChatViewModel extends ViewModel<ChatState> {
                 String groupID = state.getCurrentUser().getGroupID();
 
                 chatController.handleMessage(sender, message, timestamp, currentUser, groupSize, groupID);
-
-//                messages.forEach((key, value) -> {
-//                    if (!key.equals(state.getCurrentUser().getName())) {
-//
-//                    }
-//                    else {
-//                        if (value.trim().equalsIgnoreCase("/start")) {
-//                            if (!botInteractor.isBotActive()) {
-//                                botInteractor.startBot(state.getCurrentUser().getName());
-//                            }
-//                        }
-//
-//                        else if (value.trim().equalsIgnoreCase("/stop")) {
-//                            if (botInteractor.isBotActive()) {
-//                                botInteractor.stopBot();
-//                            }
-//                        }
-//                    }
-//
-//
-//                    if (value.trim().equalsIgnoreCase("/start")) {
-//                        System.out.println("Reached here [to start bot]");
-//                        // Start the bot if not already active`
-//                        System.out.println("[2] BOT Condition: " + botInteractor + " Bot Is Active: " + botInteractor.isBotActive());
-//                        if (botInteractor != null && !botInteractor.isBotActive()  && !Objects.equals(key, "Bot")) {
-//                            System.out.println("Reached here to [start bot] 1");
-//                            System.out.println(state.getMembers().size() == 1);
-//                            if ((state.getMembers().size() == 1 ) || ((Objects.equals(key, state.getCurrentUser().getName()) && state.getMembers().size() > 1))) {
-//                                System.out.println("Reached here [to start bot] 2");
-//                                firePropertyChanged("messages");
-//                            }
-//                            try {
-//                                Thread.sleep(500);
-//                            } catch (InterruptedException e) {
-//                                Thread.currentThread().interrupt(); // Restore interrupted status
-//                                System.err.println("Delay interrupted: " + e.getMessage());
-//                            }
-//
-//                            botInteractor.startBot(key);
-//                            System.out.println("[CVM] Bot started by: " + key);
-//                        }
-//                    } else if (value.trim().equalsIgnoreCase("/stop")) {
-//                        // Stop the bot if it is active
-//                        if (botInteractor != null && botInteractor.isBotActive()) {
-//                            botInteractor.stopBot();
-//                            firePropertyChanged("messages");
-//                            System.out.println("[CVM] Bot stopped by: " + key);
-//                        }
-//                    } else {
-//                        // If the bot is active, pass the message to the bot
-//                        if (botInteractor != null && botInteractor.isBotActive()  && !Objects.equals(key, "Bot")) {
-//                            firePropertyChanged("messages");
-//                            botInteractor.handleMessage(key, value);
-//                        } else {
-//                            // Otherwise, treat it as a normal chat message
-//                            System.out.println("[CVM] Reaches This Spot");
-//                            firePropertyChanged("message");
-//                            state.addMessage(key, value);
-//                        }
-//                    }
-//                });
-//
-//                // Clear the messages map to avoid reprocessing
-//                messages.clear();
-//                System.out.println("[CVM2]" + messages);
-//
-//                setState(state); // Update the state in ViewModel
-//                firePropertyChanged("messages");
             }
 
 
@@ -159,7 +91,6 @@ public class ChatViewModel extends ViewModel<ChatState> {
         }
     }
 
-
     public void sendMessage(String content, User user) {
         ChatState state = getState();
         System.out.println("[CVM3] Receive: " + content + "from" + user.getName());
@@ -170,12 +101,6 @@ public class ChatViewModel extends ViewModel<ChatState> {
         // Create input data and call the use case
         SendMessageInputData inputData = new SendMessageInputData(user, content);
         System.out.println(inputData.getContent() + inputData.getUser().getName());
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt(); // Restore interrupted status
-//            System.err.println("Delay interrupted: " + e.getMessage());
-//        }
         sendMessageInteractor.sendMessage(inputData); // Send the message to the database
     }
 

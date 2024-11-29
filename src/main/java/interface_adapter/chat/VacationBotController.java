@@ -10,7 +10,7 @@ public class VacationBotController {
     }
 
     public void startBot(String username) {
-        botInteractor.startBot("");
+        botInteractor.startBot("",10);
     }
 
     public void stopBot() {
