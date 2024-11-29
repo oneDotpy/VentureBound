@@ -185,17 +185,17 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     public void removeResponse(List<String> members) {
-        String username = null;
         if (botState == BotState.AWAITING_LOCATION) {
-            findMissingMember(members, username, locationResponses);
+            removeMissingMemberResponse(members, locationResponses);
         }
 
         else if (botState == BotState.AWAITING_HOBBIES) {
-            findMissingMember(members, username, hobbyResponses);
+            removeMissingMemberResponse(members, hobbyResponses);
         }
     }
 
-    private void findMissingMember(List<String> members, String username, Map<String, String> responses) {
+    private void removeMissingMemberResponse(List<String> members, Map<String, String> responses) {
+        String username;
         for (String key : responses.keySet()) {
             boolean foundMissingMember = true;
             for (String member : members ) {
@@ -206,10 +206,10 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             }
             if (foundMissingMember) {
                 username = key;
-                break;
+                System.out.println("removed response from " + username + " with content: " + responses.remove(username));
+                return;
             }
         }
-        System.out.println("removed response from " + username + " with content: " + responses.remove(username));
     }
 
 
