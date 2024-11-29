@@ -129,17 +129,15 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private void processHobbyResponses() {
         if (hobbyResponses.size() >= threshold) {
             sendBotMessage("Generating your perfect holiday destination....");
-            if (!botCalled) {
-                botCalled = true;
-                StringBuilder activities = new StringBuilder();
-                for (String hobby : hobbyResponses.values()) {
-                    activities.append(hobby).append(", ");
-                }
-                generateRecommendations(activities.toString(),chosenLocation);
-                System.out.println(hobbyResponses);
-                hobbyResponses.clear();
-                locationResponses.clear();
+            botCalled = true;
+            StringBuilder activities = new StringBuilder();
+            for (String hobby : hobbyResponses.values()) {
+                activities.append(hobby).append(", ");
             }
+            generateRecommendations(activities.toString(),chosenLocation);
+            System.out.println(hobbyResponses);
+            hobbyResponses.clear();
+            locationResponses.clear();
         }
     }
 
