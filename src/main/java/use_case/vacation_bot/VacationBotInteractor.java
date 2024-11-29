@@ -130,7 +130,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         generateRecommendations(chosenHobby, activities.toString());
     }
 
-    private void generateRecommendations(String location, String activities) {
+    private void generateRecommendations(String activities, String location) {
         System.out.println("[VBI] Generate recommendation before botstate");
         botState = BotState.GENERATING_RECOMMENDATIONS;
         System.out.println("[VBI] Genereate recommendation after botstate");
@@ -166,6 +166,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
                 if (!botCalled) {
                     botCalled = true;
                     processHobbyResponses(username);
+                    System.out.println(hobbyResponses);
                     hobbyResponses.clear();
                 }
             }
