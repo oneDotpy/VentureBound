@@ -22,6 +22,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final MessageFactory messageFactory;
     private final ResponseFactory responseFactory;
+    private final RecommendationFactory recommendationFactory;
     private User user;
 
     private String chosenLocation = "";
@@ -35,8 +36,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
                                  FirestoreUserDataAccessObject firestoreUserDataAccessObject,
                                  FirestoreGroupDataAccessObject groupDataAccessObject,
                                  MessageFactory messageFactory,
-                                 ResponseFactory responseFactory) {
+                                 ResponseFactory responseFactory, RecommendationFactory recommendationFactory) {
         this.presenter = presenter;
+        this.recommendationFactory = recommendationFactory;
         this.chatGPT = new OpenAIChatGPT();
         this.messageFactory = messageFactory;
         this.responseFactory = responseFactory;
@@ -103,11 +105,13 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+
     private User createBotUser(String groupID) {
         System.out.println("[VBI2] Create bot at " + groupID);
         UserFactory userFactory = new CommonUserFactory();
         return userFactory.create("Bot", null,"", null, groupID);
     }
+
 
     private void processLocationResponses() {
         if (locationResponses.size() >= threshold) {
@@ -120,6 +124,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
         }
     }
+
 
     private void processHobbyResponses() {
         if (hobbyResponses.size() >= threshold) {
@@ -136,7 +141,6 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
                 locationResponses.clear();
             }
         }
-
     }
 
     private void generateRecommendations(String activities, String location) {
@@ -196,6 +200,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             } else {
                 System.err.println("No 'vacationSpots' or 'vacation_spots' key found in response");
             }
+            System.out.print(vacationSpots);
 
             if (vacationSpots != null) {
                 StringBuilder formattedRecommendations = new StringBuilder();
