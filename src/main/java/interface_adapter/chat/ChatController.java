@@ -65,20 +65,29 @@ public class ChatController {
         if (sender.equals(currentUser)) {
             if (content.trim().equalsIgnoreCase("/start")) {
                 botInteractor.startBot(groupID);
+                return;
             }
 
             else if (content.trim().equalsIgnoreCase("/stop")) {
                 botInteractor.stopBot();
+                return;
+            }
+            else {
+                ReceiveMessageInputData receiveMessageInputData = new ReceiveMessageInputData(sender, content, currentUser, timestamp);
+                receiveMessageInteractor.showMessage(receiveMessageInputData);
+                return;
             }
         }
 
         else if (botInteractor.isBotActive()) {
             botInteractor.handleMessage(sender, content, groupSize, groupID);
+            return;
         }
 
         else {
             ReceiveMessageInputData receiveMessageInputData = new ReceiveMessageInputData(sender, content, currentUser, timestamp);
             receiveMessageInteractor.showMessage(receiveMessageInputData);
+            return;
         }
     }
 }
