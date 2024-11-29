@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Big Update (Small Update Bot) Changing Chat Controller" />
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Big Update (Small Update Bot 3) Changing Chat Controller">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -143,7 +149,7 @@
       <workItem from="1731338194770" duration="520000" />
       <workItem from="1731338726746" duration="124000" />
       <workItem from="1731338859588" duration="150000" />
-      <workItem from="1732795174073" duration="17366000" />
+      <workItem from="1732795174073" duration="18353000" />
     </task>
     <task id="LOCAL-00001" summary="integrated chat system">
       <option name="closed" value="true" />
@@ -217,7 +223,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732841965685</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Big Update (Small Update Bot 2) Changing Chat Controller">
+      <option name="closed" value="true" />
+      <created>1732842099680</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1732842099680</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Big Update (Small Update Bot 3) Changing Chat Controller">
+      <option name="closed" value="true" />
+      <created>1732842279094</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1732842279094</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -233,6 +255,8 @@
     <MESSAGE value="Big Update 1 (Changing flow of listener and Changing Listener of member and message)" />
     <MESSAGE value="Big Update 2 (Changing flow of listener and Changing Listener of member and message)" />
     <MESSAGE value="Big Update (Small Update Bot) Changing Chat Controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="Big Update (Small Update Bot) Changing Chat Controller" />
+    <MESSAGE value="Big Update (Small Update Bot 2) Changing Chat Controller" />
+    <MESSAGE value="Big Update (Small Update Bot 3) Changing Chat Controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="Big Update (Small Update Bot 3) Changing Chat Controller" />
   </component>
 </project>

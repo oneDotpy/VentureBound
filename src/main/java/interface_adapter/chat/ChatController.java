@@ -61,6 +61,8 @@ public class ChatController {
     }
 
     public void handleMessage(String sender, String content, Timestamp timestamp, String currentUser, int groupSize, String groupID) {
+        ReceiveMessageInputData receiveMessageInputData = new ReceiveMessageInputData(sender, content, currentUser, timestamp);
+        receiveMessageInteractor.showMessage(receiveMessageInputData);
 
         if (sender.equals(currentUser)) {
             if (content.trim().equalsIgnoreCase("/start")) {
@@ -72,21 +74,10 @@ public class ChatController {
                 botInteractor.stopBot();
                 return;
             }
-            else {
-                ReceiveMessageInputData receiveMessageInputData = new ReceiveMessageInputData(sender, content, currentUser, timestamp);
-                receiveMessageInteractor.showMessage(receiveMessageInputData);
-                return;
-            }
         }
 
-        else if (botInteractor.isBotActive()) {
+        if (botInteractor.isBotActive() && !sender.equals("Bot")) {
             botInteractor.handleMessage(sender, content, groupSize, groupID);
-            return;
-        }
-
-        else {
-            ReceiveMessageInputData receiveMessageInputData = new ReceiveMessageInputData(sender, content, currentUser, timestamp);
-            receiveMessageInteractor.showMessage(receiveMessageInputData);
             return;
         }
     }

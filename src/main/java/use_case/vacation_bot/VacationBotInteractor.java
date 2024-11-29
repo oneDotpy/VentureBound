@@ -113,6 +113,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
         botState = BotState.AWAITING_HOBBIES;
         sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
+
     }
 
     private void processHobbyResponses(String username) {
@@ -161,9 +162,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
             // Check if all members have responded
             if (hobbyResponses.size() == groupSize) {
-                botCalled = true;
                 sendBotMessage("Generating your perfect holiday destination....");
-                if (botCalled) {
+                if (!botCalled) {
+                    botCalled = true;
                     processHobbyResponses(username);
                     hobbyResponses.clear();
                 }
