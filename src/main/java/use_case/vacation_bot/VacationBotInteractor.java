@@ -186,6 +186,24 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    public void removeResponse(List<String> members) {
+        String username = null;
+        for (String member : members) {
+            if (locationResponses.containsKey(member)) {
+                username = member;
+                break;
+            }
+        }
+
+        if (botState == BotState.AWAITING_LOCATION) {
+            locationResponses.remove(username);
+        }
+
+        else if (botState == BotState.AWAITING_HOBBIES) {
+            hobbyResponses.remove(username);
+        }
+    }
+
 
     private void displayRecommendations(String recommendationsJson) {
         try {

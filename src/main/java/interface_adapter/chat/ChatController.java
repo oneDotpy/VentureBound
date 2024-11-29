@@ -33,6 +33,7 @@ public class ChatController implements ChatControllerInterface {
 
     public void addMembers(List<String> members) {
         chatInteractor.setMembers(members);
+        botInteractor.removeResponse(members);
         botInteractor.setThreshold(members.size());
     }
 

@@ -362,22 +362,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
                         else{
                             messageListenerTriggered = true;
                         }
-//                        System.out.println("[GROUPDAO] 1");
-//                        Map<String, String> messages = new HashMap<>();
-//                        DocumentSnapshot doc = snapshots.getDocuments().get(snapshots.getDocuments().size() - 1);
-//                        String user = (String) doc.get("sender");
-//                        String content = (String) doc.get("content");
-//                        Timestamp timestamp = (Timestamp) doc.get("timestamp");
-//                        messages.put(user, content); // Assuming Message has such a constructor
-////                        for (DocumentSnapshot doc : snapshots.getDocuments()) {
-////                            System.out.println("for loop" + doc.get("sender"));
-////                            String user = (String) doc.get("sender");
-////                            String content = (String) doc.get("content");
-////                            Timestamp timestamp = (Timestamp) doc.get("timestamp");
-////                            messages.put(user, content); // Assuming Message has such a constructor
-////                        }
-//                        System.out.println("[GROUPDAO] 3");
-//                        listener.onMessagesUpdated(messages);
                     }
                 });
         return groupListener;
