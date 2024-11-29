@@ -24,6 +24,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private final ResponseFactory responseFactory;
     private User user;
 
+    private String chosenLocation = "";
+    private StringBuilder chosenHobbies = new StringBuilder();
+
     private final Map<String, String> locationResponses = new HashMap<>();
     private final Map<String, String> hobbyResponses = new HashMap<>();
 
@@ -108,7 +111,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     private void processLocationResponses(String username) {
-        String chosenLocation = determineMostCommon(locationResponses.values());
+        String chosenLocationInput = determineMostCommon(locationResponses.values());
+        System.out.println("[VBI3] " + chosenLocationInput);
+        chosenLocation = chosenLocationInput;
         sendBotMessage("\n📍 The chosen vacation location is: **" + chosenLocation + "**");
 
         botState = BotState.AWAITING_HOBBIES;
@@ -124,10 +129,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
         System.out.println("[VBI] Reached processHobbyResponse");
 
-        String chosenHobby = determineMostCommon(hobbyResponses.values());
-        System.out.println("Chosen location: " + chosenHobby);
+        System.out.println("Chosen location: " + chosenLocation);
         System.out.println("[VBI] before call generate");
-        generateRecommendations(chosenHobby, activities.toString());
+        generateRecommendations(activities.toString(),chosenLocation);
     }
 
     private void generateRecommendations(String activities, String location) {
@@ -153,7 +157,6 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             // Check if all members have responded
             if (locationResponses.size() == groupSize) {
                 processLocationResponses(username);
-                locationResponses.clear();
             }
 
         } else if (botState == BotState.AWAITING_HOBBIES) {
@@ -168,6 +171,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
                     processHobbyResponses(username);
                     System.out.println(hobbyResponses);
                     hobbyResponses.clear();
+                    locationResponses.clear();
                 }
             }
         }
