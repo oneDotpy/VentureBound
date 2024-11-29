@@ -189,7 +189,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     public void removeResponse(List<String> members) {
         String username = null;
         for (String member : members) {
-            if (locationResponses.containsKey(member)) {
+            if (!locationResponses.containsKey(member)) {
                 username = member;
                 break;
             }
