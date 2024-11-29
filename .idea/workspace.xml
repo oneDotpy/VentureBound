@@ -4,38 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Updating integration between leave_group use_case and WelcomeView">
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/receive_message/ReceiveMessageInputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/receive_message/ReceiveMessageInputData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/receive_message/ReceiveMessageInteractor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/receive_message/ReceiveMessageOutputBoundary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/use_case/receive_message/ReceiveMessageOutputData.java" afterDir="false" />
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Big Update 1 (Changing flow of listener and Changing Listener of member and message)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/CommonGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/CommonGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Group.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatViewModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/VacationBotController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/VacationBotController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatInputBoundary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatInputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatInputData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/chat/ChatInteractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/chat/RealTimeChatUpdatesUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/chat/RealTimeChatUpdatesUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/join_group/JoinGroupPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/join_group/JoinGroupPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/login/LoginPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/login/LoginPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupGroupDataAccessInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupGroupDataAccessInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/leave_group/LeaveGroupInteractor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonGroup.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonGroup.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/Group.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/Group.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/VacationBotController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/VacationBotController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/login/LoginPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/login/LoginPresenter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInputBoundary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInputData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/chat/ChatInteractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase$MessageUpdateListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase$MessageUpdateListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor$BotState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor$BotState.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView$SendButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView$SendButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/ChatView.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,7 +179,7 @@
       <workItem from="1731338194770" duration="520000" />
       <workItem from="1731338726746" duration="124000" />
       <workItem from="1731338859588" duration="150000" />
-      <workItem from="1732795174073" duration="12109000" />
+      <workItem from="1732795174073" duration="16790000" />
     </task>
     <task id="LOCAL-00001" summary="integrated chat system">
       <option name="closed" value="true" />
@@ -225,7 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732510596298</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Big Update 1 (Changing flow of listener and Changing Listener of member and message)">
+      <option name="closed" value="true" />
+      <created>1732836781518</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1732836781518</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,6 +250,7 @@
     <MESSAGE value="Implements leave group use_case" />
     <MESSAGE value="Fixing bug in login use_case when want to leave group." />
     <MESSAGE value="Updating integration between leave_group use_case and WelcomeView" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updating integration between leave_group use_case and WelcomeView" />
+    <MESSAGE value="Big Update 1 (Changing flow of listener and Changing Listener of member and message)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Big Update 1 (Changing flow of listener and Changing Listener of member and message)" />
   </component>
 </project>

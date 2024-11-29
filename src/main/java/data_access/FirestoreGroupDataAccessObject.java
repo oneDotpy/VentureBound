@@ -17,11 +17,17 @@ import java.util.concurrent.ExecutionException;
 
 
 public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface, LeaveGroupGroupDataAccessInterface {
-
+    private int counter = 0;
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
     private final MessageFactory messageFactory;
     private final RecommendationFactory recommendationFactory;
+
+    private ListenerRegistration messageListener;
+    private ListenerRegistration groupListener;
+
+    private boolean messageListenerTriggered = false;
+    private boolean groupListenerTriggered = false;
 
     public FirestoreGroupDataAccessObject(GroupFactory groupFactory,
                                           ResponseFactory responseFactory,
@@ -88,8 +94,10 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
     public List<Message> getMessages(String groupID, int index) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupID);
+        System.out.println("Ini GroupID" + groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         List<QueryDocumentSnapshot> messageDocs = docRef.collection("messages").get().get().getDocuments();
+        System.out.println("Ini Size Message" + messageDocs.size());
         List<Message> messages = new ArrayList<>();
         for (int i = index; i < messageDocs.size(); i++) {
             DocumentSnapshot doc = messageDocs.get(i);
@@ -304,7 +312,7 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupID);
 
-        ListenerRegistration listenerRegistration = docRef.addSnapshotListener((snapshot, error) -> {
+        messageListener = docRef.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
                 listener.onError(error);
                 return;
@@ -315,34 +323,44 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
             }
         });
 
-        return listenerRegistration;
+        return messageListener;
     }
 
     public ListenerRegistration setMessageListener(String groupID, RealTimeChatUpdatesUseCase.MessageUpdateListener listener) {
         Firestore db = FirestoreClient.getFirestore();
         Query query = db.collection("groups").document(groupID).collection("messages").orderBy("timestamp");
-        ListenerRegistration listenerRegistration = query
+
+        groupListener = query
                 .addSnapshotListener((snapshots, error) -> {
                     if (error != null) {
                         listener.onError(error);
                         return;
                     }
                     if (snapshots != null) {
-                        for (DocumentChange document : snapshots.getDocumentChanges()) {
-                            switch (document.getType()) {
-                                case ADDED:
-                                    Map<String, String> messages = new HashMap<>();
-                                    DocumentSnapshot doc = document.getDocument();
+                        System.out.println("Pertama Kali dengar " + messageListenerTriggered);
+                        if (messageListenerTriggered) {
+                            for (DocumentChange document : snapshots.getDocumentChanges()) {
+                                switch (document.getType()) {
+                                    case ADDED:
+                                        counter += 1;
+                                        System.out.println("Pesan ke : " + counter);
+                                        Map<String, String> messages = new HashMap<>();
+                                        DocumentSnapshot doc = document.getDocument();
 
-                                    String user = (String) doc.get("sender");
-                                    String content = (String) doc.get("content");
-                                    Timestamp timestamp = (Timestamp) doc.get("timestamp");
+                                        String user = (String) doc.get("sender");
+                                        String content = (String) doc.get("content");
+                                        Timestamp timestamp = (Timestamp) doc.get("timestamp");
 
-                                    messages.put("sender", user);
-                                    messages.put("content", content);
+                                        messages.put("sender", user);
+                                        messages.put("content", content);
 
-                                    listener.onMessagesUpdated(messages, timestamp);
+                                        listener.onMessagesUpdated(messages, timestamp);
+                                }
                             }
+                        }
+
+                        else{
+                            messageListenerTriggered = true;
                         }
 //                        System.out.println("[GROUPDAO] 1");
 //                        Map<String, String> messages = new HashMap<>();
@@ -362,7 +380,15 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
 //                        listener.onMessagesUpdated(messages);
                     }
                 });
-        return listenerRegistration;
+        return groupListener;
+    }
+
+    public void detachListener() {
+        messageListener.remove();
+        groupListener.remove();
+
+        messageListenerTriggered = false;
+        groupListenerTriggered = false;
     }
 
 }

@@ -7,7 +7,6 @@ import com.google.cloud.Timestamp;
 import data_access.FirestoreGroupDataAccessObject;
 import data_access.FirestoreUserDataAccessObject;
 import entity.*;
-import interface_adapter.chat.ChatViewModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.send_message.SendMessageInputData;
@@ -18,7 +17,6 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private BotState botState = BotState.INACTIVE;
 
     private final VacationBotOutputBoundary presenter;
-    private final ChatViewModel chatViewModel;
     private final OpenAIChatGPT chatGPT;
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject;
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
@@ -30,13 +28,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private final Map<String, String> hobbyResponses = new HashMap<>();
 
     public VacationBotInteractor(VacationBotOutputBoundary presenter,
-                                 ChatViewModel chatViewModel,
                                  FirestoreUserDataAccessObject firestoreUserDataAccessObject,
                                  FirestoreGroupDataAccessObject groupDataAccessObject,
                                  MessageFactory messageFactory,
                                  ResponseFactory responseFactory) {
         this.presenter = presenter;
-        this.chatViewModel = chatViewModel;
         this.chatGPT = new OpenAIChatGPT();
         this.messageFactory = messageFactory;
         this.responseFactory = responseFactory;
@@ -45,10 +41,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     @Override
-    public void startBot() {
+    public void startBot(String groupID) {
         if (botState.equals(BotState.INACTIVE)) {
             System.out.println("[VBI1] start");
-            this.user = createBotUser();
+            this.user = createBotUser(groupID);
+            System.out.println("VacationBotInteractor: " + user.getGroupID());
             botState = BotState.AWAITING_LOCATION;
             System.out.println("[VBI2.5] succesfully created bot and updated botstate");
 
@@ -91,7 +88,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
         Message message = messageFactory.createMessage(sender, content, timestamp);
         System.out.println("[VBI4] Message created: " + message);
-        String groupID = chatViewModel.getState().getCurrentUser().getGroup().getGroupID();
+        String groupID = user.getGroupID();
         System.out.println("[VBI4] GroupID: " + groupID);
 
         try {
@@ -104,24 +101,18 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
-    private User createBotUser() {
-        System.out.println("[VBI2] Create bot at " + chatViewModel.getState().getCurrentUser().getGroupID());
+    private User createBotUser(String groupID) {
+        System.out.println("[VBI2] Create bot at " + groupID);
         UserFactory userFactory = new CommonUserFactory();
-        return userFactory.create("Bot", null, chatViewModel.getState().getUser().getGroupID());
+        return userFactory.create("Bot", null,"", null, groupID);
     }
 
     private void processLocationResponses(String username) {
         String chosenLocation = determineMostCommon(locationResponses.values());
-        String user = chatViewModel.getState().getCurrentUser().getName();
-        if (username.equals(user)) {
-            sendBotMessage("\n📍 The chosen vacation location is: **" + chosenLocation + "**");
-        }
+        sendBotMessage("\n📍 The chosen vacation location is: **" + chosenLocation + "**");
 
         botState = BotState.AWAITING_HOBBIES;
-
-        if (username.equals(user)) {
-            sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
-        }
+        sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
     }
 
     private void processHobbyResponses(String username) {
@@ -135,19 +126,17 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         String chosenHobby = determineMostCommon(hobbyResponses.values());
         System.out.println("Chosen location: " + chosenHobby);
         System.out.println("[VBI] before call generate");
-        generateRecommendations(username, chosenHobby, activities.toString());
+        generateRecommendations(chosenHobby, activities.toString());
     }
 
-    private void generateRecommendations(String username, String location, String activities) {
+    private void generateRecommendations(String location, String activities) {
         System.out.println("[VBI] Generate recommendation before botstate");
         botState = BotState.GENERATING_RECOMMENDATIONS;
         System.out.println("[VBI] Genereate recommendation after botstate");
         try {
-            if (chatViewModel.getState().getCurrentUser().getName().equals(username)) {
-                System.out.println("[VBI] Trying to generate recommendation");
-                String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
-                displayRecommendations(recommendationsJson);
-            }
+            System.out.println("[VBI] Trying to generate recommendation");
+            String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
+            displayRecommendations(recommendationsJson);
         } catch (Exception e) {
             sendBotMessage("❌ Error generating recommendations: " + e.getMessage());
         } finally {
@@ -156,7 +145,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     @Override
-    public void handleMessage(String username, String message, int groupSize) {
+    public void handleMessage(String username, String message, int groupSize, String groupID) {
         if (botState == BotState.AWAITING_LOCATION) {
             locationResponses.put(username, message);
             sendBotMessage(username + " chose: " + message);

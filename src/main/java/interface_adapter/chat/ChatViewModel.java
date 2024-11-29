@@ -72,8 +72,9 @@ public class ChatViewModel extends ViewModel<ChatState> {
                 String message = messages.get("content");
                 String currentUser = state.getCurrentUser().getName();
                 int groupSize = state.getCurrentUser().getGroup().getUsernames().size();
+                String groupID = state.getCurrentUser().getGroupID();
 
-                chatController.handleMessage(sender, message, timestamp, currentUser, groupSize);
+                chatController.handleMessage(sender, message, timestamp, currentUser, groupSize, groupID);
 
 //                messages.forEach((key, value) -> {
 //                    if (!key.equals(state.getCurrentUser().getName())) {

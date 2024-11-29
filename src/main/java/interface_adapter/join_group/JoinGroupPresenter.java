@@ -32,11 +32,9 @@ public class JoinGroupPresenter implements JoinGroupOutputBoundary {
         chatState.setCurrentUser(joinGroupOutputData.getUser());
         chatState.setMembers(joinGroupOutputData.getGroup().getUsernames());
         for (Message message: joinGroupOutputData.getGroup().getMessages()) {
-            System.out.println(message.getContent());
             chatState.addMessage(message.getSender(), message.getContent());
         }
         chatState.setGroupName(joinGroupOutputData.getGroup().getGroupName());
-
         chatViewModel.setState(chatState);
 
         // Fire to switch into ChatViewModel

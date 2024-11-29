@@ -10,7 +10,7 @@ public class VacationBotController {
     }
 
     public void startBot(String username) {
-        botInteractor.startBot();
+        botInteractor.startBot("");
     }
 
     public void stopBot() {
@@ -18,6 +18,6 @@ public class VacationBotController {
     }
 
     public void handleBotMessage(String username, String message, int groupSize) {
-        botInteractor.handleMessage(username, message, groupSize);
+        botInteractor.handleMessage(username, message, groupSize, "");
     }
 }

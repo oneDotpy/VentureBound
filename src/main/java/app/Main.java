@@ -25,7 +25,6 @@ public class Main {
                 .addCreateGroupUseCase()
                 .addJoinGroupUseCase()
                 .addChatUseCase()
-                .addVacationBotUseCase()
                 .build();
 
         application.pack();
