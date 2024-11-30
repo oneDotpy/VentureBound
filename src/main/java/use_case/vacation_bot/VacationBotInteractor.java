@@ -16,13 +16,10 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private boolean botCalled = false;
     private BotState botState = BotState.INACTIVE;
 
-    private final VacationBotOutputBoundary presenter;
     private final OpenAIChatGPT chatGPT;
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject;
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final MessageFactory messageFactory;
-    private final ResponseFactory responseFactory;
-    private final RecommendationFactory recommendationFactory;
     private User user;
 
     private String chosenLocation = "";
@@ -32,16 +29,12 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private final Map<String, String> hobbyResponses = new HashMap<>();
     private int threshold = 1;
 
-    public VacationBotInteractor(VacationBotOutputBoundary presenter,
-                                 FirestoreUserDataAccessObject firestoreUserDataAccessObject,
+    public VacationBotInteractor(FirestoreUserDataAccessObject firestoreUserDataAccessObject,
                                  FirestoreGroupDataAccessObject groupDataAccessObject,
-                                 MessageFactory messageFactory,
-                                 ResponseFactory responseFactory, RecommendationFactory recommendationFactory) {
-        this.presenter = presenter;
-        this.recommendationFactory = recommendationFactory;
+                                 MessageFactory messageFactory) {
+
         this.chatGPT = new OpenAIChatGPT();
         this.messageFactory = messageFactory;
-        this.responseFactory = responseFactory;
         this.firestoreUserDataAccessObject = firestoreUserDataAccessObject;
         this.groupDataAccessObject = groupDataAccessObject;
     }

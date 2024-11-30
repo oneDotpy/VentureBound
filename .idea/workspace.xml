@@ -4,12 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Big Update (Small Update Bot 5) add feature of leave group, so it updates the state on vacationBotInteractor">
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Fixing Bug in Leave group so that when the member is leaving the group, the messageListenerTriggered will be false. (Adding delay in chatCoontroller)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonRecommendation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonRecommendation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/create_group/CreateGroupPresenter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupPresenter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/change_password/ChangePasswordInteractor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase$GroupMemberUpdateListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase$MessageUpdateListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/login/LoginInteractor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputBoundary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInteractor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageOutputBoundary.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageOutputData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/CreateGroupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/CreateGroupView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/WelcomeView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/WelcomeView.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +48,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="java-swing" />
+        <entry key="$PROJECT_DIR$" value="test_case" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -65,8 +86,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "server-timestamp-query-listener",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Patuan Michael/IdeaProjects/VentureBound/src/main/java",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -83,7 +105,7 @@
       <recent name="interface_adapter.group" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Unnamed">
+  <component name="RunManager">
     <configuration name="ChatView" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="view.ChatView" />
       <module name="homework-5" />
@@ -97,9 +119,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="homework-5" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/main/java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -117,8 +140,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.ChatView" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ChatView" />
+        <item itemvalue="Application.ChatView" />
+        <item itemvalue="Application.ChatView" />
+        <item itemvalue="Application.ChatView" />
         <item itemvalue="Application.ChatView" />
       </list>
     </recent_temporary>
@@ -151,6 +182,8 @@
       <workItem from="1731338859588" duration="150000" />
       <workItem from="1732795174073" duration="20956000" />
       <workItem from="1732881035221" duration="9181000" />
+      <workItem from="1733003434913" duration="57000" />
+      <workItem from="1733003524684" duration="464000" />
     </task>
     <task id="LOCAL-00001" summary="integrated chat system">
       <option name="closed" value="true" />
@@ -264,11 +297,30 @@
       <option name="project" value="LOCAL" />
       <updated>1732911215664</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Fixing Bug in Leave group so that when the member is leaving the group, the messageListenerTriggered will be false. (Adding delay in chatCoontroller)">
+      <option name="closed" value="true" />
+      <created>1733003005804</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1733003005804</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="integrated chat system" />
@@ -285,6 +337,7 @@
     <MESSAGE value="Big Update (Small Update Bot 4) Changing Chat Controller" />
     <MESSAGE value="Big Update (Small Update Bot 4) add feature of leave group, so it updates the state on vacationBotInteractor" />
     <MESSAGE value="Big Update (Small Update Bot 5) add feature of leave group, so it updates the state on vacationBotInteractor" />
-    <option name="LAST_COMMIT_MESSAGE" value="Big Update (Small Update Bot 5) add feature of leave group, so it updates the state on vacationBotInteractor" />
+    <MESSAGE value="Fixing Bug in Leave group so that when the member is leaving the group, the messageListenerTriggered will be false. (Adding delay in chatCoontroller)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixing Bug in Leave group so that when the member is leaving the group, the messageListenerTriggered will be false. (Adding delay in chatCoontroller)" />
   </component>
 </project>
