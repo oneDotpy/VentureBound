@@ -27,12 +27,12 @@ public class ChatController implements ChatControllerInterface {
 
     public void leaveGroup(User user) {
         LeaveGroupInputData leaveGroupInputData = new LeaveGroupInputData(user);
+        botInteractor.stopBot();
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        botInteractor.stopBot();
         leaveGroupInteractor.leaveGroup(leaveGroupInputData);
     }
 
