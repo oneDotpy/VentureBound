@@ -24,6 +24,8 @@ public class LeaveGroupInteractor implements LeaveGroupInputBoundary {
         groupDataAccessObject.removeMember(groupID, user.getName());
         userDataAccessObject.setGroupID("", user.getName());
 
+        groupDataAccessObject.detachListener();
+
         User new_user = userFactory.create(user.getName(), user.getPassword(), user.getEmail());
 
         LeaveGroupOutputData response = new LeaveGroupOutputData(new_user);

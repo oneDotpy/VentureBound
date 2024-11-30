@@ -55,6 +55,15 @@ public class ChatState {
         messages.add(formattedMessage);
     }
 
+
+    // New Implementation
+    public void addMessages(String formattedMessage) {
+        messages.add(formattedMessage);
+    }
+    // New Implementations
+
+
+
     public void setMembers(List<String> newMembers) {
         this.members = new ArrayList<>(newMembers);
         System.out.println("[ChatState] Members set: " + this.members + " (Instance: " + this + ")");

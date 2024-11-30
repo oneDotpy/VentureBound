@@ -29,6 +29,7 @@ import use_case.group.*;
 import use_case.join_group.JoinGroupInteractor;
 import use_case.leave_group.LeaveGroupInteractor;
 import use_case.login.*;
+import use_case.receive_message.ReceiveMessageInteractor;
 import use_case.send_message.SendMessageInteractor;
 import use_case.signup.*;
 import use_case.change_password.*;
@@ -173,18 +174,20 @@ public class AppBuilder {
         chatPresenter = new ChatPresenter(viewManagerModel, chatViewModel, welcomeViewModel);
         chatInteractor = new ChatInteractor(chatPresenter, chatState);
         vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
-        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatViewModel, firestoreUserDataAccessObject,firestoreGroupDataAccessObject, messageFactory, responseFactory);
+        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, firestoreUserDataAccessObject,firestoreGroupDataAccessObject, messageFactory, responseFactory, recommendationFactory);
         vacationBotController = new VacationBotController(vacationBotInteractor);
 
+        ReceiveMessageInteractor receiveMessageInteractor = new ReceiveMessageInteractor(chatPresenter, messageFactory);
         LeaveGroupInteractor leaveGroupInteractor = new LeaveGroupInteractor(firestoreGroupDataAccessObject, firestoreUserDataAccessObject, userFactory, chatPresenter);
 
         chatViewModel.setChatUpdatesUseCase(new RealTimeChatUpdatesUseCase(firestoreGroupDataAccessObject));
         chatViewModel.setSendMessageInteractor(new SendMessageInteractor(firestoreUserDataAccessObject ,firestoreGroupDataAccessObject, messageFactory));
         chatViewModel.setBotInteractor(vacationBotInteractor);
 
-        chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor);
+        chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor, receiveMessageInteractor);
 
         chatView.setChatController(chatController);
+        chatViewModel.setController(chatController);
         return this;
     }
 
@@ -199,7 +202,7 @@ public class AppBuilder {
 
     public AppBuilder addVacationBotUseCase() {
         vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
-        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, chatViewModel, firestoreUserDataAccessObject, firestoreGroupDataAccessObject, messageFactory, responseFactory);
+        vacationBotInteractor = new VacationBotInteractor(vacationBotPresenter, firestoreUserDataAccessObject, firestoreGroupDataAccessObject, messageFactory, responseFactory, recommendationFactory);
 
         vacationBotController = new VacationBotController(vacationBotInteractor);
         return this;

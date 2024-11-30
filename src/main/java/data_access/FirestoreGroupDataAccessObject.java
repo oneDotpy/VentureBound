@@ -17,11 +17,17 @@ import java.util.concurrent.ExecutionException;
 
 
 public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface, LeaveGroupGroupDataAccessInterface {
-
+    private int counter = 0;
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
     private final MessageFactory messageFactory;
     private final RecommendationFactory recommendationFactory;
+
+    private ListenerRegistration messageListener;
+    private ListenerRegistration groupListener;
+
+    private boolean messageListenerTriggered = false;
+    private boolean groupListenerTriggered = false;
 
     public FirestoreGroupDataAccessObject(GroupFactory groupFactory,
                                           ResponseFactory responseFactory,
@@ -88,8 +94,10 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
     public List<Message> getMessages(String groupID, int index) throws InterruptedException, ExecutionException {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("groups").document(groupID);
+        System.out.println("Ini GroupID" + groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         List<QueryDocumentSnapshot> messageDocs = docRef.collection("messages").get().get().getDocuments();
+        System.out.println("Ini Size Message" + messageDocs.size());
         List<Message> messages = new ArrayList<>();
         for (int i = index; i < messageDocs.size(); i++) {
             DocumentSnapshot doc = messageDocs.get(i);
@@ -298,9 +306,13 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
         Group group = groupFactory.create(groupName, usernames, responses, recommendations, chosenLocations, messages, "10090fdas");
         groupDataAccessObject.save(group);
     }
-    public void setGroupMemberListener(String groupID, RealTimeChatUpdatesUseCase.GroupMemberUpdateListener listener) {
+
+
+    public ListenerRegistration setGroupMemberListener(String groupID, RealTimeChatUpdatesUseCase.GroupMemberUpdateListener listener) {
         Firestore db = FirestoreClient.getFirestore();
-        db.collection("groups").document(groupID).addSnapshotListener((snapshot, error) -> {
+        DocumentReference docRef = db.collection("groups").document(groupID);
+
+        messageListener = docRef.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
                 listener.onError(error);
                 return;
@@ -310,35 +322,57 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
                 listener.onGroupMembersUpdated(members);
             }
         });
+
+        return messageListener;
     }
 
-    public void setMessageListener(String groupID, RealTimeChatUpdatesUseCase.MessageUpdateListener listener) {
+    public ListenerRegistration setMessageListener(String groupID, RealTimeChatUpdatesUseCase.MessageUpdateListener listener) {
         Firestore db = FirestoreClient.getFirestore();
-        db.collection("groups").document(groupID).collection("messages")
+        Query query = db.collection("groups").document(groupID).collection("messages").orderBy("timestamp");
+
+        groupListener = query
                 .addSnapshotListener((snapshots, error) -> {
                     if (error != null) {
                         listener.onError(error);
                         return;
                     }
                     if (snapshots != null) {
-                        System.out.println("[GROUPDAO] 1");
-                        Map<String, String> messages = new HashMap<>();
-                        DocumentSnapshot doc = snapshots.getDocuments().get(snapshots.getDocuments().size() - 1);
-                        String user = (String) doc.get("sender");
-                        String content = (String) doc.get("content");
-                        Timestamp timestamp = (Timestamp) doc.get("timestamp");
-                        messages.put(user, content); // Assuming Message has such a constructor
-//                        for (DocumentSnapshot doc : snapshots.getDocuments()) {
-//                            System.out.println("for loop" + doc.get("sender"));
-//                            String user = (String) doc.get("sender");
-//                            String content = (String) doc.get("content");
-//                            Timestamp timestamp = (Timestamp) doc.get("timestamp");
-//                            messages.put(user, content); // Assuming Message has such a constructor
-//                        }
-                        System.out.println("[GROUPDAO] 3");
-                        listener.onMessagesUpdated(messages);
+                        System.out.println("Pertama Kali dengar " + messageListenerTriggered);
+                        if (messageListenerTriggered) {
+                            for (DocumentChange document : snapshots.getDocumentChanges()) {
+                                switch (document.getType()) {
+                                    case ADDED:
+                                        counter += 1;
+                                        System.out.println("Pesan ke : " + counter);
+                                        Map<String, String> messages = new HashMap<>();
+                                        DocumentSnapshot doc = document.getDocument();
+
+                                        String user = (String) doc.get("sender");
+                                        String content = (String) doc.get("content");
+                                        Timestamp timestamp = (Timestamp) doc.get("timestamp");
+
+                                        messages.put("sender", user);
+                                        messages.put("content", content);
+
+                                        listener.onMessagesUpdated(messages, timestamp);
+                                }
+                            }
+                        }
+
+                        else{
+                            messageListenerTriggered = true;
+                        }
                     }
                 });
+        return groupListener;
+    }
+
+    public void detachListener() {
+        messageListener.remove();
+        groupListener.remove();
+
+        messageListenerTriggered = false;
+        groupListenerTriggered = false;
     }
 
 }

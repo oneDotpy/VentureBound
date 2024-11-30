@@ -62,11 +62,8 @@ public class LoginPresenter implements LoginOutputBoundary {
         User user = loginOutputData.getUser();
         chatState.setUser(user);
         chatState.setCurrentUser(user);
-        chatState.setMembers(loginOutputData.getGroup().getUsernames());
         List<Message> messages = loginOutputData.getGroup().getMessages();
-        for (int i = 0; i < messages.size() - 1; i++) {
-            Message message = messages.get(i);
-            System.out.println(message.getContent());
+        for (Message message: loginOutputData.getGroup().getMessages()) {
             chatState.addMessage(message.getSender(), message.getContent());
         }
         chatState.setGroupName(loginOutputData.getGroup().getGroupName());

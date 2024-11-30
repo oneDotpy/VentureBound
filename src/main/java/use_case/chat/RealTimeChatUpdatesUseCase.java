@@ -1,5 +1,7 @@
 package use_case.chat;
 
+import com.google.cloud.Timestamp;
+import com.google.cloud.firestore.ListenerRegistration;
 import data_access.FirestoreGroupDataAccessObject;
 import entity.Message;
 import java.util.List;
@@ -19,15 +21,15 @@ public class RealTimeChatUpdatesUseCase {
     }
 
     public interface MessageUpdateListener {
-        void onMessagesUpdated(Map<String, String> messages);
+        void onMessagesUpdated(Map<String, String> messages, Timestamp timestamp);
         void onError(Exception e);
     }
 
-    public void listenForGroupMembers(String groupID, GroupMemberUpdateListener listener) {
-        groupDAO.setGroupMemberListener(groupID, listener);
+    public ListenerRegistration listenForGroupMembers(String groupID, GroupMemberUpdateListener listener) {
+        return groupDAO.setGroupMemberListener(groupID, listener);
     }
 
-    public void listenForMessages(String groupID, MessageUpdateListener listener) {
-        groupDAO.setMessageListener(groupID, listener);
+    public ListenerRegistration listenForMessages(String groupID, MessageUpdateListener listener) {
+        return groupDAO.setMessageListener(groupID, listener);
     }
 }

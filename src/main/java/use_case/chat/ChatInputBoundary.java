@@ -6,4 +6,6 @@ public interface ChatInputBoundary {
     void sendMessage(ChatInputData inputData);
 
     List<String> getMembers();
+
+    void setMembers(List<String> members);
 }

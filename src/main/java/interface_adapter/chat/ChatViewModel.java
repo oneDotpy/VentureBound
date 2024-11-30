@@ -1,5 +1,8 @@
 package interface_adapter.chat;
 
+import com.google.cloud.Timestamp;
+import com.google.cloud.firestore.ListenerRegistration;
+import entity.Group;
 import entity.Message;
 import entity.User;
 import interface_adapter.ViewModel;
@@ -17,6 +20,9 @@ public class ChatViewModel extends ViewModel<ChatState> {
     private RealTimeChatUpdatesUseCase chatUpdatesUseCase;
     private SendMessageInteractor sendMessageInteractor;
     private VacationBotInputBoundary botInteractor; // Bot integration
+    private ListenerRegistration messageListener;
+    private ListenerRegistration memberListener;
+    private ChatControllerInterface chatController;
 
     public ChatViewModel() {
         super("chat");
@@ -35,16 +41,18 @@ public class ChatViewModel extends ViewModel<ChatState> {
         this.botInteractor = botInteractor; // Inject the bot interactor
     }
 
+    public void setController(ChatControllerInterface chatController) {
+        this.chatController = chatController;
+    }
+
     public void startListeningForUpdates(String groupID) {
         ChatState state = getState();
 
         // Listen for group member updates
-        chatUpdatesUseCase.listenForGroupMembers(groupID, new RealTimeChatUpdatesUseCase.GroupMemberUpdateListener() {
+        memberListener = chatUpdatesUseCase.listenForGroupMembers(groupID, new RealTimeChatUpdatesUseCase.GroupMemberUpdateListener() {
             @Override
             public void onGroupMembersUpdated(List<String> members) {
-                state.setMembers(members); // Update state directly
-                System.out.println("[CVM]" + members);
-                firePropertyChanged("members");
+                chatController.addMembers(members);
             }
 
             @Override
@@ -53,61 +61,20 @@ public class ChatViewModel extends ViewModel<ChatState> {
             }
         });
 
-        // Listen for message updates
-        chatUpdatesUseCase.listenForMessages(groupID, new RealTimeChatUpdatesUseCase.MessageUpdateListener() {
+        // Listen for message updates/
+        messageListener = chatUpdatesUseCase.listenForMessages(groupID, new RealTimeChatUpdatesUseCase.MessageUpdateListener() {
             @Override
-            public void onMessagesUpdated(Map<String, String> messages) {
-                System.out.println("[CVM1]" + messages);
-                System.out.println("[1] BOT Condition: " + botInteractor + " Bot Is Active: " + botInteractor.isBotActive());
-                messages.forEach((key, value) -> {
-                    if (value.trim().equalsIgnoreCase("/start")) {
-                        System.out.println("Reached here [to start bot]");
-                        // Start the bot if not already active`
-                        System.out.println("[2] BOT Condition: " + botInteractor + " Bot Is Active: " + botInteractor.isBotActive());
-                        if (botInteractor != null && !botInteractor.isBotActive()  && !Objects.equals(key, "Bot")) {
-                            System.out.println("Reached here to [start bot] 1");
-                            System.out.println(state.getMembers().size() == 1);
-                            if ((state.getMembers().size() == 1 ) || (Objects.equals(key, state.getCurrentUser().getName()) && state.getMembers().size() > 1)) {
-                                System.out.println("Reached here [to start bot] 2");
-                                firePropertyChanged("messages");
-                            }
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt(); // Restore interrupted status
-                                System.err.println("Delay interrupted: " + e.getMessage());
-                            }
+            public void onMessagesUpdated(Map<String, String> messages, Timestamp timestamp) {
+//                System.out.println("[CVM1]" + messages);
+//                System.out.println("[1] BOT Condition: " + botInteractor + " Bot Is Active: " + botInteractor.isBotActive());
 
-                            botInteractor.startBot(key);
-                            System.out.println("[CVM] Bot started by: " + key);
-                        }
-                    } else if (value.trim().equalsIgnoreCase("/stop")) {
-                        // Stop the bot if it is active
-                        if (botInteractor != null && botInteractor.isBotActive()) {
-                            botInteractor.stopBot();
-                            firePropertyChanged("messages");
-                            System.out.println("[CVM] Bot stopped by: " + key);
-                        }
-                    } else {
-                        // If the bot is active, pass the message to the bot
-                        if (botInteractor != null && botInteractor.isBotActive()  && !Objects.equals(key, "Bot")) {
-                            firePropertyChanged("messages");
-                            botInteractor.handleMessage(key, value);
-                        } else {
-                            // Otherwise, treat it as a normal chat message
-                            System.out.println("[CVM] Reaches This Spot");
-                            firePropertyChanged("message");
-                            state.addMessage(key, value);
-                        }
-                    }
-                });
+                String sender = messages.get("sender");
+                String message = messages.get("content");
+                String currentUser = state.getCurrentUser().getName();
+                int groupSize = state.getCurrentUser().getGroup().getUsernames().size();
+                String groupID = state.getCurrentUser().getGroupID();
 
-                // Clear the messages map to avoid reprocessing
-                messages.clear();
-                System.out.println("[CVM2]" + messages);
-
-                setState(state); // Update the state in ViewModel
-                firePropertyChanged("messages");
+                chatController.handleMessage(sender, message, timestamp, currentUser, groupSize, groupID);
             }
 
 
@@ -119,9 +86,10 @@ public class ChatViewModel extends ViewModel<ChatState> {
     }
 
     public void stopBot() {
-        botInteractor.stopBot();
+        if (botInteractor.isBotActive()) {
+            botInteractor.stopBot();
+        }
     }
-
 
     public void sendMessage(String content, User user) {
         ChatState state = getState();
@@ -133,12 +101,14 @@ public class ChatViewModel extends ViewModel<ChatState> {
         // Create input data and call the use case
         SendMessageInputData inputData = new SendMessageInputData(user, content);
         System.out.println(inputData.getContent() + inputData.getUser().getName());
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt(); // Restore interrupted status
-//            System.err.println("Delay interrupted: " + e.getMessage());
-//        }
         sendMessageInteractor.sendMessage(inputData); // Send the message to the database
+    }
+
+    public void stopListenMessage(){
+        messageListener.remove();
+    }
+
+    public void stopListenMember() {
+        memberListener.remove();
     }
 }

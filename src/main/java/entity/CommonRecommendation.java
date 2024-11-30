@@ -9,6 +9,8 @@ public class CommonRecommendation implements Recommendation {
     private final String description;
     private final GeoPoint coordinates;
     private final int rating;
+    private int voting = 0;
+    private boolean chosen = false;
 
     public CommonRecommendation(String location, String description, GeoPoint coordinates, int rating) {
         this.location = location;
@@ -36,4 +38,10 @@ public class CommonRecommendation implements Recommendation {
     public int getRating() {
         return rating;
     }
+
+    public int getVoting() {return voting;}
+
+    public void addVoting(int amount) {voting += amount;}
+
+    public void setChosen(boolean result) {chosen = result;}
 }

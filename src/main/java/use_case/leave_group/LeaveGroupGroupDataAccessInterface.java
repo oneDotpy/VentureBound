@@ -7,4 +7,6 @@ public interface LeaveGroupGroupDataAccessInterface {
      * @param username Username from the user
      */
     public void removeMember(String groupID, String username);
+
+    public void detachListener();
 }

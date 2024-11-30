@@ -7,7 +7,6 @@ import com.google.cloud.Timestamp;
 import data_access.FirestoreGroupDataAccessObject;
 import data_access.FirestoreUserDataAccessObject;
 import entity.*;
-import interface_adapter.chat.ChatViewModel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.send_message.SendMessageInputData;
@@ -18,25 +17,28 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private BotState botState = BotState.INACTIVE;
 
     private final VacationBotOutputBoundary presenter;
-    private final ChatViewModel chatViewModel;
     private final OpenAIChatGPT chatGPT;
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject;
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final MessageFactory messageFactory;
     private final ResponseFactory responseFactory;
+    private final RecommendationFactory recommendationFactory;
     private User user;
+
+    private String chosenLocation = "";
+    private StringBuilder chosenHobbies = new StringBuilder();
 
     private final Map<String, String> locationResponses = new HashMap<>();
     private final Map<String, String> hobbyResponses = new HashMap<>();
+    private int threshold = 1;
 
     public VacationBotInteractor(VacationBotOutputBoundary presenter,
-                                 ChatViewModel chatViewModel,
                                  FirestoreUserDataAccessObject firestoreUserDataAccessObject,
                                  FirestoreGroupDataAccessObject groupDataAccessObject,
                                  MessageFactory messageFactory,
-                                 ResponseFactory responseFactory) {
+                                 ResponseFactory responseFactory, RecommendationFactory recommendationFactory) {
         this.presenter = presenter;
-        this.chatViewModel = chatViewModel;
+        this.recommendationFactory = recommendationFactory;
         this.chatGPT = new OpenAIChatGPT();
         this.messageFactory = messageFactory;
         this.responseFactory = responseFactory;
@@ -45,20 +47,28 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     @Override
-    public void startBot(String username) {
-        System.out.println("[VBI1] start");
-        this.user = createBotUser();
-        botState = BotState.AWAITING_LOCATION;
-        System.out.println("[VBI2.5] succesfully created bot and updated botstate");
-        if (chatViewModel.getState().getCurrentUser().getName().equals(username)) {
+    public void startBot(String groupID, int groupSize) {
+        if (botState.equals(BotState.INACTIVE)) {
+            System.out.println("[VBI1] start");
+            this.user = createBotUser(groupID);
+            System.out.println("VacationBotInteractor: " + user.getGroupID());
+            threshold = groupSize;
+            botState = BotState.AWAITING_LOCATION;
+            System.out.println("[VBI2.5] succesfully created bot and updated botstate");
+
             sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
+        }
+        else {
+            sendBotMessage("The Bot Already Started");
         }
     }
 
     @Override
     public void stopBot() {
-        botState = BotState.INACTIVE;
-        sendBotMessage("Vacation Bot has been stopped.");
+        if (!botState.equals(BotState.INACTIVE)) {
+            botState = BotState.INACTIVE;
+            sendBotMessage("Vacation Bot has been stopped.");
+        }
     }
 
     @Override
@@ -82,7 +92,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
         Message message = messageFactory.createMessage(sender, content, timestamp);
         System.out.println("[VBI4] Message created: " + message);
-        String groupID = chatViewModel.getState().getCurrentUser().getGroup().getGroupID();
+        String groupID = user.getGroupID();
         System.out.println("[VBI4] GroupID: " + groupID);
 
         try {
@@ -95,50 +105,50 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
-    private User createBotUser() {
-        System.out.println("[VBI2] Create bot at " + chatViewModel.getState().getCurrentUser().getGroupID());
+
+    private User createBotUser(String groupID) {
+        System.out.println("[VBI2] Create bot at " + groupID);
         UserFactory userFactory = new CommonUserFactory();
-        return userFactory.create("Bot", null, chatViewModel.getState().getUser().getGroupID());
+        return userFactory.create("Bot", null,"", null, groupID);
     }
 
-    private void processLocationResponses(String username) {
-        String chosenLocation = determineMostCommon(locationResponses.values());
-        String user = chatViewModel.getState().getCurrentUser().getName();
-        if (username.equals(user)) {
+
+    private void processLocationResponses() {
+        if (locationResponses.size() >= threshold) {
+            String chosenLocationInput = determineMostCommon(locationResponses.values());
+            System.out.println("[VBI3] " + chosenLocationInput);
+            chosenLocation = chosenLocationInput;
             sendBotMessage("\n📍 The chosen vacation location is: **" + chosenLocation + "**");
-        }
 
-        botState = BotState.AWAITING_HOBBIES;
-
-        if (username.equals(user)) {
+            botState = BotState.AWAITING_HOBBIES;
             sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
         }
     }
 
-    private void processHobbyResponses(String username) {
-        StringBuilder activities = new StringBuilder();
-        for (String hobby : hobbyResponses.values()) {
-            activities.append(hobby).append(", ");
+
+    private void processHobbyResponses() {
+        if (hobbyResponses.size() >= threshold) {
+            sendBotMessage("Generating your perfect holiday destination....");
+            botCalled = true;
+            StringBuilder activities = new StringBuilder();
+            for (String hobby : hobbyResponses.values()) {
+                activities.append(hobby).append(", ");
+            }
+            generateRecommendations(activities.toString(),chosenLocation);
+            System.out.println(hobbyResponses);
+            hobbyResponses.clear();
+            locationResponses.clear();
         }
-
-        System.out.println("[VBI] Reached processHobbyResponse");
-
-        String chosenHobby = determineMostCommon(hobbyResponses.values());
-        System.out.println("Chosen location: " + chosenHobby);
-        System.out.println("[VBI] before call generate");
-        generateRecommendations(username, chosenHobby, activities.toString());
     }
 
-    private void generateRecommendations(String username, String location, String activities) {
+    private void generateRecommendations(String activities, String location) {
         System.out.println("[VBI] Generate recommendation before botstate");
         botState = BotState.GENERATING_RECOMMENDATIONS;
         System.out.println("[VBI] Genereate recommendation after botstate");
         try {
-            if (chatViewModel.getState().getCurrentUser().getName().equals(username)) {
-                System.out.println("[VBI] Trying to generate recommendation");
-                String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
-                displayRecommendations(recommendationsJson);
-            }
+            System.out.println("[VBI] Trying to generate recommendation");
+            String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
+            displayRecommendations(recommendationsJson);
         } catch (Exception e) {
             sendBotMessage("❌ Error generating recommendations: " + e.getMessage());
         } finally {
@@ -146,32 +156,62 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+
     @Override
-    public void handleMessage(String username, String message) {
+    public void handleMessage(String username, String message, int groupSize, String groupID) {
         if (botState == BotState.AWAITING_LOCATION) {
             locationResponses.put(username, message);
             sendBotMessage(username + " chose: " + message);
             // Check if all members have responded
-            if (locationResponses.size() == chatViewModel.getState().getMembers().size()) {
-                processLocationResponses(username);
-                locationResponses.clear();
-            }
+            processLocationResponses();
 
         } else if (botState == BotState.AWAITING_HOBBIES) {
             hobbyResponses.put(username, message);
             sendBotMessage(username + " enjoys: " + message);
+            processHobbyResponses();
+        }
+    }
 
-            // Check if all members have responded
-            if (hobbyResponses.size() == chatViewModel.getState().getMembers().size()) {
-                botCalled = true;
-                sendBotMessage("Generating your perfect holiday destination....");
-                if (botCalled) {
-                    processHobbyResponses(username);
-                    hobbyResponses.clear();
+
+    @Override
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
+        if (botState == BotState.AWAITING_LOCATION) {
+            processLocationResponses();
+        }
+        else if (botState == BotState.AWAITING_HOBBIES) {
+            processHobbyResponses();
+        }
+    }
+
+    public void removeResponse(List<String> members) {
+        if (botState == BotState.AWAITING_LOCATION) {
+            removeMissingMemberResponse(members, locationResponses);
+        }
+
+        else if (botState == BotState.AWAITING_HOBBIES) {
+            removeMissingMemberResponse(members, hobbyResponses);
+        }
+    }
+
+    private void removeMissingMemberResponse(List<String> members, Map<String, String> responses) {
+        String username;
+        for (String key : responses.keySet()) {
+            boolean foundMissingMember = true;
+            for (String member : members ) {
+                if (key.equals(member)) {
+                    foundMissingMember = false;
+                    break;
                 }
+            }
+            if (foundMissingMember) {
+                username = key;
+                System.out.println("removed response from " + username + " with content: " + responses.remove(username));
+                return;
             }
         }
     }
+
 
     private void displayRecommendations(String recommendationsJson) {
         try {
@@ -186,6 +226,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             } else {
                 System.err.println("No 'vacationSpots' or 'vacation_spots' key found in response");
             }
+            System.out.print(vacationSpots);
 
             if (vacationSpots != null) {
                 StringBuilder formattedRecommendations = new StringBuilder();

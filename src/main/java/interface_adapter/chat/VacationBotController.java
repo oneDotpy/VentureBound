@@ -10,14 +10,14 @@ public class VacationBotController {
     }
 
     public void startBot(String username) {
-        botInteractor.startBot(username);
+        botInteractor.startBot("",10);
     }
 
     public void stopBot() {
         botInteractor.stopBot();
     }
 
-    public void handleBotMessage(String username, String message) {
-        botInteractor.handleMessage(username, message);
+    public void handleBotMessage(String username, String message, int groupSize) {
+        botInteractor.handleMessage(username, message, groupSize, "");
     }
 }

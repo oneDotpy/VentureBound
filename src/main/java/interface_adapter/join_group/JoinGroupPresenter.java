@@ -11,8 +11,6 @@ import interface_adapter.welcome.WelcomeViewModel;
 import use_case.join_group.JoinGroupOutputBoundary;
 import use_case.join_group.JoinGroupOutputData;
 
-import java.util.List;
-
 public class JoinGroupPresenter implements JoinGroupOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final JoinGroupViewModel joinGroupViewModel;
@@ -33,14 +31,10 @@ public class JoinGroupPresenter implements JoinGroupOutputBoundary {
         chatState.setUser(joinGroupOutputData.getUser());
         chatState.setCurrentUser(joinGroupOutputData.getUser());
         chatState.setMembers(joinGroupOutputData.getGroup().getUsernames());
-        List<Message> messages = joinGroupOutputData.getGroup().getMessages();
-        for (int i = 0; i < messages.size() - 1; i++) {
-            Message message = messages.get(i);
-            System.out.println(message.getContent());
+        for (Message message: joinGroupOutputData.getGroup().getMessages()) {
             chatState.addMessage(message.getSender(), message.getContent());
         }
         chatState.setGroupName(joinGroupOutputData.getGroup().getGroupName());
-
         chatViewModel.setState(chatState);
 
         // Fire to switch into ChatViewModel

@@ -4,18 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Updating integration between leave_group use_case and WelcomeView">
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/OpenAIChatGPT.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/OpenAIChatGPT.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatViewModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInteractor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor$BotState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor$BotState.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" afterDir="false" />
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Big Update (Small Update Bot 5) add feature of leave group, so it updates the state on vacationBotInteractor">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -47,7 +41,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/oneDotpy/VentureBound.git&quot;,
-    &quot;accountId&quot;: &quot;52d2fb4e-a6ac-4e19-a33f-e7496a7e7cbf&quot;
+    &quot;accountId&quot;: &quot;82a4a4f5-bde8-4ac2-965a-9d2dfbe35226&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -71,14 +65,14 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "server-timestamp",
+    "git-widget-placeholder": "server-timestamp-query-listener",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.14746094",
     "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
@@ -155,6 +149,8 @@
       <workItem from="1731338194770" duration="520000" />
       <workItem from="1731338726746" duration="124000" />
       <workItem from="1731338859588" duration="150000" />
+      <workItem from="1732795174073" duration="20956000" />
+      <workItem from="1732881035221" duration="9181000" />
     </task>
     <task id="LOCAL-00001" summary="integrated chat system">
       <option name="closed" value="true" />
@@ -204,7 +200,71 @@
       <option name="project" value="LOCAL" />
       <updated>1732510596298</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Big Update 1 (Changing flow of listener and Changing Listener of member and message)">
+      <option name="closed" value="true" />
+      <created>1732836781518</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1732836781518</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Big Update 2 (Changing flow of listener and Changing Listener of member and message)">
+      <option name="closed" value="true" />
+      <created>1732841543301</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1732841543301</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Big Update (Small Update Bot) Changing Chat Controller">
+      <option name="closed" value="true" />
+      <created>1732841965684</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1732841965685</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Big Update (Small Update Bot 2) Changing Chat Controller">
+      <option name="closed" value="true" />
+      <created>1732842099680</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1732842099680</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Big Update (Small Update Bot 3) Changing Chat Controller">
+      <option name="closed" value="true" />
+      <created>1732842279094</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1732842279094</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Big Update (Small Update Bot 4) Changing Chat Controller">
+      <option name="closed" value="true" />
+      <created>1732843099503</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1732843099503</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Big Update (Small Update Bot 4) add feature of leave group, so it updates the state on vacationBotInteractor">
+      <option name="closed" value="true" />
+      <created>1732888624238</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1732888624238</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Big Update (Small Update Bot 5) add feature of leave group, so it updates the state on vacationBotInteractor">
+      <option name="closed" value="true" />
+      <created>1732911215664</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1732911215664</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,6 +277,14 @@
     <MESSAGE value="Implements leave group use_case" />
     <MESSAGE value="Fixing bug in login use_case when want to leave group." />
     <MESSAGE value="Updating integration between leave_group use_case and WelcomeView" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updating integration between leave_group use_case and WelcomeView" />
+    <MESSAGE value="Big Update 1 (Changing flow of listener and Changing Listener of member and message)" />
+    <MESSAGE value="Big Update 2 (Changing flow of listener and Changing Listener of member and message)" />
+    <MESSAGE value="Big Update (Small Update Bot) Changing Chat Controller" />
+    <MESSAGE value="Big Update (Small Update Bot 2) Changing Chat Controller" />
+    <MESSAGE value="Big Update (Small Update Bot 3) Changing Chat Controller" />
+    <MESSAGE value="Big Update (Small Update Bot 4) Changing Chat Controller" />
+    <MESSAGE value="Big Update (Small Update Bot 4) add feature of leave group, so it updates the state on vacationBotInteractor" />
+    <MESSAGE value="Big Update (Small Update Bot 5) add feature of leave group, so it updates the state on vacationBotInteractor" />
+    <option name="LAST_COMMIT_MESSAGE" value="Big Update (Small Update Bot 5) add feature of leave group, so it updates the state on vacationBotInteractor" />
   </component>
 </project>
