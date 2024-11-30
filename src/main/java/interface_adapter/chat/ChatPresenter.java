@@ -1,7 +1,5 @@
 package interface_adapter.chat;
 
-import com.google.cloud.Timestamp;
-import entity.Group;
 import entity.Message;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.welcome.WelcomeState;

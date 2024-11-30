@@ -6,7 +6,7 @@ import data_access.FirestoreUserDataAccessObject;
 import entity.Message;
 import entity.MessageFactory;
 
-public class SendMessageInteractor {
+public class SendMessageInteractor implements SendMessageInputBoundary {
     private final FirestoreUserDataAccessObject userDataAccessObject;
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final MessageFactory messageFactory;
@@ -19,6 +19,7 @@ public class SendMessageInteractor {
         this.messageFactory = messageFactory;
     }
 
+    @Override
     public void sendMessage(SendMessageInputData sendMessageInputData) {
 
         String sender = sendMessageInputData.getUser().getName();
