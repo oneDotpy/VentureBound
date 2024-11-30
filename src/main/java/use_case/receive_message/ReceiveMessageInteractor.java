@@ -4,6 +4,9 @@ import com.google.cloud.Timestamp;
 import entity.Message;
 import entity.MessageFactory;
 
+/**
+ * The Receive Message Interactor.
+ */
 public class ReceiveMessageInteractor implements ReceiveMessageInputBoundary{
     private final ReceiveMessageOutputBoundary presenter;
     private final MessageFactory messageFactory;

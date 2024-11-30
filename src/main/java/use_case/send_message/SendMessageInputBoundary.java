@@ -1,7 +1,13 @@
 package use_case.send_message;
 
-import entity.Message;
-
+/**
+ * Input Boundary for actions which are related to sending a message.
+ */
 public interface SendMessageInputBoundary {
-    public void sendMessage(SendMessageInputData sendMessageInputData);
+
+    /**
+     * Executes the Send Message Use Case
+     * @param sendMessageInputData the input data
+     */
+    void sendMessage(SendMessageInputData sendMessageInputData);
 }

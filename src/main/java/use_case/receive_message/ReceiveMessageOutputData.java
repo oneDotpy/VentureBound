@@ -1,8 +1,10 @@
 package use_case.receive_message;
 
-import com.google.cloud.Timestamp;
 import entity.Message;
 
+/**
+ * Output Data for the Receive Message Use Case.
+ */
 public class ReceiveMessageOutputData {
     private final String formatted_message;
     private final Message message;

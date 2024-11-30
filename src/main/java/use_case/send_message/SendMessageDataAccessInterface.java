@@ -2,8 +2,15 @@ package use_case.send_message;
 
 import entity.Message;
 
-import java.util.List;
-
+/**
+ * DAO for the Send Message Use Case.
+ */
 public interface SendMessageDataAccessInterface {
-    public void updateMessage(String groupID, Message messages);
+
+    /**
+     * Returns the user with the given username.
+     * @param groupID the group ID of the group the message is sent to
+     * @param message the message sent
+     */
+    void updateMessage(String groupID, Message message);
 }

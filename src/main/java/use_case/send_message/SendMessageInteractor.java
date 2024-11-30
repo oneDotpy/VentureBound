@@ -6,6 +6,9 @@ import data_access.FirestoreUserDataAccessObject;
 import entity.Message;
 import entity.MessageFactory;
 
+/**
+ * The Send Message Interactor.
+ */
 public class SendMessageInteractor implements SendMessageInputBoundary {
     private final FirestoreUserDataAccessObject userDataAccessObject;
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
@@ -21,7 +24,6 @@ public class SendMessageInteractor implements SendMessageInputBoundary {
 
     @Override
     public void sendMessage(SendMessageInputData sendMessageInputData) {
-
         String sender = sendMessageInputData.getUser().getName();
         String content = sendMessageInputData.getContent();
         Timestamp timestamp = userDataAccessObject.getTimestamp(sender);
