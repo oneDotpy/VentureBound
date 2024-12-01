@@ -4,33 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Fixing Bug in Leave group so that when the member is leaving the group, the messageListenerTriggered will be false. (Adding delay in chatCoontroller)">
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Refactored FirestoreGroupDataAccessObject and FirestoreUserDataAccessObject">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/venturebound-92fe9-firebase-adminsdk-h78vn-eca22f2a8a.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/Main.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonRecommendation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonRecommendation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/create_group/CreateGroupPresenter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupPresenter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/change_password/ChangePasswordInteractor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase$GroupMemberUpdateListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase$MessageUpdateListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/login/LoginInteractor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputBoundary.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputData.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInteractor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageOutputBoundary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageOutputData.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/CreateGroupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/CreateGroupView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/WelcomeView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/WelcomeView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageDataAccessInterface.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,15 +19,15 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="test_case" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -59,12 +38,12 @@
     &quot;assignee&quot;: &quot;oneDotpy&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/oneDotpy/VentureBound.git&quot;,
-    &quot;accountId&quot;: &quot;82a4a4f5-bde8-4ac2-965a-9d2dfbe35226&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/oneDotpy/VentureBound.git",
+    "accountId": "94fec0e1-0dcc-4b72-826b-d8c1ac1d3396"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -80,15 +59,18 @@
     "Application.Main.executor": "Run",
     "Application.Unnamed.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.ReceiveMessageInteractorTest.executor": "Coverage",
+    "JUnit.SendMessageInteractorTest.executor": "Coverage",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "main",
+    "Shell Script.Unnamed.executor": "Run",
+    "git-widget-placeholder": "#26 on test__case",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Patuan Michael/IdeaProjects/VentureBound/src/main/java",
+    "last_opened_file_path": "C:/Users/Leo Lei/IdeaProjects/VentureBound/src/main/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -101,28 +83,27 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Leo Lei\IdeaProjects\VentureBound\src\main\resources" />
+      <recent name="C:\Users\Leo Lei\IdeaProjects\VentureBound\src\test\java\use_case" />
+      <recent name="C:\Users\Leo Lei\IdeaProjects\VentureBound\src\test\java\use_case\receive_message" />
+      <recent name="C:\Users\Leo Lei\IdeaProjects\VentureBound\src\test\java" />
+      <recent name="C:\Users\Leo Lei\IdeaProjects\VentureBound\src\test\java\use_case\join_group" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="interface_adapter.group" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="ChatView" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="view.ChatView" />
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="homework-5" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="view.*" />
+          <option name="PATTERN" value="app.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="app.Main" />
-      <module name="homework-5" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/main/java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -140,14 +121,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Unnamed" type="ShConfigurationType" nameIsGenerated="true">
+      <option name="SCRIPT_TEXT" value="" />
+      <option name="INDEPENDENT_SCRIPT_PATH" value="false" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/../../../../parse_logs.sh" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="false" />
+      <option name="INTERPRETER_PATH" value="$PROJECT_DIR$/../../../../Windows/System32/WindowsPowerShell/v1.0/powershell.exe" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="EXECUTE_IN_TERMINAL" value="true" />
+      <option name="EXECUTE_SCRIPT_FILE" value="true" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="Application.ChatView" />
+      <item itemvalue="Shell Script.Unnamed" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ChatView" />
-        <item itemvalue="Application.ChatView" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.ChatView" />
         <item itemvalue="Application.ChatView" />
         <item itemvalue="Application.ChatView" />
@@ -184,6 +179,7 @@
       <workItem from="1732881035221" duration="9181000" />
       <workItem from="1733003434913" duration="57000" />
       <workItem from="1733003524684" duration="464000" />
+      <workItem from="1733010401105" duration="3286000" />
     </task>
     <task id="LOCAL-00001" summary="integrated chat system">
       <option name="closed" value="true" />
@@ -305,7 +301,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733003005804</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Added ReceiveMessageInteractorTest and SendMessageInteractorTest and made some changes to the DAOs and send message use case">
+      <option name="closed" value="true" />
+      <created>1733012107249</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1733012107249</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Refactored FirestoreGroupDataAccessObject and FirestoreUserDataAccessObject">
+      <option name="closed" value="true" />
+      <created>1733013537427</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1733013537427</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -338,6 +350,16 @@
     <MESSAGE value="Big Update (Small Update Bot 4) add feature of leave group, so it updates the state on vacationBotInteractor" />
     <MESSAGE value="Big Update (Small Update Bot 5) add feature of leave group, so it updates the state on vacationBotInteractor" />
     <MESSAGE value="Fixing Bug in Leave group so that when the member is leaving the group, the messageListenerTriggered will be false. (Adding delay in chatCoontroller)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixing Bug in Leave group so that when the member is leaving the group, the messageListenerTriggered will be false. (Adding delay in chatCoontroller)" />
+    <MESSAGE value="Added ReceiveMessageInteractorTest and SendMessageInteractorTest and made some changes to the DAOs and send message use case" />
+    <MESSAGE value="Refactored FirestoreGroupDataAccessObject and FirestoreUserDataAccessObject" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored FirestoreGroupDataAccessObject and FirestoreUserDataAccessObject" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/VentureBound$ReceiveMessageInteractorTest.ic" NAME="ReceiveMessageInteractorTest Coverage Results" MODIFIED="1733011929900" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>use_case.receive_message.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/VentureBound$SendMessageInteractorTest.ic" NAME="SendMessageInteractorTest Coverage Results" MODIFIED="1733011960376" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>use_case.send_message.*</FILTER>
+    </SUITE>
   </component>
 </project>
