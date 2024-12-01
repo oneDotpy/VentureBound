@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Refactored FirestoreGroupDataAccessObject and FirestoreUserDataAccessObject">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/venturebound-92fe9-firebase-adminsdk-h78vn-eca22f2a8a.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/use_case/create_group/CreateGroupInteractorTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/InMemoryGroupDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/InMemoryGroupDataAccessObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/InMemoryUserDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/InMemoryUserDataAccessObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageDataAccessInterface.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,12 +40,12 @@
     &quot;assignee&quot;: &quot;oneDotpy&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/oneDotpy/VentureBound.git",
-    "accountId": "94fec0e1-0dcc-4b72-826b-d8c1ac1d3396"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/oneDotpy/VentureBound.git&quot;,
+    &quot;accountId&quot;: &quot;94fec0e1-0dcc-4b72-826b-d8c1ac1d3396&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -59,8 +61,9 @@
     "Application.Main.executor": "Run",
     "Application.Unnamed.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
+    "JUnit.CreateGroupInteractorTest.executor": "Run",
     "JUnit.ReceiveMessageInteractorTest.executor": "Coverage",
-    "JUnit.SendMessageInteractorTest.executor": "Coverage",
+    "JUnit.SendMessageInteractorTest.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
@@ -68,7 +71,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "Shell Script.Unnamed.executor": "Run",
-    "git-widget-placeholder": "#26 on test__case",
+    "git-widget-placeholder": "test__case",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Leo Lei/IdeaProjects/VentureBound/src/main/resources",
     "node.js.detected.package.eslint": "true",
@@ -94,7 +97,7 @@
       <recent name="interface_adapter.group" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="homework-5" />
@@ -143,9 +146,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.ChatView" />
-        <item itemvalue="Application.ChatView" />
-        <item itemvalue="Application.ChatView" />
       </list>
     </recent_temporary>
   </component>
