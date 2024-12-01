@@ -182,7 +182,7 @@ public class AppBuilder {
 
         chatViewModel.setChatUpdatesUseCase(new RealTimeChatUpdatesUseCase(firestoreGroupDataAccessObject));
 
-        chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor, sendMessageInteractor, receiveMessageInteractor);
+        chatController = new ChatController(messageFactory, chatInteractor, leaveGroupInteractor, vacationBotInteractor, sendMessageInteractor, receiveMessageInteractor);
 
         chatView.setChatController(chatController);
         chatViewModel.setController(chatController);

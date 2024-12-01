@@ -1,28 +1,21 @@
 package use_case.receive_message;
 
 import com.google.cloud.Timestamp;
+import entity.Message;
 
 /**
  * The input data for the Receive Message Use Case.
  */
 public class ReceiveMessageInputData {
-    private final String sender;
-    private final String content;
     private final String currentUser;
-    private final Timestamp timestamp;
+    private final Message message;
 
-    public ReceiveMessageInputData(String sender, String content, String currentUser, Timestamp timestamp) {
-        this.sender = sender;
-        this.content = content;
+    public ReceiveMessageInputData(String currentUser, Message message) {
         this.currentUser = currentUser;
-        this.timestamp = timestamp;
+        this.message = message;
     }
-
-    public String getSender() {return sender;}
-
-    public String getContent() {return content;}
 
     public String getCurrentUser() {return currentUser;}
 
-    public Timestamp getTimestamp() {return timestamp;}
+    public Message getMessage() {return message;}
 }

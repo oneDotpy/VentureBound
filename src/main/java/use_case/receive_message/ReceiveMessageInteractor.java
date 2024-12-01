@@ -18,10 +18,11 @@ public class ReceiveMessageInteractor implements ReceiveMessageInputBoundary{
 
     @Override
     public void receiveMessage(ReceiveMessageInputData receiveMessageInputData) {
-        String sender = receiveMessageInputData.getSender();
-        String content = receiveMessageInputData.getContent();
         String currentUser = receiveMessageInputData.getCurrentUser();
-        Timestamp timestamp = receiveMessageInputData.getTimestamp();
+        Message message = receiveMessageInputData.getMessage();
+        String sender = message.getSender();
+        String content = message.getContent();
+        Timestamp timestamp = message.getTimestamp();
         String formattedMessage;
         if (sender.equals(currentUser)) {
             formattedMessage = "You: " + content;

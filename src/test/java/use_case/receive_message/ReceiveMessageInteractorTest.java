@@ -3,6 +3,7 @@ package use_case.receive_message;
 import com.google.cloud.Timestamp;
 import data_access.InMemoryUserDataAccessObject;
 import entity.CommonMessageFactory;
+import entity.Message;
 import entity.MessageFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.chat.ChatPresenter;
@@ -16,8 +17,9 @@ public class ReceiveMessageInteractorTest {
     @Test
     public void testReceiveMessageSelf() {
         // create inputData with sender name "user" and current user name "user"
-        ReceiveMessageInputData inputData = new ReceiveMessageInputData("user",
-                "content", "user", Timestamp.now());
+        MessageFactory messageFactory = new CommonMessageFactory();
+        Message message = messageFactory.createMessage("user", "content", Timestamp.now());
+        ReceiveMessageInputData inputData = new ReceiveMessageInputData("user", message);
 
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         ChatViewModel chatViewModel = new ChatViewModel();
@@ -31,8 +33,6 @@ public class ReceiveMessageInteractorTest {
 
         ReceiveMessageOutputBoundary presenter = new ChatPresenter(viewManagerModel, chatViewModel, welcomeViewModel);
 
-        MessageFactory messageFactory = new CommonMessageFactory();
-
         ReceiveMessageInteractor interactor = new ReceiveMessageInteractor(presenter, messageFactory);
         interactor.receiveMessage(inputData);
     }
@@ -40,8 +40,9 @@ public class ReceiveMessageInteractorTest {
     @Test
     public void testReceiveMessageOther() {
         // create inputData with sender name "sender" and current user name "user"
-        ReceiveMessageInputData inputData = new ReceiveMessageInputData("sender",
-                "content", "user", Timestamp.now());
+        MessageFactory messageFactory = new CommonMessageFactory();
+        Message message = messageFactory.createMessage("sender", "content", Timestamp.now());
+        ReceiveMessageInputData inputData = new ReceiveMessageInputData("user", message);
 
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         ChatViewModel chatViewModel = new ChatViewModel();
@@ -53,8 +54,6 @@ public class ReceiveMessageInteractorTest {
         WelcomeViewModel welcomeViewModel = new WelcomeViewModel();
 
         ReceiveMessageOutputBoundary presenter = new ChatPresenter(viewManagerModel, chatViewModel, welcomeViewModel);
-
-        MessageFactory messageFactory = new CommonMessageFactory();
 
         ReceiveMessageInteractor interactor = new ReceiveMessageInteractor(presenter, messageFactory);
         interactor.receiveMessage(inputData);
