@@ -6,34 +6,59 @@ import entity.Group;
 import entity.User;
 import entity.UserFactory;
 import use_case.send_message.SendMessageUserDataAccessInterface;
+import use_case.create_group.CreateGroupUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
-public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
-        SendMessageUserDataAccessInterface {
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface, CreateGroupUserDataAccessInterface, SendMessageUserDataAccessInterface {
     UserFactory userFactory;
     InMemoryGroupDataAccessObject inMemoryGroupDataAccessObject;
+    List<User> users = new ArrayList<>();
 
     public InMemoryUserDataAccessObject() {
         userFactory = new CommonUserFactory();
         inMemoryGroupDataAccessObject = new InMemoryGroupDataAccessObject();
+
+        Group group = inMemoryGroupDataAccessObject.get("groupID");
+        User user = userFactory.create("user", "password", "email", group, "groupID");
+        users.add(user);
     }
 
     @Override
     public void save(User user) {
-
+        users.add(user);
     }
 
     @Override
     public User get(String username) {
-        String password = "password";
-        String email = "email";
-        String groupID = "groupID";
-        Group group = inMemoryGroupDataAccessObject.get(groupID);
-        return userFactory.create(username, password, email, group, groupID);
+        for (User user : users) {
+            if (user.getName().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+
+
+    @Override
+    public void setGroupID(String GroupID, String username) {
+        for (User user1 : users) {
+            if (username.equals(user1.getName())){
+                User new_user = userFactory.create(user1.getName(), user1.getPassword(), user1.getEmail(), inMemoryGroupDataAccessObject.get(GroupID), GroupID);
+                users.add(new_user);
+                users.remove(user1);
+                return;
+            }
+        }
     }
 
     @Override
     public Timestamp getTimestamp(String username) {
         return Timestamp.now();
     }
+
 }
