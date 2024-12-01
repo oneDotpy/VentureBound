@@ -14,7 +14,7 @@ import org.junit.Test;
 public class ReceiveMessageInteractorTest {
 
     @Test
-    public void testShowMessageSelf() {
+    public void testReceiveMessageSelf() {
         // create inputData with sender name "user" and current user name "user"
         ReceiveMessageInputData inputData = new ReceiveMessageInputData("user",
                 "content", "user", Timestamp.now());
@@ -34,11 +34,11 @@ public class ReceiveMessageInteractorTest {
         MessageFactory messageFactory = new CommonMessageFactory();
 
         ReceiveMessageInteractor interactor = new ReceiveMessageInteractor(presenter, messageFactory);
-        interactor.showMessage(inputData);
+        interactor.receiveMessage(inputData);
     }
 
     @Test
-    public void testShowMessageOther() {
+    public void testReceiveMessageOther() {
         // create inputData with sender name "sender" and current user name "user"
         ReceiveMessageInputData inputData = new ReceiveMessageInputData("sender",
                 "content", "user", Timestamp.now());
@@ -57,6 +57,6 @@ public class ReceiveMessageInteractorTest {
         MessageFactory messageFactory = new CommonMessageFactory();
 
         ReceiveMessageInteractor interactor = new ReceiveMessageInteractor(presenter, messageFactory);
-        interactor.showMessage(inputData);
+        interactor.receiveMessage(inputData);
     }
 }

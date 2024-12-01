@@ -59,7 +59,7 @@ public class ChatController implements ChatControllerInterface {
 
     public void handleMessage(String sender, String content, Timestamp timestamp, String currentUser, int groupSize, String groupID) {
         ReceiveMessageInputData receiveMessageInputData = new ReceiveMessageInputData(sender, content, currentUser, timestamp);
-        receiveMessageInteractor.showMessage(receiveMessageInputData);
+        receiveMessageInteractor.receiveMessage(receiveMessageInputData);
 
         if (sender.equals(currentUser)) {
             if (content.trim().equalsIgnoreCase("/start")) {

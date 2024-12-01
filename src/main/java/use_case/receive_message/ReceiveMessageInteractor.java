@@ -17,7 +17,7 @@ public class ReceiveMessageInteractor implements ReceiveMessageInputBoundary{
     }
 
     @Override
-    public void showMessage(ReceiveMessageInputData receiveMessageInputData) {
+    public void receiveMessage(ReceiveMessageInputData receiveMessageInputData) {
         String sender = receiveMessageInputData.getSender();
         String content = receiveMessageInputData.getContent();
         String currentUser = receiveMessageInputData.getCurrentUser();
