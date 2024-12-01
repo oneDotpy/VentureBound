@@ -10,13 +10,19 @@ import use_case.create_group.CreateGroupGroupDataAccessInterface;
 import com.google.firebase.cloud.FirestoreClient;
 import use_case.join_group.JoinGroupGroupDataAccessInterface;
 import use_case.leave_group.LeaveGroupGroupDataAccessInterface;
+import use_case.login.LoginGroupDataAccessInterface;
 import use_case.send_message.SendMessageGroupDataAccessInterface;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface, SendMessageGroupDataAccessInterface, LeaveGroupGroupDataAccessInterface {
+public class FirestoreGroupDataAccessObject implements
+        LoginGroupDataAccessInterface,
+        CreateGroupGroupDataAccessInterface,
+        JoinGroupGroupDataAccessInterface,
+        SendMessageGroupDataAccessInterface,
+        LeaveGroupGroupDataAccessInterface {
     private int counter = 0;
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;

@@ -1,18 +1,17 @@
 package use_case.login;
 
-import data_access.FirestoreGroupDataAccessObject;
 import entity.User;
-import use_case.encryption.PasswordEncryption;
+import app.PasswordEncryption;
 
 /**
  * The Login Interactor.
  */
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
-    private final FirestoreGroupDataAccessObject groupDataAccessObject;
+    private final LoginGroupDataAccessInterface groupDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
 
-    public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface, FirestoreGroupDataAccessObject groupDataAccessObject,
+    public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface, LoginGroupDataAccessInterface groupDataAccessObject,
                            LoginOutputBoundary loginOutputBoundary) {
         this.userDataAccessObject = userDataAccessInterface;
         this.groupDataAccessObject = groupDataAccessObject;
