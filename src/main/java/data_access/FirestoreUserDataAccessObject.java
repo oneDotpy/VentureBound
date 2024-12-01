@@ -14,12 +14,13 @@ import use_case.join_group.JoinGroupUserDataAccessInterface;
 import use_case.leave_group.LeaveGroupUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+import use_case.vacation_bot.VacationBotUserDataAccessInterface;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface, JoinGroupUserDataAccessInterface, CreateGroupUserDataAccessInterface, LeaveGroupUserDataAccessInterface {
+public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface, JoinGroupUserDataAccessInterface, CreateGroupUserDataAccessInterface, LeaveGroupUserDataAccessInterface, VacationBotUserDataAccessInterface {
 
     private UserFactory userFactory;
     private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;

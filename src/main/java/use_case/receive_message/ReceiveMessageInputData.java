@@ -5,7 +5,7 @@ import com.google.cloud.Timestamp;
 /**
  * The input data for the Receive Message Use Case.
  */
-public class ReceiveMessageInputData {
+public class ReceiveMessageInputData{
     private final String sender;
     private final String content;
     private final String currentUser;

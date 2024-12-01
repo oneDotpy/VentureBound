@@ -11,13 +11,13 @@ import com.google.firebase.cloud.FirestoreClient;
 import use_case.join_group.JoinGroupGroupDataAccessInterface;
 import use_case.leave_group.LeaveGroupGroupDataAccessInterface;
 import use_case.send_message.SendMessageDataAccessInterface;
-import use_case.vacation_bot.VacationBotDataAccessInterface;
+import use_case.vacation_bot.VacationBotGroupDataAccessInterface;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface, LeaveGroupGroupDataAccessInterface, VacationBotDataAccessInterface {
+public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface, LeaveGroupGroupDataAccessInterface, VacationBotGroupDataAccessInterface {
     private int counter = 0;
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
@@ -251,13 +251,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
             }
         }
 
-        // DocumentReference ref = db.collection("groups").document(group.getGroupName());
-        // ApiFuture<WriteResult> future = ref.set(data);
-        // try {
-        //    System.out.println("Successfully updated at: " + future.get().getUpdateTime());
-        // } catch(Exception e) {
-            // e.printStackTrace();
-        // }
         updateResponses(groupID, group.getResponses());
         updateRecommendations(groupID, group.getRecommendedLocations());
         updateMessages(groupID, group.getMessages());

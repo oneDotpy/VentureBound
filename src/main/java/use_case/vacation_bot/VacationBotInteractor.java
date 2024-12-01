@@ -4,8 +4,6 @@ import java.util.*;
 
 import app.OpenAIChatGPT;
 import com.google.cloud.Timestamp;
-import data_access.FirestoreGroupDataAccessObject;
-import data_access.FirestoreUserDataAccessObject;
 import entity.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,8 +21,8 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private enum BotState { INACTIVE, AWAITING_LOCATION, AWAITING_HOBBIES, GENERATING_RECOMMENDATIONS }
     private BotState botState = BotState.INACTIVE;
 
-    private final FirestoreUserDataAccessObject firestoreUserDataAccessObject;
-    private final FirestoreGroupDataAccessObject groupDataAccessObject;
+    private final VacationBotUserDataAccessInterface firestoreUserDataAccessObject;
+    private final VacationBotGroupDataAccessInterface groupDataAccessObject;
     private final MessageFactory messageFactory;
     private User user;
 
@@ -51,8 +49,8 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
      * @param groupDataAccessObject         Firestore DAO for group data.
      * @param messageFactory                Factory for creating messages.
      */
-    public VacationBotInteractor(FirestoreUserDataAccessObject firestoreUserDataAccessObject,
-                                 FirestoreGroupDataAccessObject groupDataAccessObject,
+    public VacationBotInteractor(VacationBotUserDataAccessInterface firestoreUserDataAccessObject,
+                                 VacationBotGroupDataAccessInterface groupDataAccessObject,
                                  MessageFactory messageFactory) {
         this.chatGPT = new OpenAIChatGPT();
         this.messageFactory = messageFactory;

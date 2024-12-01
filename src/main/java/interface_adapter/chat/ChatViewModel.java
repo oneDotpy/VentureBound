@@ -7,7 +7,6 @@ import interface_adapter.ViewModel;
 import use_case.chat.RealTimeChatUpdatesUseCase;
 import use_case.send_message.SendMessageInputData;
 import use_case.send_message.SendMessageInteractor;
-import use_case.vacation_bot.VacationBotInputBoundary;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ public class ChatViewModel extends ViewModel<ChatState> {
 
     private RealTimeChatUpdatesUseCase chatUpdatesUseCase;
     private SendMessageInteractor sendMessageInteractor;
-    private VacationBotInputBoundary botInteractor; // Bot integration
     private ListenerRegistration messageListener;
     private ListenerRegistration memberListener;
     private ChatControllerInterface chatController;
@@ -50,16 +48,6 @@ public class ChatViewModel extends ViewModel<ChatState> {
     public void setSendMessageInteractor(SendMessageInteractor sendMessageInteractor) {
         this.sendMessageInteractor = sendMessageInteractor;
     }
-
-    /**
-     * Sets the Vacation Bot interactor for handling bot-related commands.
-     *
-     * @param botInteractor The bot interactor.
-     */
-    public void setBotInteractor(VacationBotInputBoundary botInteractor) {
-        this.botInteractor = botInteractor;
-    }
-
     /**
      * Sets the chat controller interface.
      *
@@ -108,16 +96,6 @@ public class ChatViewModel extends ViewModel<ChatState> {
             }
         });
     }
-
-    /**
-     * Stops the Vacation Bot if it is currently active.
-     */
-    public void stopBot() {
-        if (botInteractor.isBotActive()) {
-            botInteractor.stopBot();
-        }
-    }
-
     /**
      * Sends a message using the interactor.
      *
