@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Making a CreateGRoupInteractorTest">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Making a JoinGroupInteractorTest">
+      <change afterPath="$PROJECT_DIR$/src/test/java/use_case/leave_group/LeaveGroupInteractorTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/data_access/InMemoryGroupDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/InMemoryGroupDataAccessObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/data_access/InMemoryUserDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/InMemoryUserDataAccessObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/use_case/join_group/JoinGroupInteractorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/use_case/join_group/JoinGroupInteractorTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -61,6 +60,7 @@
     &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
     &quot;JUnit.CreateGroupInteractorTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.JoinGroupInteractorTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.LeaveGroupInteractorTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.ReceiveMessageInteractorTest.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.SendMessageInteractorTest.executor&quot;: &quot;Run&quot;,
     &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
@@ -334,7 +334,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733015845453</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Making a JoinGroupInteractorTest">
+      <option name="closed" value="true" />
+      <created>1733020010109</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1733020010109</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -370,7 +378,8 @@
     <MESSAGE value="Added ReceiveMessageInteractorTest and SendMessageInteractorTest and made some changes to the DAOs and send message use case" />
     <MESSAGE value="Refactored FirestoreGroupDataAccessObject and FirestoreUserDataAccessObject" />
     <MESSAGE value="Making a CreateGRoupInteractorTest" />
-    <option name="LAST_COMMIT_MESSAGE" value="Making a CreateGRoupInteractorTest" />
+    <MESSAGE value="Making a JoinGroupInteractorTest" />
+    <option name="LAST_COMMIT_MESSAGE" value="Making a JoinGroupInteractorTest" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/VentureBound$ReceiveMessageInteractorTest.ic" NAME="ReceiveMessageInteractorTest Coverage Results" MODIFIED="1733011929900" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">

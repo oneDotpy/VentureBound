@@ -82,7 +82,12 @@ public class InMemoryGroupDataAccessObject implements
 
     @Override
     public void removeMember(String groupID, String username) {
-
+        for (Group group: groups) {
+            if (group.getGroupID().equals(groupID)) {
+                group.getUsernames().remove(username);
+                return;
+            }
+        }
     }
 
     @Override
