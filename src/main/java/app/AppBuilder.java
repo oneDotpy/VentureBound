@@ -48,7 +48,7 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
-    private final FirestoreGroupGroupDataAccessObject firestoreGroupDataAccessObject = new FirestoreGroupGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
+    private final FirestoreGroupDataAccessObject firestoreGroupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject = new FirestoreUserDataAccessObject(userFactory, firestoreGroupDataAccessObject);
 
 

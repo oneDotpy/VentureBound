@@ -11,11 +11,11 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
         SendMessageUserDataAccessInterface {
     UserFactory userFactory;
-    InMemoryGroupGroupDataAccessObject inMemoryGroupDataAccessObject;
+    InMemoryGroupDataAccessObject inMemoryGroupDataAccessObject;
 
     public InMemoryUserDataAccessObject() {
         userFactory = new CommonUserFactory();
-        inMemoryGroupDataAccessObject = new InMemoryGroupGroupDataAccessObject();
+        inMemoryGroupDataAccessObject = new InMemoryGroupDataAccessObject();
     }
 
     @Override

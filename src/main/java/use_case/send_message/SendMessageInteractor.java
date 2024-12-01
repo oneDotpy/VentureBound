@@ -1,8 +1,6 @@
 package use_case.send_message;
 
 import com.google.cloud.Timestamp;
-import data_access.FirestoreGroupGroupDataAccessObject;
-import data_access.FirestoreUserDataAccessObject;
 import entity.Message;
 import entity.MessageFactory;
 
