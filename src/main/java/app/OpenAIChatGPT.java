@@ -26,11 +26,13 @@ public class OpenAIChatGPT {
         return apiKey;
     }
     public static String getVacationRecommendations(String activities, String locations) throws IOException {
+        System.out.println("activities: " + activities + ", locations: " + locations);
         String prompt = String.format(
                 "Me and my friends like %s. Sticking with %s locations, provide a JSON object with 5 recommended vacation spots based of our interests. " +
                         "Include name, latitude, longitude, and a Google Maps link for each spot. ",
                 activities, locations
         );
+        System.out.println(prompt);
 
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("model", "gpt-3.5-turbo");

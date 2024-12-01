@@ -4,33 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Fixing Bug in Leave group so that when the member is leaving the group, the messageListenerTriggered will be false. (Adding delay in chatCoontroller)">
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="removed unused variables">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/OpenAIChatGPT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/OpenAIChatGPT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/FirestoreGroupDataAccessObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/app/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/app/OpenAIChatGPT.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/OpenAIChatGPT.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreGroupDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreUserDataAccessObject.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonRecommendation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonRecommendation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/interface_adapter/chat/ChatPresenter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/create_group/CreateGroupPresenter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/group/GroupPresenter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/change_password/ChangePasswordInteractor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase$GroupMemberUpdateListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase$MessageUpdateListener.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/chat/RealTimeChatUpdatesUseCase.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/login/LoginInteractor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputBoundary.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInputData.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageInteractor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageOutputBoundary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/send_message/SendMessageOutputData.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/CreateGroupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/CreateGroupView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/JoinGroupView.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/view/WelcomeView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/view/WelcomeView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/view/ChatView$SimulButtonListener.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,15 +23,15 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="test_case" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,7 +45,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/oneDotpy/VentureBound.git&quot;,
-    &quot;accountId&quot;: &quot;82a4a4f5-bde8-4ac2-965a-9d2dfbe35226&quot;
+    &quot;accountId&quot;: &quot;52d2fb4e-a6ac-4e19-a33f-e7496a7e7cbf&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -86,7 +69,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "VacationBotTestCase",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Patuan Michael/IdeaProjects/VentureBound/src/main/java",
     "node.js.detected.package.eslint": "true",
@@ -101,11 +84,15 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Document\coolyeah\csc207\VentureBound\src\main\resources" />
+      <recent name="D:\Document\coolyeah\csc207\VentureBound\src\main" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="interface_adapter.group" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="ChatView" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="view.ChatView" />
       <module name="homework-5" />
@@ -119,10 +106,9 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
+    <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="homework-5" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/main/java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -184,6 +170,9 @@
       <workItem from="1732881035221" duration="9181000" />
       <workItem from="1733003434913" duration="57000" />
       <workItem from="1733003524684" duration="464000" />
+      <workItem from="1733005126020" duration="413000" />
+      <workItem from="1733013582473" duration="991000" />
+      <workItem from="1733018624339" duration="2864000" />
     </task>
     <task id="LOCAL-00001" summary="integrated chat system">
       <option name="closed" value="true" />

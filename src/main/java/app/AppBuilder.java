@@ -32,7 +32,6 @@ import use_case.login.*;
 import use_case.receive_message.ReceiveMessageInteractor;
 import use_case.send_message.SendMessageInteractor;
 import use_case.signup.*;
-import use_case.change_password.*;
 import use_case.vacation_bot.*;
 import use_case.welcome.WelcomeInteractor;
 import view.*;
