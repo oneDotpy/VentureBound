@@ -60,7 +60,6 @@ public class LoginPresenter implements LoginOutputBoundary {
         // Set Members, Current Users
         ChatState chatState = chatViewModel.getState();
         User user = loginOutputData.getUser();
-        chatState.setUser(user);
         chatState.setCurrentUser(user);
         List<Message> messages = loginOutputData.getGroup().getMessages();
         for (Message message: loginOutputData.getGroup().getMessages()) {
