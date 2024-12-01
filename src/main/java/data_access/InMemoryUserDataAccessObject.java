@@ -1,10 +1,12 @@
 package data_access;
 
+import app.PasswordEncryption;
 import com.google.cloud.Timestamp;
 import entity.CommonUserFactory;
 import entity.Group;
 import entity.User;
 import entity.UserFactory;
+import use_case.login.LoginUserDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
 import use_case.create_group.CreateGroupUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
@@ -13,7 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface, CreateGroupUserDataAccessInterface, SendMessageUserDataAccessInterface {
+public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
+        LoginUserDataAccessInterface,
+        CreateGroupUserDataAccessInterface,
+        SendMessageUserDataAccessInterface {
     UserFactory userFactory;
     InMemoryGroupDataAccessObject inMemoryGroupDataAccessObject;
     List<User> users = new ArrayList<>();
@@ -23,7 +28,11 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         inMemoryGroupDataAccessObject = new InMemoryGroupDataAccessObject();
 
         Group group = inMemoryGroupDataAccessObject.get("groupID");
-        User user = userFactory.create("user", "password", "email", group, "groupID");
+
+        PasswordEncryption passwordEncryption = new PasswordEncryption();
+        String password = passwordEncryption.execute("password");
+
+        User user = userFactory.create("user", password, "email", group, "groupID");
         users.add(user);
     }
 

@@ -2,7 +2,7 @@ package use_case.signup;
 
 import entity.User;
 import entity.UserFactory;
-import use_case.encryption.PasswordEncryption;
+import app.PasswordEncryption;
 
 /**
  * Interactor for managing the Signup functionality.

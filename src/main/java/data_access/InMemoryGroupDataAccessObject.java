@@ -3,13 +3,19 @@ package data_access;
 import entity.*;
 import use_case.create_group.CreateGroupGroupDataAccessInterface;
 import use_case.join_group.JoinGroupGroupDataAccessInterface;
+import use_case.leave_group.LeaveGroupGroupDataAccessInterface;
+import use_case.login.LoginGroupDataAccessInterface;
 import use_case.send_message.SendMessageGroupDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryGroupDataAccessObject implements JoinGroupGroupDataAccessInterface,
-        SendMessageGroupDataAccessInterface, CreateGroupGroupDataAccessInterface {
+public class InMemoryGroupDataAccessObject implements
+        LoginGroupDataAccessInterface,
+        JoinGroupGroupDataAccessInterface,
+        SendMessageGroupDataAccessInterface,
+        CreateGroupGroupDataAccessInterface,
+        LeaveGroupGroupDataAccessInterface {
     GroupFactory groupFactory;
     List<Group> groups = new ArrayList<>();
 
@@ -57,5 +63,15 @@ public class InMemoryGroupDataAccessObject implements JoinGroupGroupDataAccessIn
         }
         groups.add(group);
         return groupID;
+    }
+
+    @Override
+    public void removeMember(String groupID, String username) {
+
+    }
+
+    @Override
+    public void detachListener() {
+
     }
 }

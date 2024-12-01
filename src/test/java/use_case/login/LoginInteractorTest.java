@@ -1,36 +1,24 @@
-import data_access.FirestoreDataAccessObject;
-import data_access.FirestoreGroupDataAccessObject;
-import data_access.FirestoreUserDataAccessObject;
-import entity.*;
+package use_case.login;
+
+import data_access.*;
 import org.junit.jupiter.api.Test;
-import use_case.login.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-class LoginInteractorTest {
-
+public class LoginInteractorTest {
     @Test
     void successTest() {
-        final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
-        LoginInputData inputData = new LoginInputData("Ken", "1234");
-        UserFactory userFactory = new CommonUserFactory();
-        GroupFactory groupFactory = new CommonGroupFactory();
-        ResponseFactory resposeFactory = new CommonResponseFactory();
-        MessageFactory messageFactory = new CommonMessageFactory();
-        RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
+        LoginInputData inputData = new LoginInputData("user", "password");
 
-        FirestoreGroupDataAccessObject groupRepository = new FirestoreGroupDataAccessObject(
-                groupFactory,
-                resposeFactory,
-                messageFactory,
-                recommendationFactory);
+        InMemoryGroupDataAccessObject groupRepository = new InMemoryGroupDataAccessObject();
 
-        LoginUserDataAccessInterface userRepository = new FirestoreUserDataAccessObject(userFactory, groupRepository);
+        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
 
         LoginOutputBoundary successPresenter = new LoginOutputBoundary() {
             @Override
             public void prepareSuccessView(LoginOutputData outputData) {
-                assertEquals("ken", outputData.getUser().getName());
+                assertEquals("user", outputData.getUser().getName());
                 System.out.println(outputData.getUser().toString());
             }
 
@@ -50,28 +38,17 @@ class LoginInteractorTest {
 
             }
         };
-
         LoginInputBoundary interactor = new LoginInteractor(userRepository, groupRepository, successPresenter);
         interactor.execute(inputData);
     }
 
     @Test
     void failurePasswordIncorrect() {
-        final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
-        LoginInputData inputData = new LoginInputData("Ken", "3456");
-        UserFactory userFactory = new CommonUserFactory();
-        GroupFactory groupFactory = new CommonGroupFactory();
-        ResponseFactory resposeFactory = new CommonResponseFactory();
-        MessageFactory messageFactory = new CommonMessageFactory();
-        RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
+        LoginInputData inputData = new LoginInputData("user", "password1");
 
-        FirestoreGroupDataAccessObject groupRepository = new FirestoreGroupDataAccessObject(
-                groupFactory,
-                resposeFactory,
-                messageFactory,
-                recommendationFactory);
+        InMemoryGroupDataAccessObject groupRepository = new InMemoryGroupDataAccessObject();
 
-        LoginUserDataAccessInterface userRepository = new FirestoreUserDataAccessObject(userFactory, groupRepository);
+        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
 
         LoginOutputBoundary successPresenter = new LoginOutputBoundary() {
             @Override
@@ -81,7 +58,7 @@ class LoginInteractorTest {
 
             @Override
             public void prepareFailView(String error) {
-                assertEquals("Incorrect password for \"Ken\".", error);
+                assertEquals("Incorrect password for \"user\".", error);
             }
 
             @Override
@@ -94,28 +71,17 @@ class LoginInteractorTest {
 
             }
         };
-
         LoginInputBoundary interactor = new LoginInteractor(userRepository, groupRepository, successPresenter);
         interactor.execute(inputData);
     }
 
     @Test
     void failureUserDoesNotExists() {
-        final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
-        LoginInputData inputData = new LoginInputData("Ken", "1234");
-        UserFactory userFactory = new CommonUserFactory();
-        GroupFactory groupFactory = new CommonGroupFactory();
-        ResponseFactory resposeFactory = new CommonResponseFactory();
-        MessageFactory messageFactory = new CommonMessageFactory();
-        RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
+        LoginInputData inputData = new LoginInputData("user1", "password1");
 
-        FirestoreGroupDataAccessObject groupRepository = new FirestoreGroupDataAccessObject(
-                groupFactory,
-                resposeFactory,
-                messageFactory,
-                recommendationFactory);
+        InMemoryGroupDataAccessObject groupRepository = new InMemoryGroupDataAccessObject();
 
-        LoginUserDataAccessInterface userRepository = new FirestoreUserDataAccessObject(userFactory, groupRepository);
+        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
 
         LoginOutputBoundary successPresenter = new LoginOutputBoundary() {
             @Override
@@ -125,7 +91,7 @@ class LoginInteractorTest {
 
             @Override
             public void prepareFailView(String error) {
-                assertEquals("Ken: Account does not exist.", error);
+                assertEquals("user1: Account does not exist.", error);
             }
 
             @Override
@@ -138,8 +104,7 @@ class LoginInteractorTest {
 
             }
         };
-
-        LoginInputBoundary interactor = new LoginInteractor(userRepository, groupRepository,successPresenter);
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, groupRepository, successPresenter);
         interactor.execute(inputData);
     }
 }
