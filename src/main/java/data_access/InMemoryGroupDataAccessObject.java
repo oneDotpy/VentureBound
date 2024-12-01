@@ -1,6 +1,7 @@
 package data_access;
 
 import entity.*;
+import use_case.create_group.CreateGroupGroupDataAccessInterface;
 import use_case.join_group.JoinGroupGroupDataAccessInterface;
 import use_case.send_message.SendMessageGroupDataAccessInterface;
 
@@ -8,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryGroupDataAccessObject implements JoinGroupGroupDataAccessInterface,
-        SendMessageGroupDataAccessInterface {
+        SendMessageGroupDataAccessInterface, CreateGroupGroupDataAccessInterface {
     GroupFactory groupFactory;
+    List<Group> groups = new ArrayList<>();
 
     public InMemoryGroupDataAccessObject() {
         groupFactory = new CommonGroupFactory();
@@ -17,6 +19,11 @@ public class InMemoryGroupDataAccessObject implements JoinGroupGroupDataAccessIn
 
     @Override
     public boolean existByID(String groupID) {
+        for (Group group : groups) {
+            if (group.getGroupID().equals(groupID)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -39,5 +46,16 @@ public class InMemoryGroupDataAccessObject implements JoinGroupGroupDataAccessIn
     @Override
     public void updateMessage(String groupID, Message message) {
 
+    }
+
+    @Override
+    public String save(Group group) {
+        String groupID = group.getGroupID();
+        if ("".equals(groupID)) {
+            groupID = "CreateGroupID";
+            group = groupFactory.create(group.getGroupName(), group.getUsernames(), groupID);
+        }
+        groups.add(group);
+        return groupID;
     }
 }
