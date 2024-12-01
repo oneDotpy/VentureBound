@@ -133,7 +133,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
             if (!message.isEmpty()) {
                 String currentUser = chatViewModel.getState().getCurrentUser().getName();
                 System.out.println("[ChatView] Sending message as current user: " + currentUser);
-                chatViewModel.sendMessage(message, chatViewModel.getState().getCurrentUser());
+                chatController.sendMessage(message, chatViewModel.getState().getCurrentUser());
                 messageInputField.setText("");
             }
         }
