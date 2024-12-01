@@ -4,7 +4,7 @@ import java.util.*;
 
 import app.OpenAIChatGPT;
 import com.google.cloud.Timestamp;
-import data_access.FirestoreGroupDataAccessObject;
+import data_access.FirestoreGroupGroupDataAccessObject;
 import data_access.FirestoreUserDataAccessObject;
 import entity.*;
 import org.json.JSONArray;
@@ -18,7 +18,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
     private final OpenAIChatGPT chatGPT;
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject;
-    private final FirestoreGroupDataAccessObject groupDataAccessObject;
+    private final FirestoreGroupGroupDataAccessObject groupDataAccessObject;
     private final MessageFactory messageFactory;
     private User user;
 
@@ -30,7 +30,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private int threshold = 1;
 
     public VacationBotInteractor(FirestoreUserDataAccessObject firestoreUserDataAccessObject,
-                                 FirestoreGroupDataAccessObject groupDataAccessObject,
+                                 FirestoreGroupGroupDataAccessObject groupDataAccessObject,
                                  MessageFactory messageFactory) {
 
         this.chatGPT = new OpenAIChatGPT();

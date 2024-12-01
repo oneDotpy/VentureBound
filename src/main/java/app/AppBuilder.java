@@ -25,14 +25,12 @@ import interface_adapter.welcome.WelcomeState;
 import interface_adapter.welcome.WelcomeViewModel;
 import use_case.chat.*;
 import use_case.create_group.CreateGroupInteractor;
-import use_case.group.*;
 import use_case.join_group.JoinGroupInteractor;
 import use_case.leave_group.LeaveGroupInteractor;
 import use_case.login.*;
 import use_case.receive_message.ReceiveMessageInteractor;
 import use_case.send_message.SendMessageInteractor;
 import use_case.signup.*;
-import use_case.change_password.*;
 import use_case.vacation_bot.*;
 import use_case.welcome.WelcomeInteractor;
 import view.*;
@@ -52,7 +50,7 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
-    private final FirestoreGroupDataAccessObject firestoreGroupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
+    private final FirestoreGroupGroupDataAccessObject firestoreGroupDataAccessObject = new FirestoreGroupGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject = new FirestoreUserDataAccessObject(userFactory, firestoreGroupDataAccessObject);
 
 
