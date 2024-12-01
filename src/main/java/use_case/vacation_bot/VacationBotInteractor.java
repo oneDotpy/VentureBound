@@ -13,14 +13,16 @@ import use_case.send_message.SendMessageInputData;
 
 /**
  * Interactor for managing the Vacation Bot functionality.
- * Handles vacation location and interest-based recommendations through user interactions.
  */
 public class VacationBotInteractor implements VacationBotInputBoundary {
+    private final OpenAIChatGPT chatGPT;
+
+    /**
+     * Enum to represent the current state of the bot.
+     */
     private enum BotState { INACTIVE, AWAITING_LOCATION, AWAITING_HOBBIES, GENERATING_RECOMMENDATIONS }
-    private boolean botCalled = false;
     private BotState botState = BotState.INACTIVE;
 
-    private final OpenAIChatGPT chatGPT;
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject;
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final MessageFactory messageFactory;
@@ -32,7 +34,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private final Map<String, String> hobbyResponses = new HashMap<>();
     private int threshold = 1;
 
-    // New field to store hobby-related questions
+    // List of hobby-related questions
     private final List<String> hobbyQuestions = Arrays.asList(
             "What kind of activities do you enjoy during vacations? (e.g., hiking, shopping, etc.)",
             "What is your favorite type of cuisine when traveling?",
@@ -42,25 +44,34 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     );
     private int currentHobbyQuestionIndex = 0; // Tracks the current hobby question
 
+    /**
+     * Constructor to initialize the VacationBotInteractor.
+     *
+     * @param firestoreUserDataAccessObject Firestore DAO for user data.
+     * @param groupDataAccessObject         Firestore DAO for group data.
+     * @param messageFactory                Factory for creating messages.
+     */
     public VacationBotInteractor(FirestoreUserDataAccessObject firestoreUserDataAccessObject,
                                  FirestoreGroupDataAccessObject groupDataAccessObject,
                                  MessageFactory messageFactory) {
-
         this.chatGPT = new OpenAIChatGPT();
         this.messageFactory = messageFactory;
         this.firestoreUserDataAccessObject = firestoreUserDataAccessObject;
         this.groupDataAccessObject = groupDataAccessObject;
     }
 
+    /**
+     * Starts the bot and prompts the group for the first question (vacation location).
+     *
+     * @param groupID   ID of the group interacting with the bot.
+     * @param groupSize Number of members in the group.
+     */
     @Override
     public void startBot(String groupID, int groupSize) {
         if (botState.equals(BotState.INACTIVE)) {
-            System.out.println("[VBI1] start");
             this.user = createBotUser(groupID);
-            System.out.println("VacationBotInteractor: " + user.getGroupID());
             threshold = groupSize;
             botState = BotState.AWAITING_LOCATION;
-            System.out.println("[VBI2.5] Successfully created bot and updated bot state");
 
             sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop the bot.\n\n**Question 1:** Where would you like to go for a vacation?");
         } else {
@@ -68,6 +79,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Stops the bot and resets its state to inactive.
+     */
     @Override
     public void stopBot() {
         if (!botState.equals(BotState.INACTIVE)) {
@@ -76,15 +90,21 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Checks if the bot is currently active.
+     *
+     * @return True if the bot is active, false otherwise.
+     */
     @Override
     public boolean isBotActive() {
         return botState != BotState.INACTIVE;
     }
 
-    public boolean isBotCalled() {
-        return botCalled;
-    }
-
+    /**
+     * Sends a message from the bot to the group.
+     *
+     * @param botMessage The content of the bot's message.
+     */
     private void sendBotMessage(String botMessage) {
         SendMessageInputData inputData = new SendMessageInputData(user, botMessage);
         System.out.println(inputData.getContent() + inputData.getUser().getName());
@@ -110,12 +130,23 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Creates a bot user for interacting with the group.
+     *
+     * @param groupID ID of the group interacting with the bot.
+     * @return The created bot user.
+     */
     private User createBotUser(String groupID) {
         System.out.println("[VBI2] Create bot at " + groupID);
         UserFactory userFactory = new CommonUserFactory();
         return userFactory.create("Bot", null, "", null, groupID);
     }
 
+
+    /**
+     * Processes location responses and determines the most common response.
+     * Updates the bot's state to await hobbies if the threshold is met.
+     */
     private void processLocationResponses() {
         if (locationResponses.size() >= threshold) {
             String chosenLocationInput = determineMostCommon(locationResponses.values());
@@ -128,6 +159,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Processes hobby responses and moves to the next question or finalizes the responses.
+     */
     private void processHobbyResponses() {
         if (hobbyResponses.size() >= threshold) {
             if (currentHobbyQuestionIndex < 3) {
@@ -138,6 +172,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Sends the next hobby-related question to the group.
+     */
     private void askNextHobbyQuestion() {
         if (currentHobbyQuestionIndex < hobbyQuestions.size()) {
             sendBotMessage("\n**Question " + (currentHobbyQuestionIndex + 2) + ":** " + hobbyQuestions.get(currentHobbyQuestionIndex));
@@ -145,9 +182,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Finalizes the hobby responses and triggers the generation of recommendations.
+     */
     private void finalizeHobbyResponses() {
         sendBotMessage("Generating your perfect holiday destination...");
-        botCalled = true;
         StringBuilder activities = new StringBuilder();
         for (String hobby : hobbyResponses.values()) {
             activities.append(hobby).append(", ");
@@ -159,6 +198,12 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         currentHobbyQuestionIndex = 0; // Reset for future sessions
     }
 
+    /**
+     * Generates recommendations based on the group's location and hobbies.
+     *
+     * @param activities Combined string of hobbies and preferences.
+     * @param location   Chosen vacation location.
+     */
     private void generateRecommendations(String activities, String location) {
         System.out.println("[VBI] Generate recommendation before bot state");
         botState = BotState.GENERATING_RECOMMENDATIONS;
@@ -174,6 +219,82 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Determines the most common response from a collection of responses.
+     *
+     * @param responses Collection of user responses.
+     * @return The most common response.
+     */
+    private String determineMostCommon(Collection<String> responses) {
+        System.out.println("[VBI] Received responses: " + responses);
+        Map<String, Integer> countMap = new HashMap<>();
+        for (String response : responses) {
+            countMap.put(response, countMap.getOrDefault(response, 0) + 1);
+        }
+        List<Map.Entry<String, Integer>> entries = new ArrayList<>(countMap.entrySet());
+        entries.sort((a, b) -> b.getValue() - a.getValue());
+
+        if (entries.size() > 1 && entries.get(0).getValue().equals(entries.get(1).getValue())) {
+            return entries.get(new Random().nextInt(entries.size())).getKey();
+        }
+        return entries.get(0).getKey();
+    }
+
+    /**
+     * Displays the generated vacation recommendations.
+     *
+     * @param recommendationsJson JSON string containing recommendations.
+     */
+    private void displayRecommendations(String recommendationsJson) {
+        try {
+            System.out.println("[VBI] Trying to display recommendation");
+            JSONObject responseObject = new JSONObject(recommendationsJson);
+            JSONArray vacationSpots = null;
+            if (responseObject.has("vacationSpots")) {
+                vacationSpots = responseObject.getJSONArray("vacationSpots");
+                System.out.println(vacationSpots);
+            } else if (responseObject.has("vacation_spots")) {
+                vacationSpots = responseObject.getJSONArray("vacation_spots");
+            }else if (responseObject.has("recommended_spots")) {
+                vacationSpots = responseObject.getJSONArray("recommended_spots");
+            } else {
+                System.err.println("No 'vacationSpots' or 'vacation_spots' key found in response");
+            }
+            System.out.print(vacationSpots);
+
+            if (vacationSpots != null) {
+                StringBuilder formattedRecommendations = new StringBuilder();
+                formattedRecommendations.append("🌟 **Here are the top vacation spots for your group** 🌟\n");
+
+                for (int i = 0; i < vacationSpots.length(); i++) {
+                    JSONObject spot = vacationSpots.getJSONObject(i);
+                    String name = spot.getString("name");
+                    String googleMapsLink = spot.getString("maps_link");
+
+                    formattedRecommendations.append(i + 1)
+                            .append(". **")
+                            .append(name)
+                            .append("**\n   📍 Google Maps: ")
+                            .append(googleMapsLink)
+                            .append("\n\n");
+                }
+                sendBotMessage(formattedRecommendations.toString());
+            } else {
+                sendBotMessage("No recommendations found.");
+            }
+        } catch (Exception e) {
+            sendBotMessage("❌ Error displaying recommendations: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Handles the message passed.
+     *
+     * @param username The sender of the message.
+     * @param message The message received.
+     * @param groupSize The size of the current group.
+     * @param groupID The group ID.
+     */
     @Override
     public void handleMessage(String username, String message, int groupSize, String groupID) {
         if (botState == BotState.AWAITING_LOCATION) {
@@ -187,6 +308,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Sets the threshold based off the size of the group.
+     *
+     * @param threshold The threshold of the group.
+     */
     @Override
     public void setThreshold(int threshold) {
         this.threshold = threshold;
@@ -197,6 +323,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Removes responses from members who are no longer part of the group.
+     *
+     * @param members List of current group members.
+     */
     public void removeResponse(List<String> members) {
         if (botState == BotState.AWAITING_LOCATION) {
             removeMissingMemberResponse(members, locationResponses);
@@ -205,6 +336,12 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
+    /**
+     * Helper method to remove responses from missing members.
+     *
+     * @param members   List of current group members.
+     * @param responses Map of responses to check.
+     */
     private void removeMissingMemberResponse(List<String> members, Map<String, String> responses) {
         String username;
         for (String key : responses.keySet()) {
@@ -223,59 +360,4 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
-    private void displayRecommendations(String recommendationsJson) {
-        try {
-            System.out.println("[VBI] Trying to display recommendation");
-            JSONObject responseObject = new JSONObject(recommendationsJson);
-            JSONArray vacationSpots = null;
-            if (responseObject.has("vacationSpots")) {
-                vacationSpots = responseObject.getJSONArray("vacationSpots");
-            } else if (responseObject.has("vacation_spots")) {
-                vacationSpots = responseObject.getJSONArray("vacation_spots");
-            }else if (responseObject.has("recommended_spots")) {
-                vacationSpots = responseObject.getJSONArray("recommended_spots");
-            } else {
-                System.err.println("No 'vacationSpots' or 'vacation_spots' key found in response");
-            }
-
-            if (vacationSpots != null) {
-                StringBuilder formattedRecommendations = new StringBuilder();
-                formattedRecommendations.append("🌟 **Here are the top vacation spots for your group** 🌟\n");
-
-                for (int i = 0; i < vacationSpots.length(); i++) {
-                    JSONObject spot = vacationSpots.getJSONObject(i);
-                    String name = spot.getString("name");
-                    String googleMapsLink = spot.getString("maps_link");
-
-                    formattedRecommendations.append(i + 1)
-                            .append(". **")
-                            .append(name)
-                            .append("**\n   📍 Google Maps: ")
-                            .append(googleMapsLink)
-                            .append("\n\n");
-                }
-
-                sendBotMessage(formattedRecommendations.toString());
-            } else {
-                sendBotMessage("No recommendations found.");
-            }
-        } catch (Exception e) {
-            sendBotMessage("❌ Error displaying recommendations: " + e.getMessage());
-        }
-    }
-
-    private String determineMostCommon(Collection<String> responses) {
-        System.out.println("[VBI] Received responses: " + responses);
-        Map<String, Integer> countMap = new HashMap<>();
-        for (String response : responses) {
-            countMap.put(response, countMap.getOrDefault(response, 0) + 1);
-        }
-        List<Map.Entry<String, Integer>> entries = new ArrayList<>(countMap.entrySet());
-        entries.sort((a, b) -> b.getValue() - a.getValue());
-
-        if (entries.size() > 1 && entries.get(0).getValue().equals(entries.get(1).getValue())) {
-            return entries.get(new Random().nextInt(entries.size())).getKey();
-        }
-        return entries.get(0).getKey();
-    }
 }
