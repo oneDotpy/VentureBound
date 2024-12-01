@@ -27,10 +27,10 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
         SendMessageUserDataAccessInterface {
 
     private UserFactory userFactory;
-    private FirestoreGroupGroupDataAccessObject firestoreGroupDataAccessObject;
+    private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;
 
     public FirestoreUserDataAccessObject(UserFactory userFactory,
-                                         FirestoreGroupGroupDataAccessObject firestoreGroupDataAccessObject) {
+                                         FirestoreGroupDataAccessObject firestoreGroupDataAccessObject) {
         this.userFactory = userFactory;
         this.firestoreGroupDataAccessObject = firestoreGroupDataAccessObject;
     }

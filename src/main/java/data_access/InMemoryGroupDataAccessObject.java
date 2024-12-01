@@ -7,11 +7,11 @@ import use_case.send_message.SendMessageGroupDataAccessInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryGroupGroupDataAccessObject implements JoinGroupGroupDataAccessInterface,
+public class InMemoryGroupDataAccessObject implements JoinGroupGroupDataAccessInterface,
         SendMessageGroupDataAccessInterface {
     GroupFactory groupFactory;
 
-    public InMemoryGroupGroupDataAccessObject() {
+    public InMemoryGroupDataAccessObject() {
         groupFactory = new CommonGroupFactory();
     }
 

@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-public class FirestoreGroupGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface, SendMessageGroupDataAccessInterface, LeaveGroupGroupDataAccessInterface {
+public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface, SendMessageGroupDataAccessInterface, LeaveGroupGroupDataAccessInterface {
     private int counter = 0;
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
@@ -29,10 +29,10 @@ public class FirestoreGroupGroupDataAccessObject implements CreateGroupGroupData
     private boolean messageListenerTriggered = false;
     private boolean groupListenerTriggered = false;
 
-    public FirestoreGroupGroupDataAccessObject(GroupFactory groupFactory,
-                                               ResponseFactory responseFactory,
-                                               MessageFactory messageFactory,
-                                               RecommendationFactory recommendationFactory) {
+    public FirestoreGroupDataAccessObject(GroupFactory groupFactory,
+                                          ResponseFactory responseFactory,
+                                          MessageFactory messageFactory,
+                                          RecommendationFactory recommendationFactory) {
         this.groupFactory = groupFactory;
         this.responseFactory = responseFactory;
         this.messageFactory = messageFactory;

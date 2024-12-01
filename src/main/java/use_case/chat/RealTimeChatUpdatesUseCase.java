@@ -2,16 +2,16 @@ package use_case.chat;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.ListenerRegistration;
-import data_access.FirestoreGroupGroupDataAccessObject;
+import data_access.FirestoreGroupDataAccessObject;
 
 import java.util.List;
 import java.util.Map;
 
 public class RealTimeChatUpdatesUseCase {
 
-    private final FirestoreGroupGroupDataAccessObject groupDAO;
+    private final FirestoreGroupDataAccessObject groupDAO;
 
-    public RealTimeChatUpdatesUseCase(FirestoreGroupGroupDataAccessObject groupDAO) {
+    public RealTimeChatUpdatesUseCase(FirestoreGroupDataAccessObject groupDAO) {
         this.groupDAO = groupDAO;
     }
 
