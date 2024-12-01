@@ -43,7 +43,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     public void startBot(String groupID, int groupSize) {
         if (botState.equals(BotState.INACTIVE)) {
             System.out.println("[VBI1] start");
-            this.user = createBotUser(groupID);
+            createBotUser(groupID);
             System.out.println("VacationBotInteractor: " + user.getGroupID());
             threshold = groupSize;
             botState = BotState.AWAITING_LOCATION;
@@ -99,11 +99,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
-
-    private User createBotUser(String groupID) {
+    @Override
+    public void createBotUser(String groupID) {
         System.out.println("[VBI2] Create bot at " + groupID);
         UserFactory userFactory = new CommonUserFactory();
-        return userFactory.create("Bot", null,"", null, groupID);
+        this.user = userFactory.create("Bot", null,"", null, groupID);
     }
 
 

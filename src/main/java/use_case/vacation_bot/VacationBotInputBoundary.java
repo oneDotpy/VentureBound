@@ -1,5 +1,7 @@
 package use_case.vacation_bot;
 
+import entity.User;
+
 import java.util.List;
 
 public interface VacationBotInputBoundary {
@@ -10,6 +12,8 @@ public interface VacationBotInputBoundary {
     boolean isBotActive();
 
     void sendBotMessage(String botMessage);
+
+    void createBotUser(String groupID);
 
     void handleMessage(String username, String message, int groupSize, String groupID);
 
