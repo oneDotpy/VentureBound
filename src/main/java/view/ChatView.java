@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -22,6 +24,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
     private final JList<String> membersList;
     private final ChatViewModel chatViewModel;
     private ChatController chatController;
+    private KeyEvent keyEvent;
+    private KeyListener keyListener;
 
     public ChatView(ChatViewModel chatViewModel, String groupName, List<String> members, CardLayout cardLayout, JPanel cardPanel) {
         this.chatViewModel = chatViewModel;
@@ -94,6 +98,7 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         messageInputField = new JTextField();
         messageInputField.setBackground(Color.decode("#f5f5f5"));
         messageInputField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        messageInputField.addKeyListener(new EnterListener());
 
         sendButton = new JButton("Send");
         sendButton.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -113,6 +118,31 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         // Add panels to main panel
         this.add(leftPanel, BorderLayout.WEST);
         this.add(rightPanel, BorderLayout.CENTER);
+    }
+
+
+
+    private class EnterListener implements KeyListener {
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                String message = messageInputField.getText().trim();
+                if (!message.isEmpty()) {
+                    String currentUser = chatViewModel.getState().getCurrentUser().getName();
+                    System.out.println("[ChatView] Sending message as current user: " + currentUser);
+                    chatController.sendMessage(message, chatViewModel.getState().getCurrentUser());
+                    messageInputField.setText("");
+                }
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
     }
 
 
@@ -149,6 +179,8 @@ public class ChatView extends JPanel implements PropertyChangeListener {
         if ("messages".equals(evt.getPropertyName())) {
             List<String> messages = chatViewModel.getState().getMessages();
             chatArea.setText(String.join("\n", messages));
+            System.out.println("Document Length : " + chatArea.getDocument().getLength());
+            chatArea.setCaretPosition(chatArea.getDocument().getLength());
         } else if ("members".equals(evt.getPropertyName())) {
             List<String> members = chatViewModel.getState().getMembers();
             updateMembers(members);
