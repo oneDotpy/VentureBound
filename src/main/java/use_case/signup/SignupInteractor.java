@@ -34,7 +34,7 @@ public class SignupInteractor implements SignupInputBoundary {
         final String email = signupInputData.getEmail();
 
         if (!signupInputData.getPassword().equals(signupInputData.getPasswordRepeat())) {
-            signupPresenter.prepareFailView("Password does not match");
+            signupPresenter.prepareFailView("Passwords does not match");
 
         } else {
             PasswordEncryption passwordEncryption = new PasswordEncryption();
