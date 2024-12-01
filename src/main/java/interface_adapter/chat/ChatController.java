@@ -62,7 +62,12 @@ public class ChatController implements ChatControllerInterface {
         receiveMessageInteractor.receiveMessage(receiveMessageInputData);
 
         if (sender.equals(currentUser)) {
-            if (content.trim().equalsIgnoreCase("/start")) {
+            if (content.trim().equalsIgnoreCase("/getid")) {
+                botInteractor.sendBotMessage(groupID);
+                return;
+            }
+
+            else if (content.trim().equalsIgnoreCase("/start")) {
                 botInteractor.startBot(groupID, groupSize);
                 return;
             }

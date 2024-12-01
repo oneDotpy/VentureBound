@@ -73,7 +73,8 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         return botCalled;
     }
 
-    private void sendBotMessage(String botMessage) {
+    @Override
+    public void sendBotMessage(String botMessage) {
         SendMessageInputData inputData = new SendMessageInputData(user, botMessage);
         System.out.println(inputData.getContent() + inputData.getUser().getName());
         String sender = inputData.getUser().getName();
