@@ -9,5 +9,5 @@ public interface ReceiveMessageInputBoundary {
      * Executes the Receive Message Use Case
      * @param receiveMessageInputData the input data
      */
-    void showMessage(ReceiveMessageInputData receiveMessageInputData);
+    void receiveMessage(ReceiveMessageInputData receiveMessageInputData);
 }

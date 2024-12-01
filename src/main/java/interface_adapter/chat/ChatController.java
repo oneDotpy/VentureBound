@@ -3,8 +3,6 @@ package interface_adapter.chat;
 import com.google.cloud.Timestamp;
 import entity.User;
 import use_case.chat.ChatInputBoundary;
-import use_case.chat.ChatInputData;
-import use_case.chat.ChatInteractor;
 import use_case.leave_group.LeaveGroupInputBoundary;
 import use_case.leave_group.LeaveGroupInputData;
 import use_case.receive_message.ReceiveMessageInputBoundary;
@@ -61,7 +59,7 @@ public class ChatController implements ChatControllerInterface {
 
     public void handleMessage(String sender, String content, Timestamp timestamp, String currentUser, int groupSize, String groupID) {
         ReceiveMessageInputData receiveMessageInputData = new ReceiveMessageInputData(sender, content, currentUser, timestamp);
-        receiveMessageInteractor.showMessage(receiveMessageInputData);
+        receiveMessageInteractor.receiveMessage(receiveMessageInputData);
 
         if (sender.equals(currentUser)) {
             if (content.trim().equalsIgnoreCase("/start")) {

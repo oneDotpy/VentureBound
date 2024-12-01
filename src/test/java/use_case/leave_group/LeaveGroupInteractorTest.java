@@ -33,6 +33,5 @@ public class LeaveGroupInteractorTest {
                 assertTrue(!((InMemoryGroupDataAccessObject)groupRepository).get("LeaveGroupID").getUsernames().contains("LeaveGroupTesting"));
             }
         };
-
     }
 }
