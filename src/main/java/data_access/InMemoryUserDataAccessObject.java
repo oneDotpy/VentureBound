@@ -6,6 +6,7 @@ import entity.CommonUserFactory;
 import entity.Group;
 import entity.User;
 import entity.UserFactory;
+import use_case.leave_group.LeaveGroupUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.join_group.JoinGroupUserDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
@@ -19,7 +20,7 @@ import java.util.List;
 public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         CreateGroupUserDataAccessInterface,
-        SendMessageUserDataAccessInterface, JoinGroupUserDataAccessInterface {
+        SendMessageUserDataAccessInterface, JoinGroupUserDataAccessInterface, LeaveGroupUserDataAccessInterface {
     UserFactory userFactory;
     InMemoryGroupDataAccessObject inMemoryGroupDataAccessObject;
     List<User> users = new ArrayList<>();
