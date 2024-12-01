@@ -10,6 +10,7 @@ import use_case.create_group.CreateGroupGroupDataAccessInterface;
 import com.google.firebase.cloud.FirestoreClient;
 import use_case.join_group.JoinGroupGroupDataAccessInterface;
 import use_case.leave_group.LeaveGroupGroupDataAccessInterface;
+import use_case.send_message.SendMessageGroupDataAccessInterface;
 import use_case.send_message.SendMessageDataAccessInterface;
 import use_case.vacation_bot.VacationBotGroupDataAccessInterface;
 
@@ -30,10 +31,10 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
     private boolean messageListenerTriggered = false;
     private boolean groupListenerTriggered = false;
 
-    public FirestoreGroupDataAccessObject(GroupFactory groupFactory,
-                                          ResponseFactory responseFactory,
-                                          MessageFactory messageFactory,
-                                          RecommendationFactory recommendationFactory) {
+    public FirestoreGroupGroupDataAccessObject(GroupFactory groupFactory,
+                                               ResponseFactory responseFactory,
+                                               MessageFactory messageFactory,
+                                               RecommendationFactory recommendationFactory) {
         this.groupFactory = groupFactory;
         this.responseFactory = responseFactory;
         this.messageFactory = messageFactory;
@@ -270,37 +271,6 @@ public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAcces
         ApiFuture<WriteResult> arrayUnion =
                 docRef.update("usernames", FieldValue.arrayRemove(username));
     }
-
-    public static void main(String[] args) {
-        FirestoreDataAccessObject db = new FirestoreDataAccessObject();
-        GroupFactory groupFactory = new CommonGroupFactory();
-        ResponseFactory responseFactory = new CommonResponseFactory();
-        MessageFactory messageFactory = new CommonMessageFactory();
-        RecommendationFactory recommendationFactory = new CommonRecommendationFactory();
-        FirestoreGroupDataAccessObject groupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
-
-        String groupName = "testGroup";
-
-        List<String> usernames = new ArrayList<>();
-        usernames.add("Bob");
-
-        List<Response> responses = new ArrayList<>();
-        responses.add(responseFactory.create("Bob", "Answer"));
-
-        List<Recommendation> recommendations = new ArrayList<>();
-        recommendations.add(recommendationFactory.create("location",
-                "description", new GeoPoint(0, 0), 5));
-
-        List<String> chosenLocations = new ArrayList<>();
-        chosenLocations.add("chosenLocation");
-
-        List<Message> messages = new ArrayList<>();
-        messages.add(messageFactory.createMessage("Bob", "content", Timestamp.now()));
-
-        Group group = groupFactory.create(groupName, usernames, responses, recommendations, chosenLocations, messages, "10090fdas");
-        groupDataAccessObject.save(group);
-    }
-
 
     public ListenerRegistration setGroupMemberListener(String groupID, RealTimeChatUpdatesUseCase.GroupMemberUpdateListener listener) {
         Firestore db = FirestoreClient.getFirestore();

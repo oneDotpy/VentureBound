@@ -1,6 +1,6 @@
 package use_case.login;
 
-import data_access.FirestoreGroupDataAccessObject;
+import data_access.FirestoreGroupGroupDataAccessObject;
 import entity.User;
 import use_case.encryption.PasswordEncryption;
 
@@ -9,7 +9,7 @@ import use_case.encryption.PasswordEncryption;
  */
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
-    private final FirestoreGroupDataAccessObject groupDataAccessObject;
+    private final FirestoreGroupGroupDataAccessObject groupDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
 
     /**
@@ -54,4 +54,16 @@ public class LoginInteractor implements LoginInputBoundary {
             }
         }
     }
+
+    public void switchToChatView(LoginOutputData loginOutputData) {
+
+        loginPresenter.switchToChatView(loginOutputData);
+    }
+
+    public void switchToLoginView(LoginOutputData loginOutputData) {
+
+        loginPresenter.switchToWelcomeView(loginOutputData);
+
+    }
+
 }

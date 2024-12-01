@@ -1,7 +1,7 @@
 package use_case.send_message;
 
 import com.google.cloud.Timestamp;
-import data_access.FirestoreGroupDataAccessObject;
+import data_access.FirestoreGroupGroupDataAccessObject;
 import data_access.FirestoreUserDataAccessObject;
 import entity.Message;
 import entity.MessageFactory;
@@ -10,12 +10,12 @@ import entity.MessageFactory;
  * The Send Message Interactor.
  */
 public class SendMessageInteractor implements SendMessageInputBoundary {
-    private final FirestoreUserDataAccessObject userDataAccessObject;
-    private final FirestoreGroupDataAccessObject groupDataAccessObject;
+    private final SendMessageUserDataAccessInterface userDataAccessObject;
+    private final SendMessageGroupDataAccessInterface groupDataAccessObject;
     private final MessageFactory messageFactory;
 
-    public SendMessageInteractor(FirestoreUserDataAccessObject userDataAccessObject,
-                                 FirestoreGroupDataAccessObject groupDataAccessObject,
+    public SendMessageInteractor(SendMessageUserDataAccessInterface userDataAccessObject,
+                                 SendMessageGroupDataAccessInterface groupDataAccessObject,
                                  MessageFactory messageFactory) {
         this.userDataAccessObject = userDataAccessObject;
         this.groupDataAccessObject = groupDataAccessObject;

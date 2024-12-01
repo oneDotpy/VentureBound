@@ -13,6 +13,7 @@ import use_case.create_group.CreateGroupUserDataAccessInterface;
 import use_case.join_group.JoinGroupUserDataAccessInterface;
 import use_case.leave_group.LeaveGroupUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
+import use_case.send_message.SendMessageUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 import use_case.vacation_bot.VacationBotUserDataAccessInterface;
 
@@ -20,18 +21,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface,
+        LoginUserDataAccessInterface,
+        JoinGroupUserDataAccessInterface,
+        CreateGroupUserDataAccessInterface,
+        LeaveGroupUserDataAccessInterface,
+        SendMessageUserDataAccessInterface {
 public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface, JoinGroupUserDataAccessInterface, CreateGroupUserDataAccessInterface, LeaveGroupUserDataAccessInterface, VacationBotUserDataAccessInterface {
 
     private UserFactory userFactory;
-    private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;
+    private FirestoreGroupGroupDataAccessObject firestoreGroupDataAccessObject;
 
     public FirestoreUserDataAccessObject(UserFactory userFactory,
-                                         FirestoreGroupDataAccessObject firestoreGroupDataAccessObject) {
+                                         FirestoreGroupGroupDataAccessObject firestoreGroupDataAccessObject) {
         this.userFactory = userFactory;
         this.firestoreGroupDataAccessObject = firestoreGroupDataAccessObject;
     }
 
-
+    @Override
     public User get(String username) {
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("users").document(username);
@@ -65,6 +72,7 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
         docRef.update("group", groupID);
     }
 
+    @Override
     public void save(User user) {
         Firestore db = FirestoreDataAccessObject.getFirestore();
         Map<String, Object> data = new HashMap<>();
@@ -93,6 +101,7 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
 
     }
 
+    @Override
     public Timestamp getTimestamp(String username) {
         System.out.println("Get Timestamp Called [GroupDAO]");
         Firestore db = FirestoreDataAccessObject.getFirestore();
@@ -129,4 +138,5 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
             return null;
         }
     }
+}
 }
