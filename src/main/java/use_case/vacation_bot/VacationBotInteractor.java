@@ -11,6 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import use_case.send_message.SendMessageInputData;
 
+/**
+ * Interactor for managing the Vacation Bot functionality.
+ * Handles vacation location and interest-based recommendations through user interactions.
+ */
 public class VacationBotInteractor implements VacationBotInputBoundary {
     private enum BotState { INACTIVE, AWAITING_LOCATION, AWAITING_HOBBIES, GENERATING_RECOMMENDATIONS }
     private boolean botCalled = false;
@@ -23,11 +27,20 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private User user;
 
     private String chosenLocation = "";
-    private StringBuilder chosenHobbies = new StringBuilder();
 
     private final Map<String, String> locationResponses = new HashMap<>();
     private final Map<String, String> hobbyResponses = new HashMap<>();
     private int threshold = 1;
+
+    // New field to store hobby-related questions
+    private final List<String> hobbyQuestions = Arrays.asList(
+            "What kind of activities do you enjoy during vacations? (e.g., hiking, shopping, etc.)",
+            "What is your favorite type of cuisine when traveling?",
+            "Do you prefer urban adventures or rural escapes?",
+            "What is your favorite mode of transportation during trips?",
+            "What type of accommodation do you prefer? (e.g., hotel, camping, etc.)"
+    );
+    private int currentHobbyQuestionIndex = 0; // Tracks the current hobby question
 
     public VacationBotInteractor(FirestoreUserDataAccessObject firestoreUserDataAccessObject,
                                  FirestoreGroupDataAccessObject groupDataAccessObject,
@@ -47,11 +60,10 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             System.out.println("VacationBotInteractor: " + user.getGroupID());
             threshold = groupSize;
             botState = BotState.AWAITING_LOCATION;
-            System.out.println("[VBI2.5] succesfully created bot and updated botstate");
+            System.out.println("[VBI2.5] Successfully created bot and updated bot state");
 
-            sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop bot.\n\n**Question 1:** Where would you like to go for a vacation?");
-        }
-        else {
+            sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop the bot.\n\n**Question 1:** Where would you like to go for a vacation?");
+        } else {
             sendBotMessage("The Bot Already Started");
         }
     }
@@ -98,13 +110,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
-
     private User createBotUser(String groupID) {
         System.out.println("[VBI2] Create bot at " + groupID);
         UserFactory userFactory = new CommonUserFactory();
-        return userFactory.create("Bot", null,"", null, groupID);
+        return userFactory.create("Bot", null, "", null, groupID);
     }
-
 
     private void processLocationResponses() {
         if (locationResponses.size() >= threshold) {
@@ -114,30 +124,45 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             sendBotMessage("\n📍 The chosen vacation location is: **" + chosenLocation + "**");
 
             botState = BotState.AWAITING_HOBBIES;
-            sendBotMessage("\n**Question 2:** What is your favorite hobbies? (Please choose one)");
+            askNextHobbyQuestion();
         }
     }
-
 
     private void processHobbyResponses() {
         if (hobbyResponses.size() >= threshold) {
-            sendBotMessage("Generating your perfect holiday destination....");
-            botCalled = true;
-            StringBuilder activities = new StringBuilder();
-            for (String hobby : hobbyResponses.values()) {
-                activities.append(hobby).append(", ");
+            if (currentHobbyQuestionIndex < 3) {
+                askNextHobbyQuestion();
+            } else {
+                finalizeHobbyResponses();
             }
-            generateRecommendations(activities.toString(),chosenLocation);
-            System.out.println(hobbyResponses);
-            hobbyResponses.clear();
-            locationResponses.clear();
         }
     }
 
+    private void askNextHobbyQuestion() {
+        if (currentHobbyQuestionIndex < hobbyQuestions.size()) {
+            sendBotMessage("\n**Question " + (currentHobbyQuestionIndex + 2) + ":** " + hobbyQuestions.get(currentHobbyQuestionIndex));
+            currentHobbyQuestionIndex++;
+        }
+    }
+
+    private void finalizeHobbyResponses() {
+        sendBotMessage("Generating your perfect holiday destination...");
+        botCalled = true;
+        StringBuilder activities = new StringBuilder();
+        for (String hobby : hobbyResponses.values()) {
+            activities.append(hobby).append(", ");
+        }
+        generateRecommendations(activities.toString(), chosenLocation);
+        System.out.println(hobbyResponses);
+        hobbyResponses.clear();
+        locationResponses.clear();
+        currentHobbyQuestionIndex = 0; // Reset for future sessions
+    }
+
     private void generateRecommendations(String activities, String location) {
-        System.out.println("[VBI] Generate recommendation before botstate");
+        System.out.println("[VBI] Generate recommendation before bot state");
         botState = BotState.GENERATING_RECOMMENDATIONS;
-        System.out.println("[VBI] Genereate recommendation after botstate");
+        System.out.println("[VBI] Generate recommendation after bot state");
         try {
             System.out.println("[VBI] Trying to generate recommendation");
             String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
@@ -149,30 +174,25 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
-
     @Override
     public void handleMessage(String username, String message, int groupSize, String groupID) {
         if (botState == BotState.AWAITING_LOCATION) {
             locationResponses.put(username, message);
             sendBotMessage(username + " chose: " + message);
-            // Check if all members have responded
             processLocationResponses();
-
         } else if (botState == BotState.AWAITING_HOBBIES) {
-            hobbyResponses.put(username, message);
-            sendBotMessage(username + " enjoys: " + message);
+            hobbyResponses.put(username, hobbyResponses.getOrDefault(username, "") + message + "; ");
+            sendBotMessage(username + " responded: " + message);
             processHobbyResponses();
         }
     }
-
 
     @Override
     public void setThreshold(int threshold) {
         this.threshold = threshold;
         if (botState == BotState.AWAITING_LOCATION) {
             processLocationResponses();
-        }
-        else if (botState == BotState.AWAITING_HOBBIES) {
+        } else if (botState == BotState.AWAITING_HOBBIES) {
             processHobbyResponses();
         }
     }
@@ -180,9 +200,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     public void removeResponse(List<String> members) {
         if (botState == BotState.AWAITING_LOCATION) {
             removeMissingMemberResponse(members, locationResponses);
-        }
-
-        else if (botState == BotState.AWAITING_HOBBIES) {
+        } else if (botState == BotState.AWAITING_HOBBIES) {
             removeMissingMemberResponse(members, hobbyResponses);
         }
     }
@@ -191,7 +209,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         String username;
         for (String key : responses.keySet()) {
             boolean foundMissingMember = true;
-            for (String member : members ) {
+            for (String member : members) {
                 if (key.equals(member)) {
                     foundMissingMember = false;
                     break;
@@ -205,7 +223,6 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         }
     }
 
-
     private void displayRecommendations(String recommendationsJson) {
         try {
             System.out.println("[VBI] Trying to display recommendation");
@@ -213,13 +230,13 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             JSONArray vacationSpots = null;
             if (responseObject.has("vacationSpots")) {
                 vacationSpots = responseObject.getJSONArray("vacationSpots");
-                System.out.println(vacationSpots);
             } else if (responseObject.has("vacation_spots")) {
                 vacationSpots = responseObject.getJSONArray("vacation_spots");
+            }else if (responseObject.has("recommended_spots")) {
+                vacationSpots = responseObject.getJSONArray("recommended_spots");
             } else {
                 System.err.println("No 'vacationSpots' or 'vacation_spots' key found in response");
             }
-            System.out.print(vacationSpots);
 
             if (vacationSpots != null) {
                 StringBuilder formattedRecommendations = new StringBuilder();
@@ -248,22 +265,17 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     }
 
     private String determineMostCommon(Collection<String> responses) {
-        System.out.println("[VBI] recieved responses: " + responses);
-        System.out.println("[VBI] Determine most common response 1");
+        System.out.println("[VBI] Received responses: " + responses);
         Map<String, Integer> countMap = new HashMap<>();
         for (String response : responses) {
             countMap.put(response, countMap.getOrDefault(response, 0) + 1);
         }
-        System.out.println("[VBI] Determine most common response 2");
         List<Map.Entry<String, Integer>> entries = new ArrayList<>(countMap.entrySet());
         entries.sort((a, b) -> b.getValue() - a.getValue());
 
         if (entries.size() > 1 && entries.get(0).getValue().equals(entries.get(1).getValue())) {
-            System.out.println("[VBI] Determine most common response 2.5");
             return entries.get(new Random().nextInt(entries.size())).getKey();
         }
-        System.out.println("[VBI] Determine most common response 3");
-        System.out.println("[VBI] Before return most common: " + entries);
         return entries.get(0).getKey();
     }
 }
