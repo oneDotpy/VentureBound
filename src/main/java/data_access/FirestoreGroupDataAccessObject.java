@@ -11,12 +11,13 @@ import com.google.firebase.cloud.FirestoreClient;
 import use_case.join_group.JoinGroupGroupDataAccessInterface;
 import use_case.leave_group.LeaveGroupGroupDataAccessInterface;
 import use_case.send_message.SendMessageDataAccessInterface;
+import use_case.vacation_bot.VacationBotDataAccesInterface;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface, LeaveGroupGroupDataAccessInterface {
+public class FirestoreGroupDataAccessObject implements CreateGroupGroupDataAccessInterface, JoinGroupGroupDataAccessInterface,SendMessageDataAccessInterface, LeaveGroupGroupDataAccessInterface, VacationBotDataAccesInterface {
     private int counter = 0;
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
