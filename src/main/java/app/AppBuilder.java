@@ -68,6 +68,7 @@ public class AppBuilder {
     private VacationBotPresenter vacationBotPresenter;
     private VacationBotInteractor vacationBotInteractor;
     private VacationBotController vacationBotController;
+    private SendMessageInteractor sendMessageInteractor;
     private ChatController chatController;
     private GroupController groupController;
     private WelcomeController welcomeController;
@@ -173,16 +174,15 @@ public class AppBuilder {
         chatInteractor = new ChatInteractor(chatPresenter, chatState);
         vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
         vacationBotInteractor = new VacationBotInteractor(firestoreUserDataAccessObject, firestoreGroupDataAccessObject, messageFactory);
+        sendMessageInteractor = new SendMessageInteractor(firestoreUserDataAccessObject, firestoreGroupDataAccessObject, messageFactory);
         vacationBotController = new VacationBotController(vacationBotInteractor);
 
         ReceiveMessageInteractor receiveMessageInteractor = new ReceiveMessageInteractor(chatPresenter, messageFactory);
         LeaveGroupInteractor leaveGroupInteractor = new LeaveGroupInteractor(firestoreGroupDataAccessObject, firestoreUserDataAccessObject, userFactory, chatPresenter);
 
         chatViewModel.setChatUpdatesUseCase(new RealTimeChatUpdatesUseCase(firestoreGroupDataAccessObject));
-        chatViewModel.setSendMessageInteractor(new SendMessageInteractor(firestoreUserDataAccessObject ,firestoreGroupDataAccessObject, messageFactory));
-        chatViewModel.setBotInteractor(vacationBotInteractor);
 
-        chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor, receiveMessageInteractor);
+        chatController = new ChatController(chatInteractor, leaveGroupInteractor, vacationBotInteractor, sendMessageInteractor, receiveMessageInteractor);
 
         chatView.setChatController(chatController);
         chatViewModel.setController(chatController);
