@@ -21,6 +21,15 @@ public class InMemoryGroupDataAccessObject implements
 
     public InMemoryGroupDataAccessObject() {
         groupFactory = new CommonGroupFactory();
+
+        String groupName = "Group";
+        List<String> usernames = new ArrayList<>();
+        List< Response > responses = new ArrayList<>();
+        List< Recommendation > recommendations = new ArrayList<>();
+        List<String> chosen = new ArrayList<>();
+        List<Message> messages = new ArrayList<>();
+
+        save(groupFactory.create(groupName, usernames, responses, recommendations, chosen, messages, "groupID"));
     }
 
     @Override
@@ -35,23 +44,29 @@ public class InMemoryGroupDataAccessObject implements
 
     @Override
     public void join(String groupID, String username) {
-
+        for (Group group : groups) {
+            if (group.getGroupID().equals(groupID)) {
+                List<String> members = group.getUsernames();
+                members.add(username);
+                group.setMembers(members);
+                return;
+            }
+        }
     }
 
     @Override
     public Group get(String groupID) {
-        String groupName = "Group";
-        List<String> usernames = new ArrayList<>();
-        List< Response > responses = new ArrayList<>();
-        List< Recommendation > recommendations = new ArrayList<>();
-        List<String> chosen = new ArrayList<>();
-        List<Message> messages = new ArrayList<>();
-        return groupFactory.create(groupName, usernames, responses, recommendations, chosen, messages, groupID);
+        for (Group group : groups) {
+            if (group.getGroupID().equals(groupID)) {
+                return group;
+            }
+        }
+        return null;
     }
 
     @Override
     public void updateMessage(String groupID, Message message) {
-
+        
     }
 
     @Override
