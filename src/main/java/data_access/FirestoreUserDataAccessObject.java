@@ -14,6 +14,8 @@ import use_case.leave_group.LeaveGroupUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+import use_case.vacation_bot.VacationBotGroupDataAccessInterface;
+import use_case.vacation_bot.VacationBotUserDataAccessInterface;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,8 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
         JoinGroupUserDataAccessInterface,
         CreateGroupUserDataAccessInterface,
         LeaveGroupUserDataAccessInterface,
-        SendMessageUserDataAccessInterface {
+        SendMessageUserDataAccessInterface,
+        VacationBotUserDataAccessInterface {
 
     private UserFactory userFactory;
     private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;

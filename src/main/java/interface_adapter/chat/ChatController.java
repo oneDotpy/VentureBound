@@ -70,7 +70,7 @@ public class ChatController implements ChatControllerInterface {
         if (sender.equals(currentUser)) {
             if (content.trim().equalsIgnoreCase("/getid")) {
                 botInteractor.createBotUser(groupID);
-                botInteractor.sendBotMessage(groupID);
+                botInteractor.sendGroupID(groupID);
                 return;
             }
 

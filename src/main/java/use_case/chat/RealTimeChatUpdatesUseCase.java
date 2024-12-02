@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class RealTimeChatUpdatesUseCase {
 
-    private final FirestoreGroupGroupDataAccessObject groupDAO;
+    private final FirestoreGroupDataAccessObject groupDAO;
 
     /**
      * Constructs a new instance of RealTimeChatUpdatesUseCase.
