@@ -86,6 +86,8 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         if (!botState.equals(BotState.INACTIVE)) {
             botState = BotState.INACTIVE;
             sendBotMessage("Vacation Bot has been stopped.");
+            hobbyResponses.clear();
+            locationResponses.clear();
         }
     }
 
