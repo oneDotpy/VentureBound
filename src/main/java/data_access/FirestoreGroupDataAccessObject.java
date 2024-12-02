@@ -12,19 +12,17 @@ import use_case.join_group.JoinGroupGroupDataAccessInterface;
 import use_case.leave_group.LeaveGroupGroupDataAccessInterface;
 import use_case.login.LoginGroupDataAccessInterface;
 import use_case.send_message.SendMessageGroupDataAccessInterface;
-import use_case.send_message.SendMessageDataAccessInterface;
-import use_case.vacation_bot.VacationBotGroupDataAccessInterface;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+
 
 public class FirestoreGroupDataAccessObject implements
         LoginGroupDataAccessInterface,
         CreateGroupGroupDataAccessInterface,
         JoinGroupGroupDataAccessInterface,
         SendMessageGroupDataAccessInterface,
-        LeaveGroupGroupDataAccessInterface,
-        VacationBotGroupDataAccessInterface {
+        LeaveGroupGroupDataAccessInterface {
     private int counter = 0;
     private final GroupFactory groupFactory;
     private final ResponseFactory responseFactory;
@@ -37,10 +35,10 @@ public class FirestoreGroupDataAccessObject implements
     private boolean messageListenerTriggered = false;
     private boolean groupListenerTriggered = false;
 
-    public FirestoreGroupGroupDataAccessObject(GroupFactory groupFactory,
-                                               ResponseFactory responseFactory,
-                                               MessageFactory messageFactory,
-                                               RecommendationFactory recommendationFactory) {
+    public FirestoreGroupDataAccessObject(GroupFactory groupFactory,
+                                          ResponseFactory responseFactory,
+                                          MessageFactory messageFactory,
+                                          RecommendationFactory recommendationFactory) {
         this.groupFactory = groupFactory;
         this.responseFactory = responseFactory;
         this.messageFactory = messageFactory;
@@ -258,6 +256,13 @@ public class FirestoreGroupDataAccessObject implements
             }
         }
 
+        // DocumentReference ref = db.collection("groups").document(group.getGroupName());
+        // ApiFuture<WriteResult> future = ref.set(data);
+        // try {
+        //    System.out.println("Successfully updated at: " + future.get().getUpdateTime());
+        // } catch(Exception e) {
+            // e.printStackTrace();
+        // }
         updateResponses(groupID, group.getResponses());
         updateRecommendations(groupID, group.getRecommendedLocations());
         updateMessages(groupID, group.getMessages());

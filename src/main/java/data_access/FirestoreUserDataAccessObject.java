@@ -5,7 +5,6 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 
-import com.google.firestore.v1.Write;
 import entity.User;
 import entity.UserFactory;
 import entity.Group;
@@ -15,7 +14,6 @@ import use_case.leave_group.LeaveGroupUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
-import use_case.vacation_bot.VacationBotUserDataAccessInterface;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +25,6 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
         CreateGroupUserDataAccessInterface,
         LeaveGroupUserDataAccessInterface,
         SendMessageUserDataAccessInterface {
-public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterface, LoginUserDataAccessInterface, JoinGroupUserDataAccessInterface, CreateGroupUserDataAccessInterface, LeaveGroupUserDataAccessInterface, VacationBotUserDataAccessInterface {
 
     private UserFactory userFactory;
     private FirestoreGroupDataAccessObject firestoreGroupDataAccessObject;
@@ -138,5 +135,4 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
             return null;
         }
     }
-}
 }
