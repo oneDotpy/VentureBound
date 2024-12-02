@@ -12,6 +12,7 @@ import use_case.join_group.JoinGroupUserDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
 import use_case.create_group.CreateGroupUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+import use_case.vacation_bot.VacationBotUserDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         CreateGroupUserDataAccessInterface,
-        SendMessageUserDataAccessInterface, JoinGroupUserDataAccessInterface, LeaveGroupUserDataAccessInterface {
+        SendMessageUserDataAccessInterface, JoinGroupUserDataAccessInterface, LeaveGroupUserDataAccessInterface, VacationBotUserDataAccessInterface {
     UserFactory userFactory;
     InMemoryGroupDataAccessObject inMemoryGroupDataAccessObject;
     List<User> users = new ArrayList<>();

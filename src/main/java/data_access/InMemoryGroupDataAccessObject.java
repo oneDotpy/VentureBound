@@ -6,6 +6,7 @@ import use_case.join_group.JoinGroupGroupDataAccessInterface;
 import use_case.leave_group.LeaveGroupGroupDataAccessInterface;
 import use_case.login.LoginGroupDataAccessInterface;
 import use_case.send_message.SendMessageGroupDataAccessInterface;
+import use_case.vacation_bot.VacationBotGroupDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class InMemoryGroupDataAccessObject implements
         JoinGroupGroupDataAccessInterface,
         SendMessageGroupDataAccessInterface,
         CreateGroupGroupDataAccessInterface,
-        LeaveGroupGroupDataAccessInterface {
+        LeaveGroupGroupDataAccessInterface, VacationBotGroupDataAccessInterface {
     GroupFactory groupFactory;
     List<Group> groups = new ArrayList<>();
 
@@ -66,7 +67,12 @@ public class InMemoryGroupDataAccessObject implements
 
     @Override
     public void updateMessage(String groupID, Message message) {
-        
+        for (Group group: groups) {
+            if (group.getGroupID().equals(groupID)) {
+                group.getMessages().add(message);
+                return;
+            }
+        }
     }
 
     @Override
@@ -92,6 +98,6 @@ public class InMemoryGroupDataAccessObject implements
 
     @Override
     public void detachListener() {
-
+        return;
     }
 }
