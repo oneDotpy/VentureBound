@@ -1,5 +1,7 @@
 package use_case.vacation_bot;
 
+import entity.User;
+
 import java.util.List;
 
 /**
@@ -50,4 +52,17 @@ public interface VacationBotInputBoundary {
      * @param members A list of current group members.
      */
     void removeResponse(List<String> members);
+
+    /**
+     * Sends the groupID to chat.
+     * @param groupID the groupID.
+     */
+    void sendGroupID(String groupID);
+
+    /**
+     * Creates a bot user for interacting with the group.
+     *
+     * @param groupID ID of the group interacting with the bot.
+     */
+    void createBotUser(String groupID);
 }

@@ -30,6 +30,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
     private final Map<String, String> locationResponses = new HashMap<>();
     private final Map<String, String> hobbyResponses = new HashMap<>();
+    private StringBuilder activities = new StringBuilder();
     private int threshold = 1;
 
     // List of hobby-related questions
@@ -67,7 +68,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     @Override
     public void startBot(String groupID, int groupSize) {
         if (botState.equals(BotState.INACTIVE)) {
-            this.user = createBotUser(groupID);
+            createBotUser(groupID);
             threshold = groupSize;
             botState = BotState.AWAITING_LOCATION;
 
@@ -132,12 +133,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
      * Creates a bot user for interacting with the group.
      *
      * @param groupID ID of the group interacting with the bot.
-     * @return The created bot user.
      */
-    private User createBotUser(String groupID) {
+    public void createBotUser(String groupID) {
         System.out.println("[VBI2] Create bot at " + groupID);
         UserFactory userFactory = new CommonUserFactory();
-        return userFactory.create("Bot", null, "", null, groupID);
+        this.user = userFactory.create("Bot", null,"", null, groupID);
     }
 
 
@@ -176,7 +176,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private void askNextHobbyQuestion() {
         if (currentHobbyQuestionIndex < hobbyQuestions.size()) {
             sendBotMessage("\n**Question " + (currentHobbyQuestionIndex + 2) + ":** " + hobbyQuestions.get(currentHobbyQuestionIndex));
+            for (String hobby : hobbyResponses.values()) {
+                this.activities.append(hobby).append(", ");
+            }
             currentHobbyQuestionIndex++;
+            hobbyResponses.clear();
         }
     }
 
@@ -187,9 +191,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         sendBotMessage("Generating your perfect holiday destination...");
         StringBuilder activities = new StringBuilder();
         for (String hobby : hobbyResponses.values()) {
-            activities.append(hobby).append(", ");
+            this.activities.append(hobby).append(", ");
         }
-        generateRecommendations(activities.toString(), chosenLocation);
+        generateRecommendations(this.activities.toString(), chosenLocation);
         System.out.println(hobbyResponses);
         hobbyResponses.clear();
         locationResponses.clear();
@@ -304,6 +308,15 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             sendBotMessage(username + " responded: " + message);
             processHobbyResponses();
         }
+    }
+
+    /**
+     * Sends the groupID to the chat.
+     * @param groupID The GroupID.
+     */
+
+    public void sendGroupID(String groupID) {
+        sendBotMessage(groupID);
     }
 
     /**

@@ -3,9 +3,9 @@ package use_case.send_message;
 import entity.Message;
 
 /**
- * DAO for the Send Message Use Case.
+ * Group DAO for the Send Message Use Case.
  */
-public interface SendMessageDataAccessInterface {
+public interface SendMessageGroupDataAccessInterface {
 
     /**
      * Returns the user with the given username.

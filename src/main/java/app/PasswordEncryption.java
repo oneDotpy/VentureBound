@@ -1,7 +1,5 @@
-package use_case.encryption;
+package app;
 import at.favre.lib.crypto.bcrypt.BCrypt;
-
-import java.nio.charset.StandardCharsets;
 
 public class PasswordEncryption {
 
