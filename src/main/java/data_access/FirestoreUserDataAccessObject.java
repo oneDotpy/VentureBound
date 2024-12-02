@@ -14,7 +14,6 @@ import use_case.leave_group.LeaveGroupUserDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.send_message.SendMessageUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
-import use_case.vacation_bot.VacationBotGroupDataAccessInterface;
 import use_case.vacation_bot.VacationBotUserDataAccessInterface;
 
 import java.util.HashMap;
@@ -40,7 +39,7 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
 
     @Override
     public User get(String username) {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("users").document(username);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         try {
@@ -67,14 +66,14 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
     }
 
     public void setGroupID(String groupID, String username) {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("users").document(username);
         docRef.update("group", groupID);
     }
 
     @Override
     public void save(User user) {
-        Firestore db = FirestoreDataAccessObject.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         Map<String, Object> data = new HashMap<>();
         data.put("username", user.getName());
         data.put("password", user.getPassword());
@@ -94,7 +93,7 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
     }
 
     public void changePassword(String username, String password) {
-        Firestore db = FirestoreDataAccessObject.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         db.collection("users")
                 .document(username)
                 .update("password", password);
@@ -104,7 +103,7 @@ public class FirestoreUserDataAccessObject implements SignupUserDataAccessInterf
     @Override
     public Timestamp getTimestamp(String username) {
         System.out.println("Get Timestamp Called [GroupDAO]");
-        Firestore db = FirestoreDataAccessObject.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("users").document(username);
         // Update the timestamp field with the value from the server
         ApiFuture<WriteResult> writeResult = docRef.update("timestamp", FieldValue.serverTimestamp());

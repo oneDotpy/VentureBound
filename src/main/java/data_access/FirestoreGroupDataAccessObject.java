@@ -48,7 +48,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public boolean existByID(final String ID) {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         if ("".equals(ID)){
             return false;
         }
@@ -70,7 +70,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public List<Recommendation> getRecommendations(String groupID) throws InterruptedException, ExecutionException {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         List<QueryDocumentSnapshot> recommendationDocs = docRef.collection("recommendations").get().get().getDocuments();
@@ -86,7 +86,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public List<Response> getResponses(String groupID) throws InterruptedException, ExecutionException {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         List<QueryDocumentSnapshot> responseDocs = docRef.collection("responses").get().get().getDocuments();
@@ -100,7 +100,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public List<Message> getMessages(String groupID, int index) throws InterruptedException, ExecutionException {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("groups").document(groupID);
         System.out.println("Ini GroupID" + groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
@@ -119,7 +119,7 @@ public class FirestoreGroupDataAccessObject implements
 
     @Override
     public Group get(String groupID) {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<DocumentSnapshot> future = docRef.get();
 
@@ -151,7 +151,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public void updateUsers(Group group) {
-        Firestore db = FirestoreDataAccessObject.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference ref = db.collection("groups").document(group.getGroupID());
         String groupName = group.getGroupName();
 
@@ -166,7 +166,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public void updateChosenLocations(Group group) {
-        Firestore db = FirestoreDataAccessObject.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference ref = db.collection("groups").document(group.getGroupID());
         String groupName = group.getGroupID();
 
@@ -181,7 +181,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public void updateResponses(String groupID, List<Response> responses) {
-        Firestore db = FirestoreDataAccessObject.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         System.out.println(groupID);
         DocumentReference ref = db.collection("groups").document(groupID);
         for (Response response : responses) {
@@ -195,7 +195,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public void updateRecommendations(String groupID, List<Recommendation> recommendations) {
-        Firestore db = FirestoreDataAccessObject.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference ref = db.collection("groups").document(groupID);
         for (Recommendation recommendation : recommendations) {
             ApiFuture<WriteResult> future = ref.collection("recommendations").document(recommendation.getLocation()).set(recommendation);
@@ -208,7 +208,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public void updateMessages(String groupID, List<Message> messages) {
-        Firestore db = FirestoreDataAccessObject.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference ref = db.collection("groups").document(groupID);
         for (Message message : messages) {
             ApiFuture<WriteResult> future = ref.collection("messages").document(message.getTimestamp().toString()).set(message);
@@ -230,7 +230,7 @@ public class FirestoreGroupDataAccessObject implements
     @Override
     public String save(Group group) {
         String groupName = group.getGroupName();
-        Firestore db = FirestoreDataAccessObject.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         String groupID = group.getGroupID();
         Map<String, Object> data = new HashMap<>();
         data.put("groupName", group.getGroupName());
@@ -272,21 +272,21 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public void join(String groupID, String username) {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<WriteResult> arrayUnion =
                 docRef.update("usernames", FieldValue.arrayUnion(username));
     }
 
     public void removeMember(String groupID, String username) {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("groups").document(groupID);
         ApiFuture<WriteResult> arrayUnion =
                 docRef.update("usernames", FieldValue.arrayRemove(username));
     }
 
     public ListenerRegistration setGroupMemberListener(String groupID, RealTimeChatUpdatesUseCase.GroupMemberUpdateListener listener) {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         DocumentReference docRef = db.collection("groups").document(groupID);
 
         messageListener = docRef.addSnapshotListener((snapshot, error) -> {
@@ -304,7 +304,7 @@ public class FirestoreGroupDataAccessObject implements
     }
 
     public ListenerRegistration setMessageListener(String groupID, RealTimeChatUpdatesUseCase.MessageUpdateListener listener) {
-        Firestore db = FirestoreClient.getFirestore();
+        Firestore db = FirestoreDataAccessObject.getInstance();
         Query query = db.collection("groups").document(groupID).collection("messages").orderBy("timestamp");
 
         groupListener = query
@@ -314,13 +314,11 @@ public class FirestoreGroupDataAccessObject implements
                         return;
                     }
                     if (snapshots != null) {
-                        System.out.println("Pertama Kali dengar " + messageListenerTriggered);
                         if (messageListenerTriggered) {
                             for (DocumentChange document : snapshots.getDocumentChanges()) {
                                 switch (document.getType()) {
                                     case ADDED:
                                         counter += 1;
-                                        System.out.println("Pesan ke : " + counter);
                                         Map<String, String> messages = new HashMap<>();
                                         DocumentSnapshot doc = document.getDocument();
 
