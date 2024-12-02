@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,12 +10,12 @@ public class CommonGroupFactory implements GroupFactory{
 
     @Override
     public Group create(String groupName, List<String> usernames, List<Response> responses, List<Recommendation> recommendations, List<String> chosen, List<Message> messages) {
-        return new CommonGroup(groupName, usernames, responses, recommendations, chosen, messages);
+        return new CommonGroup(groupName, usernames, responses, recommendations, chosen, messages, "");
     }
 
     @Override
     public Group create(String groupName, List<String> usernames){
-        return new CommonGroup(groupName, usernames);
+        return new CommonGroup(groupName, usernames, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), "");
     }
 
     @Override
@@ -23,6 +24,6 @@ public class CommonGroupFactory implements GroupFactory{
     }
 
     public Group create(String groupName, List<String> usernames, String groupID) {
-        return new CommonGroup(groupName, usernames, groupID);
+        return new CommonGroup(groupName, usernames, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), groupID);
     }
 }

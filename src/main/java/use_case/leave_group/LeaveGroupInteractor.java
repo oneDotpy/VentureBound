@@ -10,7 +10,9 @@ public class LeaveGroupInteractor implements LeaveGroupInputBoundary {
     private final LeaveGroupOutputBoundary chatPresenter;
 
 
-    public LeaveGroupInteractor(LeaveGroupGroupDataAccessInterface groupDataAccessObject, LeaveGroupUserDataAccessInterface userDataAccessObject, UserFactory userFactory, LeaveGroupOutputBoundary chatPresenter) {
+    public LeaveGroupInteractor(LeaveGroupGroupDataAccessInterface groupDataAccessObject,
+                                LeaveGroupUserDataAccessInterface userDataAccessObject, UserFactory userFactory,
+                                LeaveGroupOutputBoundary chatPresenter) {
         this.groupDataAccessObject = groupDataAccessObject;
         this.userDataAccessObject = userDataAccessObject;
         this.userFactory = userFactory;
