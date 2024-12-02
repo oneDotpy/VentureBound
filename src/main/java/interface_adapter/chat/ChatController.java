@@ -3,8 +3,6 @@ package interface_adapter.chat;
 import com.google.cloud.Timestamp;
 import entity.User;
 import use_case.chat.ChatInputBoundary;
-import use_case.chat.ChatInputData;
-import use_case.chat.ChatInteractor;
 import use_case.leave_group.LeaveGroupInputBoundary;
 import use_case.leave_group.LeaveGroupInputData;
 import use_case.receive_message.ReceiveMessageInputBoundary;
