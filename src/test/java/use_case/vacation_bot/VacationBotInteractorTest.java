@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class VacationBotInteractorTest {
     private final MessageFactory messageFactory = new CommonMessageFactory();
+    private final GroupFactory groupFactory = new CommonGroupFactory();
+    private final UserFactory userFactory = new CommonUserFactory();
 
     @Test
     public void testHandleMessage(){
@@ -20,8 +22,8 @@ public class VacationBotInteractorTest {
 
         List<String> users = new ArrayList<>();
         users.add("VacationBot");
-        Group group = new CommonGroup("VacationTesting", users, "VacationTestingID");
-        User user = new CommonUser("VacationBot", "1234", "@gmail.com", group, "VacationTestingID");
+        Group group = groupFactory.create("VacationTesting", users, "VacationTestingID");
+        User user = userFactory.create("VacationBot", "1234", "@gmail.com", group, "VacationTestingID");
 
         ((InMemoryUserDataAccessObject) userRepository).save(user);
         ((InMemoryGroupDataAccessObject) groupRepository).save(group);

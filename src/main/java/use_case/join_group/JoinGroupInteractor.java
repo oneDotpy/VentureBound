@@ -11,7 +11,10 @@ public class JoinGroupInteractor implements JoinGroupInputBoundary {
     private final JoinGroupOutputBoundary joinGroupPresenter;
 
 
-    public JoinGroupInteractor(UserFactory userFactory, JoinGroupGroupDataAccessInterface firestoreGroupDataAccessObject, JoinGroupUserDataAccessInterface firestoreUserDataAccessObject, JoinGroupOutputBoundary joinGroupPresenter) {
+    public JoinGroupInteractor(UserFactory userFactory,
+                               JoinGroupGroupDataAccessInterface firestoreGroupDataAccessObject,
+                               JoinGroupUserDataAccessInterface firestoreUserDataAccessObject,
+                               JoinGroupOutputBoundary joinGroupPresenter) {
         this.userFactory = userFactory;
         this.firestoreGroupDataAccessObject = firestoreGroupDataAccessObject;
         this.firestoreUserDataAccessObject = firestoreUserDataAccessObject;

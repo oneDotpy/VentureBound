@@ -16,7 +16,9 @@ public class CreateGroupInteractor implements CreateGroupInputBoundary{
     private final CreateGroupOutputBoundary createGroupPresenter;
 
 
-    public CreateGroupInteractor(CreateGroupGroupDataAccessInterface groupDataAccessObject, CreateGroupUserDataAccessInterface userDataAccessObject, GroupFactory groupFactory, UserFactory userFactory, CreateGroupOutputBoundary createGroupPresenter) {
+    public CreateGroupInteractor(CreateGroupGroupDataAccessInterface groupDataAccessObject,
+                                 CreateGroupUserDataAccessInterface userDataAccessObject, GroupFactory groupFactory,
+                                 UserFactory userFactory, CreateGroupOutputBoundary createGroupPresenter) {
         this.groupDataAccessObject = groupDataAccessObject;
         this.userDataAccessObject = userDataAccessObject;
         this.groupFactory = groupFactory;
