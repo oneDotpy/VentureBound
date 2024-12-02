@@ -14,9 +14,9 @@ public class SignupInteractor implements SignupInputBoundary {
 
     /**
      * Constuctor to initialize the SignupInteractor
-     * @param userDataAccessObject
-     * @param signupOutputBoundary
-     * @param userFactory
+     * @param userDataAccessObject The data access interface for the user data
+     * @param signupOutputBoundary The presenter to present the output
+     * @param userFactory The user factory object to cerate a new user
      */
     public SignupInteractor(SignupUserDataAccessInterface userDataAccessObject, SignupOutputBoundary signupOutputBoundary, UserFactory userFactory) {
         this.userDataAccessObject = userDataAccessObject;
