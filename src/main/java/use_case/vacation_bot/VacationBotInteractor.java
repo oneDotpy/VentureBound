@@ -180,7 +180,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
                 this.activities.append(hobby).append(", ");
             }
             currentHobbyQuestionIndex++;
-            hobbyQuestions.clear();
+            hobbyResponses.clear();
         }
     }
 
