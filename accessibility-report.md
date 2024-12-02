@@ -3,11 +3,11 @@
 ## Principles of Universal Design
 
 ### 1. Equitable Use
-- **Adherence**: The interface is designed to be responsive, ensuring accessibility across various devices, including desktops and mobile platforms.
+- **Adherence**: The interface is designed to be responsive, ensuring accessibility across various devices.
 - **Future Plans**: Add multi-language support to cater to a broader range of users from diverse linguistic backgrounds.
 
 ### 2. Flexibility in Use
-- **Adherence**: Supports multiple input methods, such as keyboard, mouse, and touch, allowing users to interact in their preferred way.
+- **Adherence**: Supports multiple input methods, such as keyboard and mouse allowing users to interact in their preferred way.
 - **Future Plans**: Incorporate customizable themes to accommodate users with visual impairments or sensitivities to light and colors.
 
 ### 3. Simple and Intuitive Use
