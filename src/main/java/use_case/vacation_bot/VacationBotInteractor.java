@@ -30,6 +30,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
 
     private final Map<String, String> locationResponses = new HashMap<>();
     private final Map<String, String> hobbyResponses = new HashMap<>();
+    private StringBuilder activities = new StringBuilder();
     private int threshold = 1;
 
     // List of hobby-related questions
@@ -175,7 +176,11 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     private void askNextHobbyQuestion() {
         if (currentHobbyQuestionIndex < hobbyQuestions.size()) {
             sendBotMessage("\n**Question " + (currentHobbyQuestionIndex + 2) + ":** " + hobbyQuestions.get(currentHobbyQuestionIndex));
+            for (String hobby : hobbyResponses.values()) {
+                this.activities.append(hobby).append(", ");
+            }
             currentHobbyQuestionIndex++;
+            hobbyQuestions.clear();
         }
     }
 
@@ -186,9 +191,9 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         sendBotMessage("Generating your perfect holiday destination...");
         StringBuilder activities = new StringBuilder();
         for (String hobby : hobbyResponses.values()) {
-            activities.append(hobby).append(", ");
+            this.activities.append(hobby).append(", ");
         }
-        generateRecommendations(activities.toString(), chosenLocation);
+        generateRecommendations(this.activities.toString(), chosenLocation);
         System.out.println(hobbyResponses);
         hobbyResponses.clear();
         locationResponses.clear();
