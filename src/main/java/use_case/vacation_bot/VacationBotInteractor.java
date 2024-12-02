@@ -88,6 +88,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             sendBotMessage("Vacation Bot has been stopped.");
             hobbyResponses.clear();
             locationResponses.clear();
+            currentHobbyQuestionIndex = 0;
         }
     }
 
