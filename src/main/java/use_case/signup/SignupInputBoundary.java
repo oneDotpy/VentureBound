@@ -11,5 +11,8 @@ public interface SignupInputBoundary {
      */
     void execute(SignupInputData signupInputData);
 
+    /**
+     * Switch the view of the app to Login View
+     */
     void switchToLoginView();
 }
