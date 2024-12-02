@@ -5,7 +5,7 @@ import entity.User;
 import use_case.encryption.PasswordEncryption;
 
 /**
- * The Login Interactor.
+ * Interactor for managing the Login function
  */
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
@@ -14,9 +14,9 @@ public class LoginInteractor implements LoginInputBoundary {
 
     /**
      * Constructor to initialize the LoginInteractor
-     * @param userDataAccessInterface
-     * @param groupDataAccessObject
-     * @param loginOutputBoundary
+     * @param userDataAccessInterface The data access interface for user data
+     * @param groupDataAccessObject The data access interface for group data
+     * @param loginOutputBoundary The presenter to present the output
      */
     public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface, FirestoreGroupDataAccessObject groupDataAccessObject,
                            LoginOutputBoundary loginOutputBoundary) {
