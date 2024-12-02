@@ -12,6 +12,12 @@ public class LoginInteractor implements LoginInputBoundary {
     private final FirestoreGroupDataAccessObject groupDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
 
+    /**
+     * Constructor to initialize the LoginInteractor
+     * @param userDataAccessInterface
+     * @param groupDataAccessObject
+     * @param loginOutputBoundary
+     */
     public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface, FirestoreGroupDataAccessObject groupDataAccessObject,
                            LoginOutputBoundary loginOutputBoundary) {
         this.userDataAccessObject = userDataAccessInterface;
@@ -19,6 +25,10 @@ public class LoginInteractor implements LoginInputBoundary {
         this.loginPresenter = loginOutputBoundary;
     }
 
+    /**
+     * Executes the login process to log in the user
+     * @param loginInputData the input data of the login
+     */
     @Override
     public void execute(LoginInputData loginInputData) {
         final String username = loginInputData.getUsername();
