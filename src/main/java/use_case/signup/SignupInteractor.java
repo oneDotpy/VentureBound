@@ -5,19 +5,29 @@ import entity.UserFactory;
 import use_case.encryption.PasswordEncryption;
 
 /**
- * The Signup Interactor
+ * Interactor for managing the Signup functionality.
  */
 public class SignupInteractor implements SignupInputBoundary {
     private final SignupUserDataAccessInterface userDataAccessObject;
     private final SignupOutputBoundary signupPresenter;
     private final UserFactory userFactory;
 
+    /**
+     * Constuctor to initialize the SignupInteractor
+     * @param userDataAccessObject
+     * @param signupOutputBoundary
+     * @param userFactory
+     */
     public SignupInteractor(SignupUserDataAccessInterface userDataAccessObject, SignupOutputBoundary signupOutputBoundary, UserFactory userFactory) {
         this.userDataAccessObject = userDataAccessObject;
         this.signupPresenter = signupOutputBoundary;
         this.userFactory = userFactory;
     }
 
+    /**
+     * Executes the signup process to sign up the user.
+     * @param signupInputData the input data of the signup
+     */
     @Override
     public void execute(SignupInputData signupInputData) {
         final String username = signupInputData.getUsername();
@@ -50,10 +60,12 @@ public class SignupInteractor implements SignupInputBoundary {
         }
     }
 
+    /**
+     * Switch the view to login.
+     */
     @Override
     public void switchToLoginView() {
         signupPresenter.switchToLoginView();
     }
-
 
 }
