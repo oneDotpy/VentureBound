@@ -247,15 +247,21 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             System.out.println("[VBI] Trying to display recommendation");
             JSONObject responseObject = new JSONObject(recommendationsJson);
             JSONArray vacationSpots = null;
-            if (responseObject.has("vacationSpots")) {
-                vacationSpots = responseObject.getJSONArray("vacationSpots");
-                System.out.println(vacationSpots);
-            } else if (responseObject.has("vacation_spots")) {
-                vacationSpots = responseObject.getJSONArray("vacation_spots");
-            }else if (responseObject.has("recommended_spots")) {
-                vacationSpots = responseObject.getJSONArray("recommended_spots");
-            } else {
-                System.err.println("No 'vacationSpots' or 'vacation_spots' key found in response");
+            if (responseObject != null) {
+                String[] possibleKeys = {"vacationSpots", "vacation_spots", "recommended_spots"};
+
+                for (String key : possibleKeys) {
+                    if (responseObject.has(key)) {
+                        vacationSpots = responseObject.getJSONArray(key);
+                        System.out.println("Vacation spots found under key: " + key);
+                        System.out.println(vacationSpots);
+                        break; // Stop searching after finding the first valid key
+                    }
+                }
+
+                if (vacationSpots == null) {
+                    System.err.println("No valid vacation spots key found in response");
+                }
             }
             System.out.print(vacationSpots);
 
