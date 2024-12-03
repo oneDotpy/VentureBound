@@ -1,6 +1,9 @@
-import data_access.FirestoreDataAccessObject;
+package use_case.login;
+
+import com.google.cloud.firestore.Firestore;
 import data_access.FirestoreGroupDataAccessObject;
 import data_access.FirestoreUserDataAccessObject;
+import data_access.FirestoreDataAccessObject;
 import entity.*;
 import org.junit.jupiter.api.Test;
 import use_case.login.*;
@@ -11,7 +14,7 @@ class LoginInteractorFirebaseTest {
 
     @Test
     void successTest() {
-        final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
+        final Firestore firestoreDataAccessObject = FirestoreDataAccessObject.getInstance();
         LoginInputData inputData = new LoginInputData("Ken", "1234");
         UserFactory userFactory = new CommonUserFactory();
         GroupFactory groupFactory = new CommonGroupFactory();
@@ -57,7 +60,7 @@ class LoginInteractorFirebaseTest {
 
     @Test
     void failurePasswordIncorrect() {
-        final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
+        final Firestore firestore = FirestoreDataAccessObject.getInstance();
         LoginInputData inputData = new LoginInputData("Ken", "3456");
         UserFactory userFactory = new CommonUserFactory();
         GroupFactory groupFactory = new CommonGroupFactory();
@@ -101,7 +104,7 @@ class LoginInteractorFirebaseTest {
 
     @Test
     void failureUserDoesNotExists() {
-        final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
+        final Firestore firestore = FirestoreDataAccessObject.getInstance();
         LoginInputData inputData = new LoginInputData("Ken", "1234");
         UserFactory userFactory = new CommonUserFactory();
         GroupFactory groupFactory = new CommonGroupFactory();
