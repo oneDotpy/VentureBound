@@ -62,14 +62,13 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     /**
      * Starts the bot and prompts the group for the first question (vacation location).
      *
-     * @param groupID   ID of the group interacting with the bot.
-     * @param groupSize Number of members in the group.
+     * @param vacationBotInputData The unique identifier of the group interacting with the bot.
      */
     @Override
-    public void startBot(String groupID, int groupSize) {
+    public void startBot(VacationBotInputData vacationBotInputData) {
         if (botState.equals(BotState.INACTIVE)) {
-            createBotUser(groupID);
-            threshold = groupSize;
+            createBotUser(vacationBotInputData.getGroupID());
+            threshold = vacationBotInputData.getGroupSize();
             botState = BotState.AWAITING_LOCATION;
 
             sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop the bot.\n\n**Question 1:** Where would you like to go for a vacation?");

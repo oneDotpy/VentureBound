@@ -29,7 +29,8 @@ public class VacationBotInteractorTest {
         ((InMemoryGroupDataAccessObject) groupRepository).save(group);
 
         VacationBotInputBoundary interactor = new VacationBotInteractor(userRepository, groupRepository, messageFactory);
-        interactor.startBot("VacationTestingID", 1);
+        VacationBotInputData vacationBotInputData = new VacationBotInputData("VacationTestingID", 1);
+        interactor.startBot(vacationBotInputData);
         assertTrue(interactor.isBotActive());
 
         interactor.handleMessage("VacationTesting", "Indonesia", 1, "VacationTestingID");

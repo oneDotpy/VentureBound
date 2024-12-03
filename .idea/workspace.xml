@@ -4,14 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Refactored Database">
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="removed unused files and imports">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/VacationBotController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/VacationBotPresenter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotOutputBoundary.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotOutputData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/use_case/vacation_bot/VacationBotInteractorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/use_case/vacation_bot/VacationBotInteractorTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/VacationBotController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/interface_adapter/chat/VacationBotPresenter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotOutputBoundary.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotOutputData.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +77,7 @@
     "JUnit.ReceiveMessageInteractorTest.executor": "Coverage",
     "JUnit.SendMessageInteractorTest.executor": "Run",
     "JUnit.SignupInteractorTest.executor": "Coverage",
-    "JUnit.VacationBotInteractorTest.executor": "Run",
+    "JUnit.VacationBotInteractorTest.executor": "Coverage",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
@@ -435,7 +442,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733148080174</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="removed unused files and imports">
+      <option name="closed" value="true" />
+      <created>1733232726106</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1733232726106</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,7 +490,8 @@
     <MESSAGE value="refactored ReceiveMessageInteractor method name" />
     <MESSAGE value="Refactored Group Entity" />
     <MESSAGE value="Refactored Database" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored Database" />
+    <MESSAGE value="removed unused files and imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed unused files and imports" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -503,7 +519,7 @@
     <SUITE FILE_PATH="coverage/VentureBound$SignupInteractorTest.ic" NAME="SignupInteractorTest Coverage Results" MODIFIED="1733232503877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>use_case.signup.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/VentureBound$VacationBotInteractorTest.ic" NAME="VacationBotInteractorTest Coverage Results" MODIFIED="1733232518319" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+    <SUITE FILE_PATH="coverage/VentureBound$VacationBotInteractorTest.ic" NAME="VacationBotInteractorTest Coverage Results" MODIFIED="1733232681123" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>use_case.vacation_bot.*</FILTER>
     </SUITE>
   </component>
