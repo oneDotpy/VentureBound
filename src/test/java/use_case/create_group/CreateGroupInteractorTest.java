@@ -107,6 +107,9 @@ public class CreateGroupInteractorTest {
                 assertNull(createGroupOutputData.getGroup());
             }
         };
+        
+        CreateGroupInputBoundary interactor = new CreateGroupInteractor(groupRepository, userRepository, groupFactory, userFactory, presenter);
+        interactor.switchToWelcomeView(inputData);
     }
 
 }

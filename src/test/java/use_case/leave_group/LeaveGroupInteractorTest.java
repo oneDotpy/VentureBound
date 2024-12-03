@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LeaveGroupInteractorTest {
@@ -16,10 +17,10 @@ public class LeaveGroupInteractorTest {
 
     @Test
     public void successTest() {
-        User user = new CommonUser("LeaveGroupTesting", "1234", "Leave@gmail.com", null);
         List<String> users = new ArrayList<>();
-        users.add(user.getName());
+        users.add("LeaveGroupTesting");
         Group group = groupFactory.create("LeaveGroupGroup", users, "LeaveGroupID");
+        User user = new CommonUser("LeaveGroupTesting", "1234", "Leave@gmail.com", group, group.getGroupID());
 
         LeaveGroupGroupDataAccessInterface groupRepository = new InMemoryGroupDataAccessObject();
         LeaveGroupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
@@ -31,7 +32,11 @@ public class LeaveGroupInteractorTest {
             @Override
             public void switchToWelcomeView(LeaveGroupOutputData response) {
                 assertTrue(!((InMemoryGroupDataAccessObject)groupRepository).get("LeaveGroupID").getUsernames().contains("LeaveGroupTesting"));
+                assertEquals(response.getUser().getName(), "LeaveGroupTesting");
             }
         };
+
+        LeaveGroupInputBoundary interactor = new LeaveGroupInteractor(groupRepository, userRepository, userFactory, presenter);
+        interactor.leaveGroup(inputData);
     }
 }
