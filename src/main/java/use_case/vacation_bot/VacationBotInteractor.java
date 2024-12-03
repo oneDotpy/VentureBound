@@ -120,15 +120,8 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         System.out.println("[VBI4] Message created: " + message);
         String groupID = user.getGroupID();
         System.out.println("[VBI4] GroupID: " + groupID);
-
-        try {
-            System.out.println("[VBI5] Attempting to update message in Firestore...");
-            groupDataAccessObject.updateMessage(groupID, message);
-            System.out.println("[VBI5] Successfully updated message in Firestore.");
-        } catch (Exception e) {
-            System.err.println("[VBI5] Error while updating Firestore: " + e.getMessage());
-            e.printStackTrace();
-        }
+        groupDataAccessObject.updateMessage(groupID, message);
+        System.out.println("[VBI5] Successfully updated message in Firestore.");
     }
 
     /**
@@ -217,7 +210,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
             displayRecommendations(recommendationsJson);
         } catch (Exception e) {
-            sendBotMessage("❌ Error generating recommendations: " + e.getMessage());
+            System.out.println("❌ Error generating recommendations: " + e.getMessage());
         } finally {
             botState = BotState.INACTIVE;
         }

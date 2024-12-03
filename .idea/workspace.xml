@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="removed unused files and imports">
+    <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="modified vacationbotinteractor to use vacationbotinputdata">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputBoundary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInputData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotInteractor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/use_case/vacation_bot/VacationBotInteractorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/use_case/vacation_bot/VacationBotInteractorTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
@@ -47,12 +44,12 @@
     &quot;assignee&quot;: &quot;oneDotpy&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/oneDotpy/VentureBound.git&quot;,
-    &quot;accountId&quot;: &quot;82a4a4f5-bde8-4ac2-965a-9d2dfbe35226&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/oneDotpy/VentureBound.git",
+    "accountId": "52d2fb4e-a6ac-4e19-a33f-e7496a7e7cbf"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -77,7 +74,9 @@
     "JUnit.ReceiveMessageInteractorTest.executor": "Coverage",
     "JUnit.SendMessageInteractorTest.executor": "Run",
     "JUnit.SignupInteractorTest.executor": "Coverage",
-    "JUnit.VacationBotInteractorTest.executor": "Coverage",
+    "JUnit.VacationBotInteractorTest.executor": "Run",
+    "JUnit.VacationBotInteractorTest.testFailAPI.executor": "Run",
+    "JUnit.VacationBotInteractorTest.testStartBotTwice.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
@@ -113,36 +112,6 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.VacationBotInteractorTest">
-    <configuration name="CreateGroupInteractorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="homework-5" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="use_case.create_group.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="use_case.create_group" />
-      <option name="MAIN_CLASS_NAME" value="use_case.create_group.CreateGroupInteractorTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="JoinGroupInteractorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="homework-5" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="use_case.join_group.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="use_case.join_group" />
-      <option name="MAIN_CLASS_NAME" value="use_case.join_group.JoinGroupInteractorTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="LoginInteractorFirebaseTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="homework-5" />
       <extension name="coverage">
@@ -188,6 +157,38 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VacationBotInteractorTest.testFailAPI" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-5" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="use_case.vacation_bot.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="use_case.vacation_bot" />
+      <option name="MAIN_CLASS_NAME" value="use_case.vacation_bot.VacationBotInteractorTest" />
+      <option name="METHOD_NAME" value="testFailAPI" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VacationBotInteractorTest.testStartBotTwice" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-5" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="use_case.vacation_bot.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="use_case.vacation_bot" />
+      <option name="MAIN_CLASS_NAME" value="use_case.vacation_bot.VacationBotInteractorTest" />
+      <option name="METHOD_NAME" value="testStartBotTwice" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="VentureBound" />
       <method v="2">
@@ -217,8 +218,8 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="JUnit.CreateGroupInteractorTest" />
-      <item itemvalue="JUnit.JoinGroupInteractorTest" />
+      <item itemvalue="JUnit.VacationBotInteractorTest.testFailAPI" />
+      <item itemvalue="JUnit.VacationBotInteractorTest.testStartBotTwice" />
       <item itemvalue="JUnit.LoginInteractorFirebaseTest" />
       <item itemvalue="JUnit.SignupInteractorTest" />
       <item itemvalue="JUnit.VacationBotInteractorTest" />
@@ -227,10 +228,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.VacationBotInteractorTest" />
+        <item itemvalue="JUnit.VacationBotInteractorTest.testFailAPI" />
+        <item itemvalue="JUnit.VacationBotInteractorTest.testStartBotTwice" />
         <item itemvalue="JUnit.SignupInteractorTest" />
         <item itemvalue="JUnit.LoginInteractorFirebaseTest" />
-        <item itemvalue="JUnit.CreateGroupInteractorTest" />
-        <item itemvalue="JUnit.JoinGroupInteractorTest" />
       </list>
     </recent_temporary>
   </component>
@@ -265,6 +266,7 @@
       <workItem from="1733003434913" duration="57000" />
       <workItem from="1733003524684" duration="464000" />
       <workItem from="1733010401105" duration="3286000" />
+      <workItem from="1733236935499" duration="2125000" />
     </task>
     <task id="LOCAL-00001" summary="integrated chat system">
       <option name="closed" value="true" />
@@ -450,7 +452,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733232726106</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="modified vacationbotinteractor to use vacationbotinputdata">
+      <option name="closed" value="true" />
+      <created>1733233597032</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1733233597032</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -491,7 +501,8 @@
     <MESSAGE value="Refactored Group Entity" />
     <MESSAGE value="Refactored Database" />
     <MESSAGE value="removed unused files and imports" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed unused files and imports" />
+    <MESSAGE value="modified vacationbotinteractor to use vacationbotinputdata" />
+    <option name="LAST_COMMIT_MESSAGE" value="modified vacationbotinteractor to use vacationbotinputdata" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -519,7 +530,7 @@
     <SUITE FILE_PATH="coverage/VentureBound$SignupInteractorTest.ic" NAME="SignupInteractorTest Coverage Results" MODIFIED="1733232503877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>use_case.signup.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/VentureBound$VacationBotInteractorTest.ic" NAME="VacationBotInteractorTest Coverage Results" MODIFIED="1733232681123" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+    <SUITE FILE_PATH="coverage/VentureBound$VacationBotInteractorTest.ic" NAME="VacationBotInteractorTest Coverage Results" MODIFIED="1733238829521" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>use_case.vacation_bot.*</FILTER>
     </SUITE>
   </component>

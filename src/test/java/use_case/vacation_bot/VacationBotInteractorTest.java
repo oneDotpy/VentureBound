@@ -46,4 +46,68 @@ public class VacationBotInteractorTest {
 
         assertTrue(!interactor.isBotActive());
     }
+
+    @Test
+    public void testStopBot(){
+        VacationBotUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        VacationBotGroupDataAccessInterface groupRepository = new InMemoryGroupDataAccessObject();
+
+        List<String> users = new ArrayList<>();
+        users.add("VacationBot");
+        Group group = groupFactory.create("VacationTesting", users, "VacationTestingID");
+        User user = userFactory.create("VacationBot", "1234", "@gmail.com", group, "VacationTestingID");
+
+        ((InMemoryUserDataAccessObject) userRepository).save(user);
+        ((InMemoryGroupDataAccessObject) groupRepository).save(group);
+
+        VacationBotInputBoundary interactor = new VacationBotInteractor(userRepository, groupRepository, messageFactory);
+        VacationBotInputData vacationBotInputData = new VacationBotInputData("VacationTestingID", 1);
+        interactor.startBot(vacationBotInputData);
+        assertTrue(interactor.isBotActive());
+        interactor.stopBot();
+        assertTrue(!interactor.isBotActive());
+    }
+
+    @Test
+    public void testStartBotTwice(){
+        VacationBotUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        VacationBotGroupDataAccessInterface groupRepository = new InMemoryGroupDataAccessObject();
+
+        List<String> users = new ArrayList<>();
+        users.add("VacationBot");
+        Group group = groupFactory.create("VacationTesting", users, "VacationTestingID");
+        User user = userFactory.create("VacationBot", "1234", "@gmail.com", group, "VacationTestingID");
+
+        ((InMemoryUserDataAccessObject) userRepository).save(user);
+        ((InMemoryGroupDataAccessObject) groupRepository).save(group);
+
+        VacationBotInputBoundary interactor = new VacationBotInteractor(userRepository, groupRepository, messageFactory);
+        VacationBotInputData vacationBotInputData = new VacationBotInputData("VacationTestingID", 1);
+        interactor.startBot(vacationBotInputData);
+        assertTrue(interactor.isBotActive());
+        interactor.startBot(vacationBotInputData);
+        assertTrue(((InMemoryGroupDataAccessObject) groupRepository).get("VacationTestingID").getMessages().size() > 1);
+    }
+
+    @Test
+    public void testSendGroupID(){
+        VacationBotUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        VacationBotGroupDataAccessInterface groupRepository = new InMemoryGroupDataAccessObject();
+
+        List<String> users = new ArrayList<>();
+        users.add("VacationBot");
+        Group group = groupFactory.create("VacationTesting", users, "VacationTestingID");
+        User user = userFactory.create("VacationBot", "1234", "@gmail.com", group, "VacationTestingID");
+
+        ((InMemoryUserDataAccessObject) userRepository).save(user);
+        ((InMemoryGroupDataAccessObject) groupRepository).save(group);
+
+        VacationBotInputBoundary interactor = new VacationBotInteractor(userRepository, groupRepository, messageFactory);
+        VacationBotInputData vacationBotInputData = new VacationBotInputData("VacationTestingID", 1);
+        interactor.startBot(vacationBotInputData);
+
+        interactor.sendGroupID("VacationTestingID");
+        assertTrue(((InMemoryGroupDataAccessObject) groupRepository).get("VacationTestingID").getMessages().size() > 1);
+    }
+
 }
