@@ -28,22 +28,26 @@ public class VacationBotInteractorTest {
         ((InMemoryUserDataAccessObject) userRepository).save(user);
         ((InMemoryGroupDataAccessObject) groupRepository).save(group);
 
+
         VacationBotInputBoundary interactor = new VacationBotInteractor(userRepository, groupRepository, messageFactory);
         VacationBotInputData vacationBotInputData = new VacationBotInputData("VacationTestingID", 1);
         interactor.startBot(vacationBotInputData);
         assertTrue(interactor.isBotActive());
 
-        interactor.handleMessage("VacationTesting", "Indonesia", 1, "VacationTestingID");
+        interactor.setThreshold(2);
+        interactor.handleMessage("VacationBotTemp", "Bolivia", 2, "VacationTestingID");
+        interactor.handleMessage("VacationBot", "Indonesia", 2, "VacationTestingID");
         assertTrue(((InMemoryGroupDataAccessObject) groupRepository).get("VacationTestingID").getMessages().size() > 2);
 
-        interactor.handleMessage("VacationTesting", "Hiking", 1, "VacationTestingID");
+        interactor.handleMessage("VacationBot", "Hiking", 2, "VacationTestingID");
         assertTrue(((InMemoryGroupDataAccessObject)groupRepository).get("VacationTestingID").getMessages().size() > 5);
+        interactor.removeResponse(users);
+        interactor.setThreshold(1);
 
-        interactor.handleMessage("VacationTesting", "StreetFood", 1, "VacationTestingID");
-        interactor.handleMessage("VacationTesting", "Urban", 1, "VacationTestingID");
+        interactor.handleMessage("VacationBot", "StreetFood", 1, "VacationTestingID");
+        interactor.handleMessage("VacationBot", "Urban", 1, "VacationTestingID");
 
         assertTrue(((InMemoryGroupDataAccessObject)groupRepository).get("VacationTestingID").getMessages().size() > 10);
-
         assertTrue(!interactor.isBotActive());
     }
 
