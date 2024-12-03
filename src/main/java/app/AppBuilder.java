@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
+import com.google.cloud.firestore.Firestore;
 import data_access.*;
 import entity.*;
 import interface_adapter.ViewManagerModel;
@@ -49,7 +50,6 @@ public class AppBuilder {
 
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    private final FirestoreDataAccessObject firestoreDataAccessObject = new FirestoreDataAccessObject();
     private final FirestoreGroupDataAccessObject firestoreGroupDataAccessObject = new FirestoreGroupDataAccessObject(groupFactory, responseFactory, messageFactory, recommendationFactory);
     private final FirestoreUserDataAccessObject firestoreUserDataAccessObject = new FirestoreUserDataAccessObject(userFactory, firestoreGroupDataAccessObject);
 

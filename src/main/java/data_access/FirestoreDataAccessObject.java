@@ -11,9 +11,9 @@ import java.io.IOException;
 
 public class FirestoreDataAccessObject {
 
-    static Firestore db;
+    private static Firestore db;
 
-    public FirestoreDataAccessObject() {
+    private FirestoreDataAccessObject() {
         try{
             FileInputStream inputStream = new FileInputStream("src/main/resources/venturebound-92fe9-firebase-adminsdk-h78vn-eca22f2a8a.json");
             FirebaseOptions options = FirebaseOptions.builder()
@@ -27,13 +27,17 @@ public class FirestoreDataAccessObject {
 
             System.out.println("Firestore successfully loaded");
             // Return Firestore client
-            db = FirestoreClient.getFirestore();
         }
         catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("BP 3");
         }
     }
 
-    static Firestore getFirestore() { return db; }
+    public static Firestore getInstance() {
+        if (db == null) {
+            new FirestoreDataAccessObject();
+            db = FirestoreClient.getFirestore();
+        }
+
+        return db;}
 }
