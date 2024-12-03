@@ -6,20 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="95c79133-6db0-443f-a048-70c5f3c6ef3f" name="Changes" comment="Refactored Database">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/join_group/JoinGroupInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/join_group/JoinGroupInteractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/use_case/login/LoginInteractorFirebaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/use_case/login/LoginInteractorFirebaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/VacationBotController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/chat/VacationBotPresenter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotOutputBoundary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/vacation_bot/VacationBotOutputData.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/app/AppBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data_access/FirestoreDataAccessObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data_access/FirestoreDataAccessObject.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonGroup.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonGroup.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/entity/CommonGroupFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/entity/CommonGroupFactory.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/create_group/CreateGroupInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/create_group/CreateGroupInteractor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/join_group/JoinGroupInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/join_group/JoinGroupInteractor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/signup/SignupInputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/signup/SignupInputData.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/signup/SignupInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/signup/SignupInteractor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/signup/SignupOutputData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/signup/SignupOutputData.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInputBoundary.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor$BotState.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor$BotState.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/use_case/vacation_bot/VacationBotInteractor.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,11 +62,15 @@
     "Application.MainTet.executor": "Run",
     "Application.Unnamed.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
-    "JUnit.CreateGroupInteractorTest.executor": "Run",
-    "JUnit.JoinGroupInteractorTest.executor": "Run",
+    "JUnit.CreateGroupInteractorTest.executor": "Coverage",
+    "JUnit.JoinGroupInteractorTest.executor": "Coverage",
     "JUnit.LeaveGroupInteractorTest.executor": "Run",
-    "JUnit.ReceiveMessageInteractorTest.executor": "Run",
+    "JUnit.LoginInteractorFirebaseTest.executor": "Coverage",
+    "JUnit.LoginInteractorTest.executor": "Coverage",
+    "JUnit.ReceiveMessageInteractorTest.executor": "Coverage",
     "JUnit.SendMessageInteractorTest.executor": "Run",
+    "JUnit.SignupInteractorTest.executor": "Coverage",
+    "JUnit.VacationBotInteractorTest.executor": "Run",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
@@ -109,16 +105,78 @@
       <recent name="interface_adapter.group" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="app.Main" />
+  <component name="RunManager" selected="JUnit.VacationBotInteractorTest">
+    <configuration name="CreateGroupInteractorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="homework-5" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="app.*" />
+          <option name="PATTERN" value="use_case.create_group.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="use_case.create_group" />
+      <option name="MAIN_CLASS_NAME" value="use_case.create_group.CreateGroupInteractorTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JoinGroupInteractorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-5" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="use_case.join_group.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="use_case.join_group" />
+      <option name="MAIN_CLASS_NAME" value="use_case.join_group.JoinGroupInteractorTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LoginInteractorFirebaseTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-5" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="use_case.login.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="use_case.login" />
+      <option name="MAIN_CLASS_NAME" value="use_case.login.LoginInteractorFirebaseTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SignupInteractorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-5" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="use_case.signup.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="use_case.signup" />
+      <option name="MAIN_CLASS_NAME" value="use_case.signup.SignupInteractorTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VacationBotInteractorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-5" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="use_case.vacation_bot.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="use_case.vacation_bot" />
+      <option name="MAIN_CLASS_NAME" value="use_case.vacation_bot.VacationBotInteractorTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -152,12 +210,20 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.CreateGroupInteractorTest" />
+      <item itemvalue="JUnit.JoinGroupInteractorTest" />
+      <item itemvalue="JUnit.LoginInteractorFirebaseTest" />
+      <item itemvalue="JUnit.SignupInteractorTest" />
+      <item itemvalue="JUnit.VacationBotInteractorTest" />
       <item itemvalue="Shell Script.Unnamed" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.VacationBotInteractorTest" />
+        <item itemvalue="JUnit.SignupInteractorTest" />
+        <item itemvalue="JUnit.LoginInteractorFirebaseTest" />
+        <item itemvalue="JUnit.CreateGroupInteractorTest" />
+        <item itemvalue="JUnit.JoinGroupInteractorTest" />
       </list>
     </recent_temporary>
   </component>
@@ -416,11 +482,29 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/VentureBound$ReceiveMessageInteractorTest.ic" NAME="ReceiveMessageInteractorTest Coverage Results" MODIFIED="1733011929900" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>use_case.receive_message.*</FILTER>
-    </SUITE>
     <SUITE FILE_PATH="coverage/VentureBound$SendMessageInteractorTest.ic" NAME="SendMessageInteractorTest Coverage Results" MODIFIED="1733011960376" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
       <FILTER>use_case.send_message.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/VentureBound$ReceiveMessageInteractorTest.ic" NAME="ReceiveMessageInteractorTest Coverage Results" MODIFIED="1733232452001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>use_case.receive_message.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/VentureBound$CreateGroupInteractorTest.ic" NAME="CreateGroupInteractorTest Coverage Results" MODIFIED="1733232475933" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>use_case.create_group.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/VentureBound$LoginInteractorFirebaseTest.ic" NAME="LoginInteractorFirebaseTest Coverage Results" MODIFIED="1733232487405" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>use_case.login.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/VentureBound$JoinGroupInteractorTest.ic" NAME="JoinGroupInteractorTest Coverage Results" MODIFIED="1733232465040" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>use_case.join_group.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/VentureBound$LoginInteractorTest.ic" NAME="LoginInteractorTest Coverage Results" MODIFIED="1733232356400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>use_case.login.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/VentureBound$SignupInteractorTest.ic" NAME="SignupInteractorTest Coverage Results" MODIFIED="1733232503877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>use_case.signup.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/VentureBound$VacationBotInteractorTest.ic" NAME="VacationBotInteractorTest Coverage Results" MODIFIED="1733232518319" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>use_case.vacation_bot.*</FILTER>
     </SUITE>
   </component>
 </project>
