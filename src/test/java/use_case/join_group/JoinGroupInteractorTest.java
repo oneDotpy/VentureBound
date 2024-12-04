@@ -109,4 +109,35 @@ public class JoinGroupInteractorTest {
         JoinGroupInputBoundary joinGroupInteractor = new JoinGroupInteractor(userFactory, groupRepository, userRepository, presenter);
         joinGroupInteractor.joinGroup(inputData);
     }
+
+    @Test
+    public void testSwitch() {
+        User user = new CommonUser("JoinGroupTesting", "1234", "Create@gmail.com", null);
+
+        JoinGroupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        JoinGroupGroupDataAccessInterface groupRepository = new InMemoryGroupDataAccessObject();
+
+        JoinGroupInputData inputData = new JoinGroupInputData(user, "");
+        JoinGroupOutputBoundary presenter = new JoinGroupOutputBoundary() {
+            @Override
+            public void presentChatView(JoinGroupOutputData joinGroupOutputData) {
+                fail("Unexpected failure Join Group use Case");
+            }
+
+            @Override
+            public void presentFailView(String message) {
+                fail("Unexpected failure Join Group use Case");
+            }
+
+            @Override
+            public void switchToWelcomeView(JoinGroupOutputData joinGroupOutputData) {
+                assertEquals(joinGroupOutputData.getUser().getName(), "JoinGroupTesting");
+                assertEquals(joinGroupOutputData.getUser().getGroupID(), "");
+                assertNull(joinGroupOutputData.getUser().getGroup());
+            }
+
+        };
+        JoinGroupInputBoundary interactor = new JoinGroupInteractor(userFactory, groupRepository, userRepository, presenter);
+        interactor.switchToWelcomeView(inputData);
+    }
 }

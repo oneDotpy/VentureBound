@@ -12,10 +12,9 @@ public interface VacationBotInputBoundary {
     /**
      * Starts the bot with a specified group ID and response threshold.
      *
-     * @param groupID   The unique identifier of the group interacting with the bot.
-     * @param threshold The number of responses required to proceed with processing.
+     * @param vacationBotInputData   The unique identifier of the group interacting with the bot.
      */
-    void startBot(String groupID, int threshold);
+    void startBot(VacationBotInputData vacationBotInputData);
 
     /**
      * Stops the bot and resets its state.

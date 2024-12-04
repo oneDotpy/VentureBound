@@ -62,14 +62,13 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
     /**
      * Starts the bot and prompts the group for the first question (vacation location).
      *
-     * @param groupID   ID of the group interacting with the bot.
-     * @param groupSize Number of members in the group.
+     * @param vacationBotInputData The unique identifier of the group interacting with the bot.
      */
     @Override
-    public void startBot(String groupID, int groupSize) {
+    public void startBot(VacationBotInputData vacationBotInputData) {
         if (botState.equals(BotState.INACTIVE)) {
-            createBotUser(groupID);
-            threshold = groupSize;
+            createBotUser(vacationBotInputData.getGroupID());
+            threshold = vacationBotInputData.getGroupSize();
             botState = BotState.AWAITING_LOCATION;
 
             sendBotMessage("🌍 Vacation Bot started! 🛫\nPlease answer the following questions or send /stop to stop the bot.\n\n**Question 1:** Where would you like to go for a vacation?");
@@ -121,15 +120,8 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
         System.out.println("[VBI4] Message created: " + message);
         String groupID = user.getGroupID();
         System.out.println("[VBI4] GroupID: " + groupID);
-
-        try {
-            System.out.println("[VBI5] Attempting to update message in Firestore...");
-            groupDataAccessObject.updateMessage(groupID, message);
-            System.out.println("[VBI5] Successfully updated message in Firestore.");
-        } catch (Exception e) {
-            System.err.println("[VBI5] Error while updating Firestore: " + e.getMessage());
-            e.printStackTrace();
-        }
+        groupDataAccessObject.updateMessage(groupID, message);
+        System.out.println("[VBI5] Successfully updated message in Firestore.");
     }
 
     /**
@@ -218,7 +210,7 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             String recommendationsJson = OpenAIChatGPT.getVacationRecommendations(activities, location);
             displayRecommendations(recommendationsJson);
         } catch (Exception e) {
-            sendBotMessage("❌ Error generating recommendations: " + e.getMessage());
+            System.out.println("❌ Error generating recommendations: " + e.getMessage());
         } finally {
             botState = BotState.INACTIVE;
         }
@@ -255,15 +247,21 @@ public class VacationBotInteractor implements VacationBotInputBoundary {
             System.out.println("[VBI] Trying to display recommendation");
             JSONObject responseObject = new JSONObject(recommendationsJson);
             JSONArray vacationSpots = null;
-            if (responseObject.has("vacationSpots")) {
-                vacationSpots = responseObject.getJSONArray("vacationSpots");
-                System.out.println(vacationSpots);
-            } else if (responseObject.has("vacation_spots")) {
-                vacationSpots = responseObject.getJSONArray("vacation_spots");
-            }else if (responseObject.has("recommended_spots")) {
-                vacationSpots = responseObject.getJSONArray("recommended_spots");
-            } else {
-                System.err.println("No 'vacationSpots' or 'vacation_spots' key found in response");
+            if (responseObject != null) {
+                String[] possibleKeys = {"vacationSpots", "vacation_spots", "recommended_spots"};
+
+                for (String key : possibleKeys) {
+                    if (responseObject.has(key)) {
+                        vacationSpots = responseObject.getJSONArray(key);
+                        System.out.println("Vacation spots found under key: " + key);
+                        System.out.println(vacationSpots);
+                        break; // Stop searching after finding the first valid key
+                    }
+                }
+
+                if (vacationSpots == null) {
+                    System.err.println("No valid vacation spots key found in response");
+                }
             }
             System.out.print(vacationSpots);
 

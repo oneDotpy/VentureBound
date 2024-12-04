@@ -12,6 +12,8 @@ import use_case.receive_message.ReceiveMessageInputData;
 import use_case.send_message.SendMessageInputBoundary;
 import use_case.send_message.SendMessageInputData;
 import use_case.vacation_bot.VacationBotInputBoundary;
+import use_case.vacation_bot.VacationBotInputData;
+
 import java.util.List;
 
 public class ChatController implements ChatControllerInterface {
@@ -75,7 +77,8 @@ public class ChatController implements ChatControllerInterface {
             }
 
             else if (content.trim().equalsIgnoreCase("/start")) {
-                botInteractor.startBot(groupID, groupSize);
+                VacationBotInputData inputData = new VacationBotInputData(groupID, groupSize);
+                botInteractor.startBot(inputData);
                 return;
             }
 

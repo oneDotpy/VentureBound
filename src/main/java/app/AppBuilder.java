@@ -65,18 +65,10 @@ public class AppBuilder {
     private ChatState chatState;
     private ChatPresenter chatPresenter;
     private ChatInteractor chatInteractor;
-    private VacationBotPresenter vacationBotPresenter;
     private VacationBotInteractor vacationBotInteractor;
-    private VacationBotController vacationBotController;
     private SendMessageInteractor sendMessageInteractor;
     private ChatController chatController;
-    private GroupController groupController;
-    private WelcomeController welcomeController;
     private WelcomeState welcomeState;
-    private JoinGroupController joinGroupController;
-    private CreateGroupController createGroupController;
-    private JoinGroupState joinGroupState;
-    private CreateGroupState createGroupState;
 
     private SignupView signupView;
     private LoginView loginView;
@@ -147,20 +139,8 @@ public class AppBuilder {
 
         loginView.setLoginController(loginController);
 
-        // Listen for successful login to set the current user
-//        loginPresenter.setOnLoginSuccessListener(username -> {
-//            if (chatInteractor != null) {
-//                chatInteractor.setCurrentUser(username);
-//            }
-//            if (groupController != null) {
-//                groupController.setCurrentUser(username);
-//            }
-//        });
-
         loginPresenter.setOnLoginSuccessListener(username -> {
             if (chatInteractor != null) {
-            }
-            if (groupController != null) {
             }
         });
         return this;
@@ -172,10 +152,8 @@ public class AppBuilder {
 
         chatPresenter = new ChatPresenter(viewManagerModel, chatViewModel, welcomeViewModel);
         chatInteractor = new ChatInteractor(chatPresenter, chatState);
-        vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
         vacationBotInteractor = new VacationBotInteractor(firestoreUserDataAccessObject, firestoreGroupDataAccessObject, messageFactory);
         sendMessageInteractor = new SendMessageInteractor(firestoreUserDataAccessObject, firestoreGroupDataAccessObject, messageFactory);
-        vacationBotController = new VacationBotController(vacationBotInteractor);
 
         ReceiveMessageInteractor receiveMessageInteractor = new ReceiveMessageInteractor(chatPresenter, messageFactory);
         LeaveGroupInteractor leaveGroupInteractor = new LeaveGroupInteractor(firestoreGroupDataAccessObject, firestoreUserDataAccessObject, userFactory, chatPresenter);
@@ -199,10 +177,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addVacationBotUseCase() {
-        vacationBotPresenter = new VacationBotPresenter(chatViewModel, viewManagerModel);
         vacationBotInteractor = new VacationBotInteractor(firestoreUserDataAccessObject, firestoreGroupDataAccessObject, messageFactory);
-
-        vacationBotController = new VacationBotController(vacationBotInteractor);
         return this;
     }
 
@@ -226,9 +201,6 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        // Pre-populate test data before adding views
-        prePopulateTestData();
-
         JFrame application = new JFrame("Application");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setSize(1280, 720);
@@ -240,30 +212,5 @@ public class AppBuilder {
         viewManagerModel.setState(loginView.getViewName());
 
         return application;
-    }
-
-    // Method to pre-populate data for testing
-    private void prePopulateTestData() {
-        // Set the current user for testing
-        if (chatInteractor != null) {
-            System.out.println("[Debug] Current User set to: Charlie");
-        }
-        if (groupController != null) {
-            groupController.setCurrentUser("Charlie");
-        }
-
-        User user = new CommonUser("Patuan", "fd", "Dfadaf", null);
-        welcomeState = welcomeViewModel.getState();
-        welcomeState.setUser(user);
-        // Pre-populate chat members
-        ArrayList<String> testMembers = new ArrayList<>();
-        testMembers.add("Charlie");
-
-
-        // Pre-populate a group for testing
-        if (groupController != null) {
-            groupController.createGroup("Test Group");
-            System.out.println("[Debug] Test Group created with members: " + testMembers);
-        }
     }
 }
