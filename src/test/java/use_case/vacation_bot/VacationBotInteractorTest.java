@@ -22,6 +22,7 @@ public class VacationBotInteractorTest {
 
         List<String> users = new ArrayList<>();
         users.add("VacationBot");
+        users.add("VacationBotTemp1");
         Group group = groupFactory.create("VacationTesting", users, "VacationTestingID");
         User user = userFactory.create("VacationBot", "1234", "@gmail.com", group, "VacationTestingID");
 
@@ -34,11 +35,16 @@ public class VacationBotInteractorTest {
         interactor.startBot(vacationBotInputData);
         assertTrue(interactor.isBotActive());
 
+        interactor.setThreshold(3);
+        interactor.handleMessage("VacationBotTemp2", "Bolivia", 3, "VacationTestingID");
+        interactor.handleMessage("VacationBot", "Indonesia", 3, "VacationTestingID");
+        interactor.removeResponse(users);
         interactor.setThreshold(2);
-        interactor.handleMessage("VacationBotTemp", "Bolivia", 2, "VacationTestingID");
-        interactor.handleMessage("VacationBot", "Indonesia", 2, "VacationTestingID");
+        interactor.handleMessage("VacationBotTemp1", "Bolivia", 2, "VacationTestingID");
         assertTrue(((InMemoryGroupDataAccessObject) groupRepository).get("VacationTestingID").getMessages().size() > 2);
 
+
+        users.remove("VacationBotTemp1");
         interactor.handleMessage("VacationBot", "Hiking", 2, "VacationTestingID");
         assertTrue(((InMemoryGroupDataAccessObject)groupRepository).get("VacationTestingID").getMessages().size() > 5);
         interactor.removeResponse(users);
